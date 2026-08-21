@@ -1,0 +1,1933 @@
+/* ==========================================================================
+   MeCodex — style.css (v2, premium art direction)
+   Table of contents:
+   1. Custom properties (design tokens)
+   2. Reset / base
+   3. Typography
+   4. Layout utilities (container, grid, section)
+   5. Buttons & links
+   6. Header / nav
+   7. Hero
+   8. Services (editorial rows)
+   9. Why MeCodex (asymmetric)
+   10. Process timeline
+   11. CTA panel
+   12. Footer
+   13. About page
+   14. Services page
+   15. Contact page
+   16. Scroll-reveal / animation
+   16c–16f. v8 — Accordion, coming-soon placeholder, elevated tech-stack, newsletter notice
+   17. Focus states & accessibility
+   18. Responsive breakpoints
+   ========================================================================== */
+
+/* ---------- 1. Custom properties ---------- */
+:root {
+  /* Brand colors */
+  --teal: #33E0C7;
+  --blue: #3D6CF2;
+  --ink-dark: #0A0F1C;
+  --ink-light: #EAF6FF;
+
+  /* Derived surface colors (neutrals — restrained, no pure black/white) */
+  --surface-0: #0A0F1C;
+  --surface-1: #0E1424;
+  --surface-2: #131b30;
+  --surface-3: #182140;
+  --surface-4: #202b4d;
+  --border-subtle: rgba(234, 246, 255, 0.09);
+  --border-strong: rgba(234, 246, 255, 0.18);
+  --border-accent: rgba(51, 224, 199, 0.4);
+  --text-primary: var(--ink-light);
+  --text-secondary: rgba(234, 246, 255, 0.66);
+  --text-muted: rgba(234, 246, 255, 0.44);
+  --text-faint: rgba(234, 246, 255, 0.22);
+
+  --gradient-brand: linear-gradient(135deg, var(--teal), var(--blue));
+  --gradient-brand-soft: linear-gradient(135deg, rgba(51,224,199,0.15), rgba(61,108,242,0.15));
+
+  /* Typography */
+  --font-heading: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* Responsive type scale (clamp: min, fluid, max) */
+  --text-display: clamp(2.75rem, 1.6rem + 3.6vw, 5rem);
+  --text-h1:      clamp(2.25rem, 1.6rem + 2.2vw, 3.25rem);
+  --text-h2:      clamp(1.7rem, 1.35rem + 1.3vw, 2.5rem);
+  --text-h3:      clamp(1.1rem, 1.02rem + 0.3vw, 1.3rem);
+  --text-body-lg: clamp(1.05rem, 1rem + 0.2vw, 1.2rem);
+  --text-body:    1rem;
+  --text-caption: 0.85rem;
+  --text-label:   0.76rem;
+  --text-button:  0.88rem;
+
+  /* Spacing scale */
+  --space-3xs: 0.25rem;
+  --space-2xs: 0.5rem;
+  --space-xs: 0.75rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2.5rem;
+  --space-xl: 4rem;
+  --space-2xl: 6rem;
+  --space-3xl: 8.5rem;
+
+  /* Layout */
+  --container-width: 1240px;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-pill: 999px;
+  --header-height: 80px;
+
+  /* Shadows — restrained, only on hover/interaction, never resting glow */
+  --shadow-soft: 0 24px 48px -24px rgba(0,0,0,0.6);
+  --shadow-lift: 0 10px 24px -12px rgba(0,0,0,0.5);
+
+  --ease: cubic-bezier(.16,.8,.32,1);
+  --transition-base: 220ms var(--ease);
+  --transition-slow: 480ms var(--ease);
+
+  /* Depth / blueprint texture (v3) — reused as a restrained "engineered" layering motif */
+  --grid-line: rgba(234, 246, 255, 0.05);
+  --grid-line-strong: rgba(234, 246, 255, 0.08);
+  --grid-size: 64px;
+  --grid-size-lg: 128px;
+}
+
+/* ---------- 2. Reset / base ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; }
+html { scroll-behavior: smooth; }
+html, body { height: 100%; }
+body {
+  font-family: var(--font-body);
+  background: var(--surface-0);
+  color: var(--text-primary);
+  line-height: 1.6;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+img, svg { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+ul { list-style: none; padding: 0; }
+button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
+input, textarea { font: inherit; color: inherit; }
+
+/* Background texture (fixed, subtle — faint grid + radial glow, not a loud gradient blob) */
+body::before {
+  content: "";
+  position: fixed;
+  inset: -10%;
+  z-index: -2;
+  background-image:
+    radial-gradient(circle at 12% 8%, rgba(51,224,199,0.06), transparent 38%),
+    radial-gradient(circle at 88% 4%, rgba(61,108,242,0.08), transparent 42%),
+    radial-gradient(circle at 50% 100%, rgba(51,224,199,0.04), transparent 50%);
+  pointer-events: none;
+  animation: bgDrift 34s ease-in-out infinite alternate;
+  will-change: transform;
+}
+/* Sitewide ambient background drift (v5) — one fixed pseudo-element, transform-only, so pages
+   never feel fully static even before scrolling. Enlarged 10% past viewport edges so the
+   translate/scale never reveals a seam. */
+@keyframes bgDrift {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to   { transform: translate3d(-1.6%, 1.4%, 0) scale(1.035); }
+}
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(var(--grid-line-strong) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line-strong) 1px, transparent 1px);
+  background-size: var(--grid-size) var(--grid-size), var(--grid-size) var(--grid-size), var(--grid-size-lg) var(--grid-size-lg), var(--grid-size-lg) var(--grid-size-lg);
+  -webkit-mask-image: linear-gradient(to bottom, black, transparent 78%);
+  mask-image: linear-gradient(to bottom, black, transparent 78%);
+  pointer-events: none;
+}
+
+/* Ambient particle field (v6) — sitewide fixed canvas, drawn/animated by main.js §9. Sits between
+   the glow (-2) and the grid (-1) in paint order, doesn't matter which — both are barely-visible
+   background layers. Fixed + inset:0 so it never affects layout or introduces scroll/overflow;
+   decorative-only (aria-hidden, pointer-events: none) so it never intercepts focus or clicks. */
+.bg-particles {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+}
+
+/* Blueprint grid plane — reusable depth layer for sections that want extra "engineered" texture
+   (kept low-contrast; layers under content, never competes with it) */
+.grid-plane { position: relative; isolation: isolate; }
+.grid-plane::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: var(--grid-size) var(--grid-size);
+  -webkit-mask-image: radial-gradient(ellipse 85% 100% at 50% 0%, black, transparent 75%);
+  mask-image: radial-gradient(ellipse 85% 100% at 50% 0%, black, transparent 75%);
+  pointer-events: none;
+}
+
+/* Skip link */
+.skip-link {
+  position: absolute;
+  left: -999px;
+  top: 0;
+  background: var(--teal);
+  color: var(--ink-dark);
+  padding: 0.75rem 1.25rem;
+  z-index: 1000;
+  border-radius: 0 0 var(--radius-sm) 0;
+  font-weight: 600;
+}
+.skip-link:focus { left: 0; }
+
+/* ---------- 3. Typography ---------- */
+h1, h2, h3, h4 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+}
+h1, h2 { font-weight: 700; letter-spacing: -0.015em; }
+h1 { font-size: var(--text-h1); }
+h2 { font-size: var(--text-h2); }
+h3 { font-size: var(--text-h3); }
+h4 { font-size: 1.02rem; }
+p { color: var(--text-secondary); max-width: 62ch; }
+.lead { font-size: var(--text-body-lg); color: var(--text-secondary); max-width: 54ch; }
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-family: var(--font-heading);
+  text-transform: uppercase;
+  letter-spacing: 0.19em;
+  font-weight: 600;
+  font-size: var(--text-label);
+  color: var(--teal);
+  margin-bottom: var(--space-sm);
+}
+.eyebrow::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--gradient-brand);
+  display: inline-block;
+  flex-shrink: 0;
+  animation: eyebrowPulse 2.6s ease-in-out infinite;
+}
+/* Ambient "quietly alive at rest" pulse on every eyebrow marker site-wide (v5) — transform/opacity only. */
+@keyframes eyebrowPulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.35); opacity: 0.72; }
+}
+
+.text-gradient {
+  background: var(--gradient-brand);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Ghost numeral — large faint mono numerals used as editorial texture, never decorative-only clutter */
+.ghost-num {
+  font-family: var(--font-heading);
+  color: transparent;
+  -webkit-text-stroke: 1px var(--border-strong);
+  font-weight: 600;
+  line-height: 1;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* ---------- 4. Layout utilities ---------- */
+.container {
+  width: 100%;
+  max-width: var(--container-width);
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 4vw, 2.5rem);
+}
+.section {
+  padding-block: var(--space-2xl);
+}
+.section-head {
+  max-width: 640px;
+  margin-bottom: var(--space-xl);
+}
+.section-head.centered {
+  margin-inline: auto;
+  text-align: center;
+}
+main { display: block; }
+
+.grid {
+  display: grid;
+  gap: var(--space-lg);
+}
+/* Stagger sibling .reveal blocks inside any grid/why-grid layout (story-grid, contact-grid,
+   why-grid, engagement-grid) so columns/cards animate in sequence rather than together (v4). */
+.grid > .reveal:nth-child(2),
+.why-grid > .reveal:nth-child(2) { transition-delay: 110ms; }
+.grid > .reveal:nth-child(3),
+.why-grid > .reveal:nth-child(3) { transition-delay: 220ms; }
+
+/* Corner-bracket frame motif — restrained "engineering blueprint" accent, used sparingly */
+.bracket-frame { position: relative; }
+.bracket-frame::before,
+.bracket-frame::after {
+  content: "";
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid var(--border-accent);
+  pointer-events: none;
+}
+.bracket-frame::before { top: -1px; left: -1px; border-right: none; border-bottom: none; }
+.bracket-frame::after { bottom: -1px; right: -1px; border-left: none; border-top: none; }
+
+/* ---------- 5. Buttons & links ---------- */
+.btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 48px;
+  padding: 0.85rem 1.7rem;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-heading);
+  font-size: var(--text-button);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background var(--transition-base), border-color var(--transition-base);
+  white-space: nowrap;
+}
+.btn-primary {
+  background: var(--gradient-brand);
+  background-size: 160% 160%;
+  background-position: 0% 0%;
+  color: var(--ink-dark);
+  box-shadow: 0 8px 26px -10px rgba(51,224,199,0.4);
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background var(--transition-base), border-color var(--transition-base), background-position var(--transition-slow);
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 14px 32px -10px rgba(51,224,199,0.5); background-position: 100% 60%; }
+.btn-primary:active { transform: translateY(0) scale(0.98); }
+.btn-secondary {
+  background: transparent;
+  color: var(--text-primary);
+  border: 1px solid var(--border-strong);
+}
+.btn-secondary:hover { border-color: var(--teal); background: rgba(51,224,199,0.06); transform: translateY(-2px); }
+.btn-secondary:active { transform: translateY(0) scale(0.98); }
+.btn-sm { min-height: 40px; padding: 0.6rem 1.15rem; font-size: 0.82rem; }
+.btn-block { width: 100%; }
+
+.link-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  color: var(--teal);
+  font-weight: 600;
+}
+.link-arrow svg { transition: transform var(--transition-base); width: 16px; height: 16px; }
+.link-arrow:hover svg { transform: translateX(4px); }
+
+/* Underline-draw link treatment, used across footer/inline links */
+.text-link {
+  position: relative;
+  background-image: linear-gradient(var(--teal), var(--teal));
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 1px;
+  transition: background-size var(--transition-base);
+}
+.text-link:hover { background-size: 100% 1px; }
+
+/* ---------- 6. Header / nav ---------- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: var(--header-height);
+  display: flex;
+  align-items: center;
+  background: rgba(10, 15, 28, 0.5);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid transparent;
+  transition: background var(--transition-base), border-color var(--transition-base), height var(--transition-base);
+}
+/* Scroll-progress accent — thin bar at the header's top edge, fills as the page scrolls (v4).
+   Genuinely useful (position feedback) as well as decorative; width set by main.js. */
+.scroll-progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 2px;
+  width: 0%;
+  background: var(--gradient-brand);
+  transition: width 120ms linear;
+  pointer-events: none;
+  z-index: 101;
+}
+.site-header.is-scrolled {
+  height: calc(var(--header-height) - 12px);
+  background: rgba(10, 15, 28, 0.86);
+  border-bottom: 1px solid var(--border-subtle);
+}
+.site-header .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+}
+.brand { display: flex; align-items: center; transition: opacity var(--transition-base); }
+.brand:hover { opacity: 0.85; }
+.brand img { height: 28px; width: auto; transition: transform var(--transition-base); }
+.brand:hover img { transform: scale(1.04); }
+.brand:active img { transform: scale(0.98); }
+.brand:focus-visible { outline: 2px solid var(--teal); outline-offset: 4px; border-radius: 4px; }
+
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  transition: border-color var(--transition-base);
+}
+.nav-toggle:hover { border-color: var(--border-strong); }
+.nav-toggle span {
+  display: block;
+  width: 20px;
+  height: 2px;
+  margin-inline: auto;
+  background: var(--text-primary);
+  transition: transform var(--transition-base), opacity var(--transition-base);
+}
+.nav-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.nav-toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+.primary-nav { display: flex; }
+.primary-nav ul { display: flex; align-items: center; gap: var(--space-lg); }
+.primary-nav a {
+  font-family: var(--font-heading);
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  position: relative;
+  padding: 0.4rem 0;
+  transition: color var(--transition-base);
+}
+.primary-nav a::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 100%; bottom: -4px;
+  height: 2px;
+  background: var(--gradient-brand);
+  /* v7: the underline gains a subtle gradient sweep on hover (background-position shift)
+     instead of sitting as a flat two-color fill — same technique as .btn-primary's hover. */
+  background-size: 220% 100%;
+  background-position: 0% 0%;
+  border-radius: 2px;
+  transition: right var(--transition-base), background-position var(--transition-slow);
+}
+.primary-nav a:hover::after { background-position: 100% 0%; }
+.primary-nav a:hover { color: var(--text-primary); }
+.primary-nav a:hover::after { right: 0; }
+.primary-nav a[aria-current="page"] { color: var(--teal); }
+.primary-nav a[aria-current="page"]::after { right: 0; }
+.header-actions { display: flex; align-items: center; gap: var(--space-md); }
+
+/* Services mega-menu preview — desktop-only enhancement; the "Services" link itself
+   still works standalone on touch/mobile, so nothing essential depends on hover. */
+.nav-has-menu { position: relative; }
+.nav-menu {
+  position: absolute;
+  top: calc(100% + 14px);
+  left: 50%;
+  transform: translate(-50%, 10px);
+  width: 460px;
+  max-width: calc(100vw - 2rem);
+  padding: var(--space-md);
+  background: var(--surface-2);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-soft);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.35rem;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity var(--transition-slow), transform var(--transition-slow), visibility var(--transition-slow);
+  z-index: 90;
+}
+.nav-has-menu:hover .nav-menu,
+.nav-has-menu:focus-within .nav-menu {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translate(-50%, 0);
+}
+.nav-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.65rem 0.6rem;
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: background var(--transition-base), color var(--transition-base), opacity var(--transition-base), transform var(--transition-base);
+}
+/* Staggered item entrance — pure CSS, nth-child transition-delay trick */
+.nav-has-menu:hover .nav-menu-item,
+.nav-has-menu:focus-within .nav-menu-item { opacity: 1; transform: translateY(0); }
+.nav-menu-item:nth-child(1) { transition-delay: 30ms; }
+.nav-menu-item:nth-child(2) { transition-delay: 70ms; }
+.nav-menu-item:nth-child(3) { transition-delay: 110ms; }
+.nav-menu-item:nth-child(4) { transition-delay: 150ms; }
+.nav-menu-item:hover,
+.nav-menu-item:focus-visible { background: var(--surface-3); color: var(--text-primary); }
+.nav-menu-item .card-icon { width: 34px; height: 34px; margin-bottom: 0; }
+.nav-menu-item .card-icon svg { width: 17px; height: 17px; transition: transform var(--transition-base); }
+.nav-menu-item:hover .card-icon svg,
+.nav-menu-item:focus-visible .card-icon svg { transform: scale(1.12) rotate(-4deg); }
+.nav-menu-item span { font-family: var(--font-heading); font-size: 0.82rem; }
+@media (max-width: 860px) {
+  .nav-menu { display: none; }
+}
+
+/* ---------- 7. Hero ---------- */
+.hero {
+  position: relative;
+  padding-block: clamp(3rem, 6vw, var(--space-3xl)) var(--space-xl);
+  overflow: hidden;
+}
+.hero-grid {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1.05fr) minmax(0, 0.95fr);
+  gap: clamp(1.5rem, 3vw, var(--space-xl));
+  align-items: center;
+}
+.hero-index {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+  height: 100%;
+  padding-block: var(--space-sm);
+}
+.hero-index span:not(.hero-index-line) {
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  color: var(--text-faint);
+  writing-mode: vertical-rl;
+  text-transform: uppercase;
+}
+.hero-index-line {
+  flex: 1;
+  width: 1px;
+  background: linear-gradient(var(--border-strong), transparent);
+}
+.hero-copy h1 { margin-bottom: var(--space-md); font-size: var(--text-display); }
+.hero-copy .lead { margin-bottom: var(--space-lg); }
+.hero-ctas { display: flex; gap: var(--space-sm); flex-wrap: wrap; }
+
+/* Hero entrance — short staggered fade+rise sequence on page load (v4), not scroll-gated. */
+@keyframes heroEnter {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.hero-index,
+.hero-copy .eyebrow,
+.hero-copy h1,
+.hero-copy .lead,
+.hero-copy .hero-ctas,
+.hero-visual {
+  animation: heroEnter 700ms var(--ease) both;
+}
+.hero-index { animation-delay: 0ms; }
+.hero-copy .eyebrow { animation-delay: 60ms; }
+.hero-copy h1 { animation-delay: 140ms; }
+.hero-copy .lead { animation-delay: 260ms; }
+.hero-copy .hero-ctas { animation-delay: 360ms; }
+.hero-visual { animation-delay: 220ms; }
+
+.hero-visual {
+  position: relative;
+  padding: clamp(1rem, 3vw, 2rem);
+}
+.hero-visual svg { width: 100%; height: auto; position: relative; z-index: 1; }
+/* Layered depth behind the network diagram: soft vignette + fine blueprint grid + corner brackets */
+.hero-visual::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 70% 60% at 50% 40%, rgba(51,224,199,0.08), transparent 70%),
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 100% 100%, 32px 32px, 32px 32px;
+  -webkit-mask-image: radial-gradient(ellipse 75% 75% at 50% 45%, black, transparent 72%);
+  mask-image: radial-gradient(ellipse 75% 75% at 50% 45%, black, transparent 72%);
+  pointer-events: none;
+}
+.hero-visual-frame { position: relative; }
+.hero-visual-frame::before,
+.hero-visual-frame::after {
+  content: "";
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border: 1px solid var(--border-strong);
+  pointer-events: none;
+  z-index: 1;
+}
+.hero-visual-frame::before { top: 0; left: 0; border-right: none; border-bottom: none; }
+.hero-visual-frame::after { bottom: 0; right: 0; border-left: none; border-top: none; }
+.hero-visual-caption {
+  display: flex;
+  justify-content: space-between;
+  margin-top: var(--space-sm);
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  color: var(--text-faint);
+  text-transform: uppercase;
+}
+.hero-visual-readout {
+  display: flex;
+  gap: var(--space-md);
+  font-family: var(--font-heading);
+  font-size: 0.68rem;
+  letter-spacing: 0.05em;
+  color: var(--text-faint);
+}
+
+.hero-statbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xl);
+  margin-top: var(--space-2xl);
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--border-subtle);
+}
+/* Stat blocks fade+rise in on scroll, staggered; numbers are counted up by main.js. */
+.hero-statbar > div {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 550ms var(--ease), transform 550ms var(--ease);
+}
+.hero-statbar > div.is-visible { opacity: 1; transform: translateY(0); }
+.hero-statbar > div:nth-child(2) { transition-delay: 110ms; }
+.hero-statbar > div:nth-child(3) { transition-delay: 220ms; }
+.hero-statbar .stat-num {
+  font-family: var(--font-heading);
+  font-size: 1.6rem;
+  color: var(--text-primary);
+  display: block;
+  perspective: 240px; /* v6: 3D space for the per-digit flip below */
+}
+/* Odometer-style digit flip (v6) — main.js §6 splits the counted-up value into per-digit spans
+   and retriggers this animation each time a digit's value changes, so the count-up reads as a
+   flip/tumble (like a split-flap counter) instead of a plain incrementing number. */
+.hero-statbar .stat-num .digit,
+.hero-statbar .stat-num .digit-suffix {
+  display: inline-block;
+  transform-origin: 50% 50%;
+  backface-visibility: hidden;
+}
+.hero-statbar .stat-num .digit.is-flipping {
+  animation: digitFlip 340ms var(--ease);
+}
+@keyframes digitFlip {
+  0% { transform: rotateX(-90deg); opacity: 0.15; }
+  55% { transform: rotateX(14deg); opacity: 1; }
+  100% { transform: rotateX(0deg); opacity: 1; }
+}
+.hero-statbar .stat-label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* Hero network visual animation */
+.hero-visual .orbit-ring {
+  animation: spin 40s linear infinite;
+  transform-origin: center;
+}
+.hero-visual .drift {
+  animation: drift 9s ease-in-out infinite alternate;
+}
+.node-pulse {
+  animation: pulse 2.8s ease-in-out infinite;
+  transform-origin: center;
+}
+.node-pulse.delay-1 { animation-delay: .4s; }
+.node-pulse.delay-2 { animation-delay: .9s; }
+.node-pulse.delay-3 { animation-delay: 1.3s; }
+@keyframes pulse {
+  0%, 100% { opacity: 0.85; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+@keyframes drift {
+  from { transform: translate(0, 0); }
+  to { transform: translate(0, -8px); }
+}
+/* Faint scanline sweep across the hero visual — restrained HUD detail, static fallback under reduced motion.
+   Deliberately on .hero-visual (not .hero-visual-frame), which already owns ::before for the vignette/grid layer,
+   so this doesn't collide with .hero-visual-frame's own ::before/::after corner-bracket pair. */
+.hero-visual::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background-image: linear-gradient(rgba(51,224,199,0.05) 1px, transparent 1px);
+  background-size: 100% 3px;
+  background-position: 0 0;
+  animation: scanline 7s linear infinite;
+  pointer-events: none;
+}
+@keyframes scanline {
+  from { background-position: 0 0; }
+  to { background-position: 0 480px; }
+}
+
+/* "Data packet" travelling along two of the network's connection lines — reinforces the
+   network/data motif started by the orbit ring + node pulses. CSS motion-path, slow/subtle. */
+.hero-visual .packet {
+  offset-path: path('M80,90 L220,60 L360,110 L240,200 L400,240');
+  offset-rotate: 0deg;
+  animation: packetTravel 4.6s linear infinite;
+}
+.hero-visual .packet-2 {
+  offset-path: path('M100,230 L240,200 L230,350 L330,360');
+  animation-duration: 5.4s;
+  animation-delay: 1.4s;
+}
+@keyframes packetTravel {
+  0% { offset-distance: 0%; opacity: 0; }
+  8% { opacity: 1; }
+  92% { opacity: 1; }
+  100% { offset-distance: 100%; opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .node-pulse, .orbit-ring, .drift, .hero-visual::after { animation: none; }
+  .hero-index, .hero-copy .eyebrow, .hero-copy h1, .hero-copy .lead, .hero-copy .hero-ctas, .hero-visual {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+  .hero-visual .packet { animation: none; opacity: 0; }
+  .hero-statbar > div { opacity: 1; transform: none; transition: none; }
+  html { scroll-behavior: auto; }
+}
+
+/* ---------- 8. Services (editorial rows) ---------- */
+.service-rows { border-top: 1px solid var(--border-subtle); }
+.service-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 4.5rem 1fr 2fr auto;
+  align-items: center;
+  gap: var(--space-lg);
+  padding-block: var(--space-lg);
+  border-bottom: 1px solid var(--border-subtle);
+  overflow: hidden;
+  transition: padding-left var(--transition-base);
+  perspective: 300px; /* v6: 3D space for .row-index's tumble-in */
+}
+.service-row::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(51,224,199,0.06), transparent 60%);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--transition-slow);
+  z-index: 0;
+}
+.service-row:hover::before { transform: scaleX(1); }
+.service-row:hover { padding-left: var(--space-sm); }
+.service-row > * { position: relative; z-index: 1; }
+.service-row .row-index {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  color: var(--text-faint);
+  opacity: 0;
+  transform: scale(0.5) rotateX(65deg);
+  transition: color var(--transition-base), opacity 480ms var(--ease), transform 480ms var(--ease);
+}
+.service-row:hover .row-index { color: var(--teal); }
+/* Index numeral tumble-in (v6), timed with the row's own stagger delay below */
+.service-rows.is-visible .service-row .row-index { opacity: 1; transform: scale(1) rotateX(0deg); }
+.service-rows.is-visible .service-row:nth-child(2) .row-index { transition-delay: 90ms; }
+.service-rows.is-visible .service-row:nth-child(3) .row-index { transition-delay: 180ms; }
+.service-rows.is-visible .service-row:nth-child(4) .row-index { transition-delay: 270ms; }
+.service-row h3 { display: flex; align-items: center; gap: 0.85rem; }
+.service-row .card-icon { margin-bottom: 0; width: 40px; height: 40px; flex-shrink: 0; }
+.service-row .card-icon svg { width: 20px; height: 20px; }
+.service-row p { font-size: 0.95rem; margin: 0; }
+.service-row .row-link {
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: opacity var(--transition-base), transform var(--transition-base);
+}
+.service-row:hover .row-link { opacity: 1; transform: translateX(0); }
+.service-row .card-icon svg { transition: transform var(--transition-base); }
+.service-row:hover .card-icon svg { transform: scale(1.12) rotate(-4deg); }
+
+/* Staggered row-by-row entrance — .service-rows carries the observed .reveal, children animate
+   in sequence once it's visible instead of all firing at once. */
+.service-rows .service-row {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 600ms var(--ease), transform 600ms var(--ease), padding-left var(--transition-base);
+}
+.service-rows.is-visible .service-row { opacity: 1; transform: translateY(0); }
+.service-rows.is-visible .service-row:nth-child(1) { transition-delay: 0ms; }
+.service-rows.is-visible .service-row:nth-child(2) { transition-delay: 90ms; }
+.service-rows.is-visible .service-row:nth-child(3) { transition-delay: 180ms; }
+.service-rows.is-visible .service-row:nth-child(4) { transition-delay: 270ms; }
+
+/* Generic small icon chip (reused: services, contact info) */
+.card-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--gradient-brand-soft);
+  margin-bottom: var(--space-md);
+  flex-shrink: 0;
+}
+.card-icon svg { width: 26px; height: 26px; }
+
+/* ---------- 9. Why MeCodex (asymmetric) ---------- */
+.why-grid {
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+  gap: var(--space-2xl);
+  align-items: start;
+}
+.why-intro .lead { max-width: 46ch; }
+.why-callout {
+  margin-top: var(--space-xl);
+  padding: var(--space-md) var(--space-lg);
+  border-left: 2px solid var(--teal);
+  background: var(--surface-1);
+}
+.why-callout .stat-num {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  color: var(--text-primary);
+  display: block;
+}
+.why-callout .stat-label { font-size: 0.85rem; color: var(--text-muted); }
+
+.why-list { display: flex; flex-direction: column; }
+.why-item {
+  display: grid;
+  grid-template-columns: 3rem 1fr;
+  gap: var(--space-md);
+  padding-block: var(--space-lg);
+  border-top: 1px solid var(--border-subtle);
+  transition: border-color var(--transition-base);
+  perspective: 300px; /* v6: 3D space for .feature-num's tumble-in */
+}
+.why-list .why-item:last-child { border-bottom: 1px solid var(--border-subtle); }
+.why-item .feature-num {
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  color: var(--text-faint);
+  letter-spacing: 0.08em;
+  opacity: 0;
+  transform: scale(0.5) rotateX(65deg);
+  transition: color var(--transition-base), opacity 480ms var(--ease), transform 480ms var(--ease);
+}
+.why-item:hover .feature-num { color: var(--teal); }
+/* Index numeral tumble-in (v6), timed with the row's own stagger delay below */
+.why-list.is-visible .why-item .feature-num { opacity: 1; transform: scale(1) rotateX(0deg); }
+.why-list.is-visible .why-item:nth-child(2) .feature-num { transition-delay: 90ms; }
+.why-list.is-visible .why-item:nth-child(3) .feature-num { transition-delay: 180ms; }
+.why-list.is-visible .why-item:nth-child(4) .feature-num { transition-delay: 270ms; }
+.why-item h3 { margin-bottom: var(--space-2xs); font-size: 1.05rem; }
+.why-item p { font-size: 0.94rem; margin: 0; }
+
+/* Staggered entrance, same pattern as .service-rows */
+.why-list .why-item {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 600ms var(--ease), transform 600ms var(--ease), border-color var(--transition-base);
+}
+.why-list.is-visible .why-item { opacity: 1; transform: translateY(0); }
+.why-list.is-visible .why-item:nth-child(1) { transition-delay: 0ms; }
+.why-list.is-visible .why-item:nth-child(2) { transition-delay: 90ms; }
+.why-list.is-visible .why-item:nth-child(3) { transition-delay: 180ms; }
+.why-list.is-visible .why-item:nth-child(4) { transition-delay: 270ms; }
+
+/* ---------- 10. Process timeline ---------- */
+.process-list {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: var(--space-md);
+  position: relative;
+  margin-top: var(--space-sm);
+}
+.process-step {
+  position: relative;
+  padding-top: var(--space-xl);
+  perspective: 300px; /* v6: 3D space for .step-index's flip-in */
+}
+.process-step:nth-child(even) { transform: translateY(var(--space-lg)); }
+.process-step::before {
+  content: "";
+  position: absolute;
+  top: 17px;
+  left: -8px;
+  right: 8px;
+  height: 1px;
+  background: var(--border-subtle);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 550ms var(--ease);
+}
+.process-step:first-child::before { display: none; }
+.process-step.is-visible::before { transform: scaleX(1); }
+.step-index {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-heading);
+  font-size: 0.9rem;
+  background: var(--surface-2);
+  border: 1px solid var(--border-strong);
+  color: var(--text-primary);
+  font-weight: 700;
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transform: scale(0.4) rotateX(70deg); /* v6: flip-in instead of a plain scale-pop */
+  transition: background var(--transition-base), border-color var(--transition-base), color var(--transition-base), opacity 420ms var(--ease), transform 420ms var(--ease);
+}
+.process-step.is-visible .step-index { opacity: 1; transform: scale(1) rotateX(0deg); }
+.process-step:hover .step-index {
+  background: var(--gradient-brand);
+  border-color: transparent;
+  color: var(--ink-dark);
+}
+/* Stagger the step markers/lines popping/drawing in sequence as the row scrolls into view */
+.process-step:nth-child(2) .step-index { transition-delay: 90ms; }
+.process-step:nth-child(3) .step-index { transition-delay: 180ms; }
+.process-step:nth-child(4) .step-index { transition-delay: 270ms; }
+.process-step:nth-child(5) .step-index { transition-delay: 360ms; }
+.process-step:nth-child(2)::before { transition-delay: 60ms; }
+.process-step:nth-child(3)::before { transition-delay: 150ms; }
+.process-step:nth-child(4)::before { transition-delay: 240ms; }
+.process-step:nth-child(5)::before { transition-delay: 330ms; }
+.process-step h3 { margin: var(--space-sm) 0 var(--space-2xs); font-size: 1.05rem; }
+.process-step p { font-size: 0.9rem; }
+
+/* ---------- 11. CTA panel ---------- */
+.cta-panel {
+  position: relative;
+  padding: var(--space-2xl) var(--space-xl);
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: var(--space-xl);
+  align-items: center;
+  border: 1px solid var(--border-subtle);
+  background: var(--surface-1);
+}
+.cta-panel h2 { margin-bottom: var(--space-sm); font-size: var(--text-h1); }
+.cta-panel p { max-width: 42ch; margin-bottom: 0; }
+.cta-panel-actions { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-md); }
+.cta-panel-actions .hero-ctas { justify-content: flex-start; }
+.cta-panel-meta {
+  font-family: var(--font-heading);
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+}
+
+/* ---------- 12. Footer ---------- */
+.site-footer {
+  position: relative;
+  border-top: 1px solid var(--border-subtle);
+  padding-block: var(--space-xl) var(--space-lg);
+  margin-top: var(--space-2xl);
+}
+.site-footer::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 0;
+  width: 96px;
+  height: 2px;
+  background: var(--gradient-brand);
+}
+.footer-top {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1fr;
+  gap: var(--space-lg);
+  padding-bottom: var(--space-xl);
+}
+.footer-brand img { height: 26px; margin-bottom: var(--space-sm); }
+.footer-brand p { font-size: 0.9rem; max-width: 32ch; }
+.footer-col h4 {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  margin-bottom: var(--space-sm);
+  font-family: var(--font-heading);
+}
+.footer-col ul { display: flex; flex-direction: column; gap: 0.6rem; }
+.footer-col a { font-size: 0.92rem; color: var(--text-secondary); transition: color var(--transition-base); }
+.footer-col a:hover { color: var(--teal); }
+.social-row { display: flex; gap: var(--space-sm); margin-top: var(--space-sm); }
+.social-row a {
+  width: 38px; height: 38px;
+  border: 1px solid var(--border-subtle);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  transition: border-color var(--transition-base), color var(--transition-base), transform var(--transition-base);
+}
+.social-row a:hover { border-color: var(--teal); color: var(--teal); transform: translateY(-2px); }
+.social-row svg { width: 16px; height: 16px; transition: transform var(--transition-base); }
+.social-row a:hover svg { transform: scale(1.15) rotate(-8deg); }
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--border-subtle);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+.footer-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-family: var(--font-heading);
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  color: var(--text-faint);
+}
+.footer-meta::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--teal);
+  box-shadow: 0 0 0 3px rgba(51,224,199,0.12);
+  flex-shrink: 0;
+}
+
+/* ---------- 13. About page ---------- */
+.story-grid {
+  grid-template-columns: 1fr 1fr;
+  align-items: start;
+}
+.story-grid h2 { font-size: var(--text-h3); margin-bottom: var(--space-xs); }
+.story-grid p { font-size: 0.96rem; }
+
+.values-list { border-top: 1px solid var(--border-subtle); }
+.value-row {
+  display: grid;
+  grid-template-columns: 5rem 1fr;
+  gap: var(--space-lg);
+  padding-block: var(--space-lg);
+  border-bottom: 1px solid var(--border-subtle);
+  perspective: 300px; /* v6: 3D space for .value-mark's tumble-in */
+}
+.value-row .value-mark {
+  font-family: var(--font-heading);
+  color: var(--text-faint);
+  font-size: 1.1rem;
+  opacity: 0;
+  transform: scale(0.5) rotateX(65deg);
+  transition: color var(--transition-base), opacity 480ms var(--ease), transform 480ms var(--ease);
+}
+.value-row:hover .value-mark { color: var(--teal); }
+/* Index numeral tumble-in (v6), timed with the row's own stagger delay below */
+.values-list.is-visible .value-row .value-mark { opacity: 1; transform: scale(1) rotateX(0deg); }
+.values-list.is-visible .value-row:nth-child(2) .value-mark { transition-delay: 90ms; }
+.values-list.is-visible .value-row:nth-child(3) .value-mark { transition-delay: 180ms; }
+.values-list.is-visible .value-row:nth-child(4) .value-mark { transition-delay: 270ms; }
+.value-row h3 { margin-bottom: var(--space-2xs); }
+.value-row p { font-size: 0.95rem; margin: 0; }
+
+/* Staggered entrance, same pattern as .service-rows / .why-list */
+.values-list .value-row {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 600ms var(--ease), transform 600ms var(--ease);
+}
+.values-list.is-visible .value-row { opacity: 1; transform: translateY(0); }
+.values-list.is-visible .value-row:nth-child(1) { transition-delay: 0ms; }
+.values-list.is-visible .value-row:nth-child(2) { transition-delay: 90ms; }
+.values-list.is-visible .value-row:nth-child(3) { transition-delay: 180ms; }
+.values-list.is-visible .value-row:nth-child(4) { transition-delay: 270ms; }
+
+.stack-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+.stack-chip {
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  padding: 0.55rem 1rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border-subtle);
+  background: var(--surface-1);
+  color: var(--text-secondary);
+  transition: border-color var(--transition-base), color var(--transition-base), transform 420ms var(--ease), background var(--transition-base), opacity 420ms var(--ease);
+}
+.stack-chip:hover { border-color: var(--teal); color: var(--text-primary); transform: translateY(-3px); background: rgba(51,224,199,0.08); }
+.stack-chip:active { transform: translateY(-1px) scale(0.97); }
+
+/* Staggered chip entrance (v5) — parent .stack-grid.reveal shows instantly, chips cascade in tiers */
+.stack-grid.reveal { opacity: 1; transform: none; transition: none; }
+.stack-chip {
+  opacity: 0;
+  transform: translateY(10px) scale(0.94);
+}
+.stack-grid.is-visible .stack-chip { opacity: 1; transform: none; }
+.stack-chip:nth-child(n+1):nth-child(-n+4) { transition-delay: 0ms; }
+.stack-chip:nth-child(n+5):nth-child(-n+8) { transition-delay: 70ms; }
+.stack-chip:nth-child(n+9):nth-child(-n+12) { transition-delay: 140ms; }
+.stack-chip:nth-child(n+13):nth-child(-n+16) { transition-delay: 210ms; }
+.stack-chip:nth-child(n+17) { transition-delay: 280ms; }
+
+/* ---------- 14. Services page ---------- */
+.service-detail {
+  position: relative;
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: var(--space-xl);
+  align-items: start;
+  padding-block: var(--space-xl);
+  border-bottom: 1px solid var(--border-subtle);
+  perspective: 600px; /* v6: 3D space for the ghost numeral's tumble-in */
+}
+.service-detail:first-of-type { padding-top: 0; }
+.service-detail:last-of-type { border-bottom: none; }
+.service-detail:nth-of-type(even) .service-detail-media { order: 2; }
+.service-detail-ghost {
+  position: absolute;
+  top: -0.5em;
+  right: 0;
+  font-size: clamp(4rem, 9vw, 8rem);
+  z-index: 0;
+  transform-origin: center;
+  opacity: 0;
+  transform: rotateX(75deg) scale(0.7);
+}
+.service-detail > * { position: relative; z-index: 1; }
+.service-detail > .service-detail-ghost { z-index: 0; }
+.service-detail .card-icon { margin-bottom: var(--space-md); }
+.service-detail .card-icon svg { transition: transform var(--transition-base); }
+.service-detail:hover .card-icon svg { transform: scale(1.1) rotate(-4deg); }
+/* Ghost numeral tumble-in (v6): flips/rotates into place once its .service-detail scrolls into
+   view (via the existing sitewide .reveal observer), then settles into the v5 ambient breathe. */
+.service-detail.is-visible .service-detail-ghost {
+  animation: ghostTumbleIn 620ms var(--ease) both, ghostBreathe 6s ease-in-out 620ms infinite;
+}
+@keyframes ghostTumbleIn {
+  0% { opacity: 0; transform: rotateX(75deg) scale(0.7); }
+  60% { opacity: 1; transform: rotateX(-10deg) scale(1.04); }
+  100% { opacity: 1; transform: rotateX(0deg) scale(1); }
+}
+/* Quiet ambient life on the decorative ghost numerals (v5) — transform/opacity only. */
+@keyframes ghostBreathe {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.62; transform: scale(1.015); }
+}
+.service-detail-list { display: flex; flex-direction: column; gap: 0.65rem; margin: var(--space-md) 0; }
+.service-detail-list li {
+  display: flex;
+  gap: 0.6rem;
+  align-items: flex-start;
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+}
+.service-detail-list svg { flex-shrink: 0; width: 18px; height: 18px; margin-top: 2px; color: var(--teal); }
+.best-for {
+  margin-top: var(--space-md);
+  padding: var(--space-md);
+  border-radius: var(--radius-sm);
+  background: var(--surface-1);
+  border-left: 2px solid var(--teal);
+  font-size: 0.9rem;
+}
+.best-for strong { color: var(--text-primary); font-family: var(--font-heading); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.06em; display: block; margin-bottom: 0.3rem; }
+
+.engagement-grid { grid-template-columns: repeat(3, 1fr); }
+.engagement-card {
+  position: relative;
+  padding: var(--space-lg);
+  border: 1px solid var(--border-subtle);
+  background: var(--surface-1);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  transition: border-color var(--transition-base), transform var(--transition-base), box-shadow var(--transition-slow);
+}
+.engagement-card:hover {
+  border-color: var(--border-accent);
+  transform: translateY(-4px);
+  box-shadow: 0 22px 44px -26px rgba(51,224,199,0.35);
+}
+.engagement-card h3 { font-size: 1.1rem; }
+.engagement-card .eng-mark { font-family: var(--font-heading); font-size: 0.78rem; color: var(--teal); letter-spacing: 0.1em; }
+
+/* ---------- 15. Contact page ---------- */
+.contact-grid {
+  grid-template-columns: 0.85fr 1.15fr;
+  align-items: start;
+}
+.contact-info-list { display: flex; flex-direction: column; gap: var(--space-md); margin-top: var(--space-lg); }
+.contact-info-item { display: flex; gap: var(--space-sm); align-items: flex-start; }
+.contact-info-item .icon-wrap {
+  width: 40px; height: 40px; flex-shrink: 0;
+  border-radius: var(--radius-sm);
+  background: var(--gradient-brand-soft);
+  display: flex; align-items: center; justify-content: center;
+}
+.contact-info-item .icon-wrap svg { width: 20px; height: 20px; }
+.contact-info-item h4 { font-size: 0.9rem; margin-bottom: 0.2rem; }
+.contact-info-item p, .contact-info-item a { font-size: 0.92rem; }
+.contact-info-item a { transition: color var(--transition-base); }
+.contact-info-item a:hover { color: var(--teal); }
+.contact-info-item .icon-wrap { transition: transform var(--transition-base); }
+.contact-info-item:hover .icon-wrap { transform: scale(1.08) rotate(-4deg); }
+
+.contact-form {
+  background: var(--surface-1);
+  border: 1px solid var(--border-subtle);
+  padding: var(--space-lg);
+}
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md); }
+.form-group { margin-bottom: var(--space-md); }
+.form-group label {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+.form-group input, .form-group textarea {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  min-height: 48px;
+  background: var(--surface-2);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  transition: border-color var(--transition-base), box-shadow var(--transition-base);
+}
+.form-group textarea { min-height: auto; }
+.form-group input::placeholder, .form-group textarea::placeholder { color: var(--text-muted); }
+.form-group input:focus, .form-group textarea:focus {
+  outline: none;
+  border-color: var(--teal);
+  box-shadow: 0 0 0 3px rgba(51,224,199,0.15);
+  transform: translateY(-1px);
+}
+.form-note { font-size: 0.8rem; color: var(--text-muted); margin-top: var(--space-sm); }
+
+/* Field focus-in polish (v5): label tints teal while its input/textarea has focus, input itself
+   gets a tiny lift (already declared above via transform on :focus). */
+.form-group label { transition: color var(--transition-base); }
+.form-group:focus-within label { color: var(--teal); }
+
+/* Submit button loading state (v5) — brief spinner while the client-side "send" simulates work. */
+.btn.is-loading { color: transparent; pointer-events: none; }
+.btn.is-loading::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(10,15,28,0.3);
+  border-top-color: var(--ink-dark);
+  border-radius: 50%;
+  animation: btnSpin 700ms linear infinite;
+}
+@keyframes btnSpin {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to   { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+.form-success {
+  display: none;
+  align-items: center;
+  gap: 0.6rem;
+  padding: var(--space-md);
+  border-radius: var(--radius-sm);
+  background: rgba(51,224,199,0.12);
+  border: 1px solid rgba(51,224,199,0.35);
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  margin-top: var(--space-md);
+  opacity: 0;
+  transform: translateY(10px) scale(0.98);
+  transition: opacity 420ms var(--ease), transform 420ms var(--ease);
+}
+.form-success.visible { display: flex; }
+.form-success.is-shown { opacity: 1; transform: translateY(0) scale(1); }
+.form-success svg { width: 20px; height: 20px; color: var(--teal); flex-shrink: 0; }
+/* Checkmark draws in once the success message is shown — satisfying confirmation, not a flat pop. */
+.form-success svg polyline { stroke-dasharray: 14; stroke-dashoffset: 14; }
+.form-success.is-shown svg polyline { animation: checkDraw 420ms var(--ease) 200ms forwards; }
+@keyframes checkDraw { to { stroke-dashoffset: 0; } }
+
+/* ---------- 16. Scroll-reveal ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 700ms var(--ease), transform 700ms var(--ease);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ---------- 16b. v5 full motion sweep ---------- */
+
+/* Section-head reveal (v5): every "eyebrow → h1/h2 → lead" block site-wide (.section-head,
+   plus the homepage's asymmetric .why-intro variant) now animates its own children in sequence
+   instead of fading as one flat block — the heading itself gets a distinct reveal beat. */
+.section-head.reveal,
+.why-intro.reveal {
+  opacity: 1;
+  transform: none;
+  transition: none;
+}
+.section-head > .eyebrow, .section-head > h1, .section-head > h2, .section-head > .lead,
+.why-intro > .eyebrow, .why-intro > h2, .why-intro > .lead, .why-intro > .why-callout {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 650ms var(--ease), transform 650ms var(--ease);
+}
+.section-head > .eyebrow, .why-intro > .eyebrow { transition-delay: 0ms; }
+.section-head > h1, .section-head > h2, .why-intro > h2 { transition-delay: 100ms; }
+.section-head > .lead, .why-intro > .lead { transition-delay: 200ms; }
+.why-intro > .why-callout { transition-delay: 300ms; }
+.section-head.is-visible > .eyebrow, .section-head.is-visible > h1,
+.section-head.is-visible > h2, .section-head.is-visible > .lead,
+.why-intro.is-visible > .eyebrow, .why-intro.is-visible > h2,
+.why-intro.is-visible > .lead, .why-intro.is-visible > .why-callout {
+  opacity: 1;
+  transform: none;
+}
+
+/* Headline word-reveal (v5): applied only to page H1s (short, headline-length text) via
+   main.js, which wraps each word in a .word span carrying --i. Words cascade in on top of the
+   block-level rise above, so the H1 both rises as a whole and its words settle in sequence. */
+.word-reveal .word {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(0.4em);
+  transition: opacity 520ms var(--ease), transform 520ms var(--ease);
+  transition-delay: calc(var(--i, 0) * 45ms);
+}
+.word-reveal.words-in .word {
+  opacity: 1;
+  transform: none;
+}
+
+/* Footer reveal-in (v5): footer columns were previously static; now cascade in like every
+   other list on the site once the footer scrolls into view. */
+.footer-top.reveal { opacity: 1; transform: none; transition: none; }
+.footer-top > * {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 550ms var(--ease), transform 550ms var(--ease);
+}
+.footer-top.is-visible > * { opacity: 1; transform: none; }
+.footer-top > *:nth-child(1) { transition-delay: 0ms; }
+.footer-top > *:nth-child(2) { transition-delay: 80ms; }
+.footer-top > *:nth-child(3) { transition-delay: 160ms; }
+.footer-top > *:nth-child(4) { transition-delay: 240ms; }
+
+/* Cursor-aware spotlight (v5): a soft radial highlight follows the pointer within a row/card on
+   hover. Desktop-with-precise-pointer only (pointer:fine) — on touch the media query simply
+   doesn't match, so nothing is half-styled. --mx/--my are set by a rAF-throttled mousemove
+   listener in main.js; falls back to a centered glow if JS never sets them. */
+@media (pointer: fine) {
+  .spotlight { position: relative; }
+  .spotlight::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(240px circle at var(--mx, 50%) var(--my, 50%), rgba(51,224,199,0.10), transparent 70%);
+    opacity: 0;
+    transition: opacity var(--transition-base);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .spotlight:hover::after,
+  .spotlight:focus-within::after { opacity: 1; }
+  .value-row, .why-item, .contact-info-item { position: relative; }
+  .value-row > *, .why-item > *, .contact-info-item > * { position: relative; z-index: 1; }
+
+  /* v7: subtle 3D tilt, layered onto the same rows/cards as the spotlight above and driven by
+     the same rAF-batched mousemove handler in main.js (§8) — --tilt-x/--tilt-y are set per
+     element on mousemove and reset on mouseleave. Rows are wide, so their tilt range is kept
+     smaller than the narrower engagement cards. Desktop-with-precise-pointer only. */
+  .service-row.tilt, .why-item.tilt, .value-row.tilt {
+    transition: transform var(--transition-base);
+    transform: perspective(1400px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+  }
+  .engagement-card.tilt {
+    transition: border-color var(--transition-base), transform var(--transition-base), box-shadow var(--transition-slow);
+    transform: perspective(900px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+  }
+  /* Higher-specificity hover state already sets its own `transform` (lift + accent border) —
+     merge the tilt into it here rather than letting the two rules fight over the property. */
+  .engagement-card.tilt:hover {
+    transform: perspective(900px) translateY(-4px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+  }
+
+  /* v7: small magnetic pull on primary/secondary buttons, --mag-x/--mag-y set the same way as
+     the tilt above. Merged into the existing :hover transform so the lift and the pull read as
+     one motion instead of two competing transforms. */
+  .btn-primary.magnetic:hover {
+    transform: translateY(-2px) translate(var(--mag-x, 0px), var(--mag-y, 0px));
+  }
+  .btn-secondary.magnetic:hover {
+    transform: translateY(-2px) translate(var(--mag-x, 0px), var(--mag-y, 0px));
+  }
+}
+
+/* Section divider line-draw (v7): a thin brand-gradient rule that draws itself (scaleX 0→1)
+   between major sections as they scroll into view. Reuses the existing .reveal/IntersectionObserver
+   system (main.js §3) — the divider just carries the .reveal class like every other scroll-triggered
+   element; only the visual treatment is overridden here (fade+rise doesn't suit a 1px line). */
+.section-divider {
+  display: flex;
+  justify-content: center;
+  padding-block: 0;
+  pointer-events: none;
+}
+.section-divider.reveal { opacity: 1; transform: none; transition: none; }
+.section-divider .divider-line {
+  width: 100%;
+  max-width: 220px;
+  height: 1px;
+  background: var(--gradient-brand);
+  opacity: 0.55;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 900ms var(--ease);
+}
+.section-divider.is-visible .divider-line { transform: scaleX(1); }
+
+/* Icon stroke-draw (v7): the two most-seen icon contexts — homepage service rows and the
+   services-page detail blocks — "draw" themselves in on scroll-reveal instead of just fading,
+   reinforcing the blueprint/schematic motif. A generous fixed dasharray is used (rather than the
+   exact per-path length) since these are small, simple glyphs — the draw still reads cleanly even
+   if it visually completes a little before the transition's nominal end. Piggybacks on the
+   existing .service-rows.is-visible / .service-detail.is-visible reveal state, no new JS. */
+.service-row .card-icon svg :is(path, rect, circle, polyline),
+.service-detail .card-icon svg :is(path, rect, circle, polyline) {
+  stroke-dasharray: 140;
+  stroke-dashoffset: 140;
+  transition: stroke-dashoffset 850ms var(--ease);
+}
+.service-rows.is-visible .service-row .card-icon svg :is(path, rect, circle, polyline),
+.service-detail.is-visible .card-icon svg :is(path, rect, circle, polyline) {
+  stroke-dashoffset: 0;
+}
+.service-rows.is-visible .service-row:nth-child(2) .card-icon svg :is(path, rect, circle, polyline) { transition-delay: 90ms; }
+.service-rows.is-visible .service-row:nth-child(3) .card-icon svg :is(path, rect, circle, polyline) { transition-delay: 180ms; }
+.service-rows.is-visible .service-row:nth-child(4) .card-icon svg :is(path, rect, circle, polyline) { transition-delay: 270ms; }
+
+/* Form-submit success burst (v7): a single soft ring pulses outward from the checkmark once the
+   success state shows, keyed off the same .form-success.is-shown class main.js already sets —
+   no new JS. Brief (<1s), brand teal only, no confetti. */
+.form-success .success-icon-wrap { position: relative; display: inline-flex; flex-shrink: 0; }
+.form-success .success-icon-wrap::after {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(51, 224, 199, 0.55);
+  opacity: 0;
+  pointer-events: none;
+}
+.form-success.is-shown .success-icon-wrap::after {
+  animation: successPulse 900ms var(--ease) 250ms;
+}
+@keyframes successPulse {
+  0% { opacity: 0.85; transform: scale(0.6); }
+  70% { opacity: 0.25; }
+  100% { opacity: 0; transform: scale(2.1); }
+}
+
+/* Scroll-to-top affordance (v7): fades in once the hero has scrolled past (main.js §0, same
+   rAF-throttled scroll handler that drives the header state/progress bar), smooth-scrolls up on
+   click. visibility (not just opacity) is toggled so it drops out of the tab order while hidden. */
+.scroll-top {
+  position: fixed;
+  right: clamp(1rem, 3vw, 2rem);
+  bottom: clamp(1rem, 3vw, 2rem);
+  width: 46px;
+  height: 46px;
+  border-radius: var(--radius-pill);
+  background: var(--surface-2);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(8px);
+  transition: opacity var(--transition-base), transform var(--transition-base),
+    visibility var(--transition-base), border-color var(--transition-base), background var(--transition-base);
+  z-index: 95;
+}
+.scroll-top.is-visible { opacity: 1; visibility: visible; pointer-events: auto; transform: translateY(0); }
+.scroll-top:hover { border-color: var(--teal); background: rgba(51, 224, 199, 0.08); transform: translateY(-3px); }
+.scroll-top:active { transform: translateY(-1px) scale(0.96); }
+.scroll-top svg { width: 18px; height: 18px; transition: transform var(--transition-base); }
+.scroll-top:hover svg { transform: translateY(-2px); }
+
+/* ---------- 16c. v8 — Accordion (FAQ pages/section) ---------- */
+/* New reusable component, styled to match the existing hairline-divider row language
+   (.service-row / .value-row) rather than inventing a new visual idea: top-bordered list,
+   bottom hairline per item, mono heading type, teal hover — a FAQ-flavored row, not a new card. */
+.accordion { border-top: 1px solid var(--border-subtle); }
+.accordion-item { border-bottom: 1px solid var(--border-subtle); }
+.accordion-heading { margin: 0; }
+.accordion-trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  padding-block: var(--space-md);
+  text-align: left;
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  transition: color var(--transition-base);
+}
+.accordion-trigger:hover,
+.accordion-trigger:focus-visible { color: var(--teal); }
+.accordion-icon {
+  position: relative;
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid var(--border-strong);
+  transition: transform var(--transition-base), border-color var(--transition-base);
+}
+.accordion-icon::before,
+.accordion-icon::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  background: var(--text-primary);
+  transition: transform var(--transition-base), background var(--transition-base);
+}
+.accordion-icon::before { width: 11px; height: 1.5px; transform: translate(-50%, -50%); }
+.accordion-icon::after { width: 1.5px; height: 11px; transform: translate(-50%, -50%); }
+.accordion-trigger:hover .accordion-icon,
+.accordion-trigger:focus-visible .accordion-icon { border-color: var(--teal); }
+.accordion-trigger[aria-expanded="true"] .accordion-icon { transform: rotate(135deg); border-color: var(--teal); }
+.accordion-trigger[aria-expanded="true"] .accordion-icon::before,
+.accordion-trigger[aria-expanded="true"] .accordion-icon::after { background: var(--teal); }
+
+/* Height animation via a capped max-height transition — the classic, broadly reliable
+   accordion technique. The cap (60rem) is generously larger than any answer in this system's
+   copy, so the transition never visibly clips content; it only needs to be large enough that
+   real content never exceeds it, not an exact match, since the transition timing is fixed
+   either way. Keyed off .accordion-item.is-open (set by main.js alongside aria-expanded)
+   rather than a trigger+panel sibling-combinator, since the trigger is nested inside an
+   .accordion-heading (the standard accessible accordion markup: <h3><button aria-expanded>)
+   and is therefore not a direct sibling of .accordion-panel. */
+.accordion-panel {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height var(--transition-slow);
+}
+.accordion-item.is-open .accordion-panel { max-height: 60rem; }
+.accordion-panel-inner p {
+  padding-bottom: var(--space-md);
+  padding-right: calc(30px + var(--space-md));
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+/* Staggered row entrance, same pattern as .value-row / .why-item */
+.accordion.reveal { opacity: 1; transform: none; transition: none; }
+.accordion-item {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 550ms var(--ease), transform 550ms var(--ease);
+}
+.accordion.is-visible .accordion-item { opacity: 1; transform: none; }
+.accordion.is-visible .accordion-item:nth-child(1) { transition-delay: 0ms; }
+.accordion.is-visible .accordion-item:nth-child(2) { transition-delay: 60ms; }
+.accordion.is-visible .accordion-item:nth-child(3) { transition-delay: 120ms; }
+.accordion.is-visible .accordion-item:nth-child(4) { transition-delay: 180ms; }
+.accordion.is-visible .accordion-item:nth-child(5) { transition-delay: 240ms; }
+.accordion.is-visible .accordion-item:nth-child(6) { transition-delay: 300ms; }
+.accordion.is-visible .accordion-item:nth-child(7) { transition-delay: 360ms; }
+.accordion.is-visible .accordion-item:nth-child(8) { transition-delay: 420ms; }
+.accordion.is-visible .accordion-item:nth-child(9) { transition-delay: 480ms; }
+.accordion.is-visible .accordion-item:nth-child(10) { transition-delay: 540ms; }
+
+.accordion-more, .section-more {
+  margin-top: var(--space-lg);
+  display: flex;
+  justify-content: center;
+}
+
+/* ---------- 16d. v8 — Coming-soon placeholder state (Portfolio, Insights) ---------- */
+/* Deliberately reuses .engagement-card / .engagement-grid / .bracket-frame as-is (same
+   3-column bordered-panel language already used on services.html) rather than a new card idiom. */
+.coming-soon-card .card-icon { margin-bottom: var(--space-md); }
+.coming-soon-tag {
+  display: inline-block;
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin-top: auto;
+  padding-top: var(--space-sm);
+}
+
+/* ---------- 16e. v8 — Elevated tech-stack section (about.html) ---------- */
+.stack-groups { display: flex; flex-direction: column; gap: var(--space-lg); }
+.stack-group h3 {
+  font-family: var(--font-heading);
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  margin-bottom: var(--space-sm);
+}
+.stack-group .stack-grid { margin: 0; }
+
+/* ---------- 16f. v8 — Newsletter notice (insights.html) ---------- */
+.newsletter-row {
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+  align-items: flex-start;
+  margin-top: var(--space-lg);
+}
+.newsletter-row .form-group { margin-bottom: 0; flex: 1 1 260px; }
+.newsletter-row .btn { flex-shrink: 0; }
+
+/* ---------- 16g. v9 — Content-fill additions (portfolio/careers/insights, home previews) ---------- */
+/* Small tag chips on illustrative work cards (portfolio.html + home "Featured Work"), a smaller
+   non-interactive variant of the existing .stack-chip pill token rather than a new shape. */
+.eng-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: auto; padding-top: var(--space-sm); }
+.eng-tag {
+  font-family: var(--font-heading);
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  padding: 0.3rem 0.65rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-muted);
+  background: var(--surface-2);
+}
+
+/* Job listing accordion (careers.html): role title + type/location meta inside the trigger,
+   and "what you'll do / what we're looking for" lists reuse the existing .service-detail-list
+   check-row pattern from services.html rather than inventing a new list idiom. */
+.accordion-trigger .role-title { display: flex; flex-direction: column; gap: 0.3rem; text-align: left; }
+.role-meta {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--text-muted);
+}
+.accordion-panel-inner h4 {
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin-bottom: var(--space-xs);
+}
+.accordion-panel-inner .service-detail-list { margin-top: 0; margin-bottom: var(--space-md); padding-right: calc(30px + var(--space-md)); }
+.accordion-panel-inner .service-detail-list li { max-width: 60ch; }
+.role-apply { display: flex; align-items: center; gap: var(--space-sm); flex-wrap: wrap; padding-bottom: var(--space-md); padding-right: calc(30px + var(--space-md)); }
+.role-apply p { margin: 0; font-size: 0.85rem; max-width: none; }
+
+/* Article entries (insights.html): meta line matches the existing .eng-mark/.cta-panel-meta
+   small-mono-label language; paragraphs get explicit stacking margin since the base `p` rule
+   is intentionally margin-less elsewhere (single-paragraph rows/cards only, until now). */
+.insight-meta {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  color: var(--teal);
+  margin-bottom: var(--space-sm);
+}
+.insight-article h2 { margin-bottom: var(--space-md); }
+.insight-article p { margin-bottom: var(--space-md); }
+.insight-article p:last-child { margin-bottom: 0; }
+.insight-article code, .engagement-card code {
+  font-family: var(--font-heading);
+  font-size: 0.88em;
+  color: var(--teal);
+  background: var(--surface-2);
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  padding: 0.05em 0.4em;
+}
+
+/* .section-more shares the .accordion-more rule above (§16c) — same "view all / read more"
+   link-row layout, reused outside accordion contexts for the home "Featured Work" / "From the
+   Blog" previews. */
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+
+  /* v4 additions: disable every new stagger/hover-motion effect, show content instantly */
+  .service-rows .service-row,
+  .why-list .why-item,
+  .values-list .value-row {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .process-step::before { transform: none; transition: none; }
+  .step-index { opacity: 1; transform: none; transition: background var(--transition-base), border-color var(--transition-base), color var(--transition-base); }
+  .nav-menu-item { opacity: 1; transform: none; transition: background var(--transition-base), color var(--transition-base); }
+  .nav-menu { transition: opacity var(--transition-base), visibility var(--transition-base); }
+  .service-row .card-icon svg,
+  .nav-menu-item .card-icon svg { transition: none; }
+  .service-row:hover .card-icon svg,
+  .nav-menu-item:hover .card-icon svg,
+  .nav-menu-item:focus-visible .card-icon svg { transform: none; }
+  .btn-primary { transition: background-position 0s, transform var(--transition-base), box-shadow var(--transition-base), background var(--transition-base), border-color var(--transition-base); background-position: 0% 0%; }
+  .btn-primary:hover { background-position: 0% 0%; }
+
+  /* v5 additions: disable every newly-added stagger/ambient/hover-motion effect */
+  body::before { animation: none; }
+  .eyebrow::before { animation: none; }
+  .service-detail-ghost { animation: none; opacity: 1; transform: none; }
+  .section-head > .eyebrow, .section-head > h1, .section-head > h2, .section-head > .lead,
+  .why-intro > .eyebrow, .why-intro > h2, .why-intro > .lead, .why-intro > .why-callout {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .word-reveal .word { opacity: 1; transform: none; transition: none; }
+  .footer-top > * { opacity: 1; transform: none; transition: none; }
+  .stack-chip { opacity: 1; transform: none; transition: border-color var(--transition-base), color var(--transition-base), background var(--transition-base); }
+  .spotlight::after { transition: none; }
+  .brand img, .social-row svg, .contact-info-item .icon-wrap,
+  .service-detail .card-icon svg, .form-group input:focus, .form-group textarea:focus {
+    transition: none;
+    transform: none !important;
+  }
+  .btn.is-loading::after { animation: none; }
+  .form-success { transition: opacity var(--transition-base); transform: none; }
+  .form-success.is-shown { transform: none; }
+  .form-success svg polyline { animation: none; stroke-dashoffset: 0; }
+
+  /* v6 additions: ambient particle field freezes (main.js §9 skips its rAF loop and draws a
+     static frame instead — this is belt-and-braces in case a static frame ever needs a CSS nudge)
+     and every number-flip/tumble effect collapses to a plain instant/fade appearance — no 3D
+     rotation, no flipping, no digit-roll count-up. Higher-specificity ".is-visible"/".is-flipping"
+     rules are matched here too (not just the bare class) since some of them out-specify these. */
+  .hero-statbar .stat-num .digit { animation: none !important; transform: none !important; }
+  .service-row .row-index,
+  .service-rows.is-visible .service-row .row-index {
+    opacity: 1;
+    transform: none;
+    transition: color var(--transition-base);
+  }
+  .why-item .feature-num,
+  .why-list.is-visible .why-item .feature-num {
+    opacity: 1;
+    transform: none;
+    transition: color var(--transition-base);
+  }
+  .value-row .value-mark,
+  .values-list.is-visible .value-row .value-mark {
+    opacity: 1;
+    transform: none;
+    transition: color var(--transition-base);
+  }
+  .service-detail-ghost,
+  .service-detail.is-visible .service-detail-ghost {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  /* v7 additions: tilt/magnetic/parallax collapse to zero transform offset, dividers show
+     already-drawn, icon strokes show fully drawn, and the success burst becomes a plain fade
+     (the checkmark's own fade is handled by the .form-success rules above). main.js also never
+     attaches the tilt/magnetic listeners or writes scroll-parallax transforms under reduced
+     motion — these are belt-and-braces in case any stray inline style is ever left behind. */
+  .service-row.tilt, .why-item.tilt, .value-row.tilt,
+  .engagement-card.tilt, .engagement-card.tilt:hover {
+    transform: none !important;
+    transition: none;
+  }
+  .btn-primary.magnetic:hover, .btn-secondary.magnetic:hover {
+    transform: translateY(0) !important;
+  }
+  .hero-visual-frame, .bg-particles { transform: none !important; }
+  .section-divider .divider-line { transform: scaleX(1); transition: none; }
+  .service-row .card-icon svg :is(path, rect, circle, polyline),
+  .service-detail .card-icon svg :is(path, rect, circle, polyline) {
+    stroke-dashoffset: 0 !important;
+    transition: none;
+  }
+  .form-success .success-icon-wrap::after { animation: none; opacity: 0; }
+  .scroll-top { transition: border-color var(--transition-base), background var(--transition-base); }
+  .scroll-top.is-visible { transform: none; }
+
+  /* v8 additions: accordion open/close and its list entrance collapse to instant */
+  .accordion-panel { transition: none; }
+  .accordion-icon, .accordion-icon::before, .accordion-icon::after { transition: none; }
+  .accordion-item { opacity: 1; transform: none; transition: none; }
+}
+
+/* ---------- 17. Focus states & accessibility ---------- */
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+.visually-hidden {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------- 18. Responsive breakpoints ---------- */
+@media (max-width: 1024px) {
+  .why-grid { grid-template-columns: 1fr; gap: var(--space-lg); }
+  .why-callout { margin-top: var(--space-lg); }
+  .values-list, .story-grid { grid-template-columns: 1fr; }
+  .story-grid { display: grid; gap: var(--space-lg); }
+  .process-list { grid-template-columns: repeat(3, 1fr); row-gap: var(--space-xl); }
+  .process-step:nth-child(even) { transform: none; }
+  .footer-top { grid-template-columns: 1fr 1fr; }
+  .engagement-grid { grid-template-columns: 1fr; }
+  .hero-grid { grid-template-columns: 1fr; }
+  .hero-index { display: none; }
+  .hero-visual { order: -1; max-width: 480px; margin-inline: auto; }
+  .cta-panel { grid-template-columns: 1fr; text-align: left; }
+  .service-row { grid-template-columns: 3rem 1fr; }
+  .service-row p { grid-column: 2 / -1; }
+  .service-row .row-link { display: none; }
+}
+
+@media (max-width: 860px) {
+  .nav-toggle { display: flex; }
+  .primary-nav {
+    position: fixed;
+    top: var(--header-height);
+    left: 0; right: 0;
+    background: var(--surface-0);
+    border-bottom: 1px solid var(--border-subtle);
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height var(--transition-base);
+  }
+  .primary-nav.open { max-height: 400px; }
+  .primary-nav .container { padding: 0; }
+  .primary-nav ul {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    padding: var(--space-sm) var(--space-md) var(--space-md);
+  }
+  .primary-nav li { width: 100%; }
+  .primary-nav a { display: block; padding: 0.95rem 0; width: 100%; font-size: 1rem; }
+  .primary-nav a::after { display: none; }
+  .header-actions .btn-primary.header-cta-desktop { display: none; }
+  .contact-grid, .service-detail { grid-template-columns: 1fr; }
+  .service-detail:nth-of-type(even) .service-detail-media { order: 0; }
+  .form-row { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 640px) {
+  .footer-bottom { flex-direction: column; align-items: flex-start; }
+  .footer-meta { order: 3; }
+  .values-list { grid-template-columns: 1fr; }
+  .value-row { grid-template-columns: 1fr; gap: var(--space-2xs); }
+  .process-list { grid-template-columns: 1fr; }
+  .process-step::before { display: none; }
+  .footer-top { grid-template-columns: 1fr; }
+  .hero-statbar { gap: var(--space-md); }
+  .hero-statbar .stat-num { font-size: 1.35rem; }
+  .section { padding-block: var(--space-xl); }
+  .cta-panel { padding: var(--space-xl) var(--space-md); }
+  .service-row { grid-template-columns: 1fr; row-gap: var(--space-2xs); }
+  .service-row .row-index { display: none; }
+  .hero-visual-readout { flex-wrap: wrap; gap: var(--space-xs) var(--space-md); }
+}

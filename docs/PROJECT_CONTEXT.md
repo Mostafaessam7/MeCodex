@@ -1,0 +1,37 @@
+# Project Context — MeCodex Website
+
+## What this is
+A premium, art-directed **corporate/services website** for MeCodex, a software development studio (web, mobile, custom software/SaaS, maintenance & support). English only. **Not an ecommerce store** — this was explicitly decided twice; the Ecomus template's shop functionality (cart, checkout, PDP, collections) is out of scope.
+
+## Paths
+- Live site: `website/` — 8 pages, all sharing the same header/nav/footer markup and `css/style.css` / `js/main.js`:
+  - `index.html` (Home) — hero, services overview, why-MeCodex, process, **Featured Work (v9, 3 illustrative portfolio cards + "View All Work" link)**, FAQ section (v8, 5-item subset + "See All FAQs" link), **From the Blog (v9, 3 insights.html article previews + "Read More Insights" link)**, CTA.
+  - `about.html` — mission/how-we-think, values, **tech stack (v8, elevated into its own grouped section: Frontend/Backend/Infrastructure/Tools & integrations)**, CTA.
+  - `services.html` — service details, engagement models, CTA.
+  - `contact.html` — contact info + front-end-only contact form.
+  - `faq.html` (v8, new) — full FAQ accordion (9 Q&A).
+  - `portfolio.html` (v8, new; **filled v9**, nav label "Work") — 6 illustrative/representative work-sample cards (`.engagement-card`), each with a title, description, and tag row. **Not real past client engagements** — a framing line at the top of the page says so explicitly; no invented client names, logos, or testimonial quotes. Treat this content as illustrative/representative in any future session, not as fact about MeCodex's actual project history.
+  - `careers.html` (v8, new; **filled v9**) — culture/values/how-we-work + an "Open roles" Accordion with 3 real generic role listings (Senior Full-Stack Engineer, Product Designer, DevOps/Platform Engineer; Remote-first / Cairo, Egypt), apply via `mailto:hello@mecodex.com`. No fabricated salaries, headcount, or deadlines. Fallback "send your CV anyway" CTA retained.
+  - `insights.html` (v8, new; **filled v9**) — 3 full, original articles (genuine written content, "MeCodex Engineering" byline, plausible 2026 dates) plus the existing front-end-only "notify me" form. Full article content lives directly on this page (no separate per-article files/pages).
+  - `assets/img/` — brand assets copied in.
+- **Nav structure decision (v8)**: primary header nav stays at 5 items — Home / About / Services (mega-menu) / Work / Contact — to avoid overcrowding. FAQ / Careers / Insights live in a new footer "Company" column (replacing the old footer "Services" quick-link column; those 4 service anchors are still reachable via the header's Services mega-menu on every page). `aria-current="page"` is set correctly on each page's own nav item (header nav for the 5 core pages; footer "Company" column for FAQ/Careers/Insights, which have no header nav entry).
+- `ecomus-package/ecomus/` — purchased Ecomus HTML template. **Reference only**, read-only, used for layout/interaction inspiration, never wired live.
+- `Mecodex-Brand-Assets/` — read-only source logo/icon/favicon files (SVG + PNG) and brand README (colors, font direction).
+- `docs/` — this project's memory (this file, DESIGN_SYSTEM.md, TASKS.md, WORK_LOG.md).
+
+## Brand
+- Colors: Teal `#33E0C7`, Blue `#3D6CF2`, Ink Dark `#0A0F1C` (primary bg), Ink Light `#EAF6FF` (text on dark). Direction: "Tech / Network".
+- Typeface direction: IBM Plex Mono (headings/display), Inter (body) — loaded via Google Fonts.
+- Logo files: `mecodex-logo-for-dark-bg.svg` / `-for-light-bg.svg`, `mecodex-icon.svg`. Do not alter the logo itself.
+
+## Homepage structure (v9)
+Header (sticky, scroll-state) → Hero (asymmetric, network SVG) → Services overview (4 editorial rows) → Why MeCodex (asymmetric intro + thin list) → Process (5-step offset timeline) → **Featured Work (v9, 3 illustrative portfolio cards)** → FAQ (v8, 5-item accordion subset) → **From the Blog (v9, 3 article previews)** → CTA panel → Footer.
+Same header/footer shared verbatim across all 8 pages. Only one `.cta-panel` on the page (the final CTA) — new sections use the lighter `.section-more` link row instead of a second CTA panel.
+
+## Status
+v3 (enterprise-grade visual elevation) shipped on top of v2: heavier heading weight, a site-wide blueprint-grid depth system, a more layered hero visual, a reused corner-bracket motif, a CSS-only Services mega-menu preview, and a denser footer. v4 (expanded motion pass) shipped on top of v3 at the client's explicit request for "more animation": staggered scroll reveals, a hero load-in sequence, a hero stat count-up, an animated header scroll-progress bar, a smoother staggered nav mega-menu, and more noticeable hover/SVG motion. v5 (full motion sweep) shipped on top of v4 after the client escalated ("animation in every corner, make it feel جامد/dope"): every section on every page now carries deliberate motion — generalized section-heading reveal, headline word-reveal, sitewide ambient drift/pulse/breathe, cursor-aware spotlight on rows/cards, footer reveal-in, contact-form loading/success polish, and a full hover-motion sweep. v6 shipped on top of v5 for two specific client requests: a sitewide ambient particle-dot background (vanilla-JS canvas) and a "numbers tumble" system (odometer-style digit flip for hero stat counters, flip/rotate entrances for ghost numerals and every row-index numeral). v7 shipped on top of v6 after another client escalation ("continue, add more animation/detail"): pointer-driven 3D tilt on rows/cards, magnetic buttons, scroll parallax on the hero visual/particle background, section-divider line-draws, icon stroke-draw-in, a form-success burst ring, a nav underline gradient sweep, and a scroll-to-top button — with the listener/rAF footprint deliberately consolidated rather than grown 1:1 with each new effect. **v8 (new pages + sections)** expanded the site from 4 to 8 pages — FAQ, Work/Portfolio, Careers, Insights, all built to the existing v7 design system with no parallel visual language — plus a new FAQ section on Home and an elevated, grouped Tech Stack section on About. A new reusable **Accordion** component was added (documented in `docs/DESIGN_SYSTEM.md`), reusing the existing `.reveal` stagger and hairline-row visual language. No fabricated content anywhere: Work/Insights shipped as honest "coming soon" states, Careers had no fake job listings, only a CV/portfolio CTA. **v9 (content fill + new home sections)**, client follow-up ("fill them" [portfolio/careers/insights] + "add more sections to the home page"): filled all three former "coming soon" pages with honestly-framed real content — `portfolio.html` gained 6 illustrative/representative work-sample cards (explicitly framed as representative, not real named client engagements), `careers.html` gained 3 real generic role listings in the existing Accordion component, `insights.html` gained 3 full original articles under a MeCodex Engineering byline — and added two new homepage sections, Featured Work and From the Blog, both reusing existing card/section-head/reveal patterns with no new visual language. All motion respects `prefers-reduced-motion`. Hand-written CSS/JS only. See `docs/DESIGN_SYSTEM.md` for the finalized visual + motion system and `docs/TASKS.md` for follow-ups.
+
+## Things that must not change without explicit user approval
+- Not becoming an ecommerce store.
+- The logo files themselves (only their usage/placement can change).
+- Brand color hex values.
