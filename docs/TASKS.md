@@ -1,9 +1,6 @@
 # Tasks
 
 ## Current
-- (none open)
-
-## Current
 - Waiting on client: Formspree endpoint URL to wire up `contact.html` (and optionally `insights.html`'s notify form) to a real backend.
 
 ## Next
@@ -12,11 +9,11 @@
 - Replace/update the 3 job listings on `careers.html` as real hiring needs change — current listings (Senior Full-Stack Engineer, Product Designer, DevOps/Platform Engineer) are genuine current openings the client chose to post, but generic in scope/requirements language; keep salaries/headcount out per the standing honesty rule unless the client wants those added explicitly.
 - The 3 insights.html articles are real, original written content (not fabricated stats or client mentions) — add more as they're written; no placeholder posts remain.
 - Replace footer social links (`#` placeholders for LinkedIn/GitHub/X) with real profile URLs.
-- Confirm the `mecodex.com` domain (used in every `og:url`, `robots.txt`, `sitemap.xml`) is the real one before launch, or update all three.
 - Confirm `hello@mecodex.com` is a real, monitored inbox.
-- Decide on hosting/deployment target (Netlify/Vercel/GitHub Pages/etc.) — not yet deployed anywhere, still local-only.
+- If a custom domain (e.g. `mecodex.com`) is bought later, add a `CNAME` file to `website/` and update every `og:url` + `robots.txt`/`sitemap.xml` from the current `https://mostafaessam7.github.io/MeCodex/` back to the real domain. Client confirmed (2026-08-21) no domain purchase planned soon — current GitHub Pages URL is the real, final one for now.
 
 ## Completed
+- Deployed live on GitHub Pages: repo [`Mostafaessam7/MeCodex`](https://github.com/Mostafaessam7/MeCodex) (public), auto-deploy via `.github/workflows/deploy.yml` (GitHub Actions → Pages, serves `website/` only) on every push to `main`. Live at **https://mostafaessam7.github.io/MeCodex/**. Updated every `og:url`, `robots.txt`, and `sitemap.xml` from the placeholder `mecodex.com` to this real URL (mailto emails left untouched — those are the company inbox, unrelated to hosting domain).
 - Project hygiene pass: added `website/404.html` (branded not-found page, `noindex`), `website/robots.txt`, `website/sitemap.xml` (all 8 real pages), root `README.md` (structure/run/deploy instructions), and initialized a git repo at the project root (`ecomus-package/` excluded via `.gitignore` — large read-only vendor template, not part of the live site) with an initial commit.
 - New pages + sections (v7 → v8), client request "add sections and pages, apply the design system to them": built FAQ, Work/Portfolio, Careers, and Insights pages (all honest — no fabricated case studies, job listings, or blog posts), added a Home FAQ section and an elevated grouped Tech Stack section on About, added a new reusable Accordion component, and restructured the header/footer nav across all 8 pages (primary nav held at 5 items; FAQ/Careers/Insights moved to a new footer "Company" column). See `docs/DESIGN_SYSTEM.md` v8 section and `docs/WORK_LOG.md` for details.
 - Interaction/parallax pass (v6 → v7), client escalation ("continue, add more animation/detail"): pointer tilt on service/why/value rows and engagement cards, magnetic pull on buttons, scroll parallax on the hero visual and particle background, section-divider line-draws, icon stroke-draw-in on the two most-seen icon contexts, a form-success burst ring, a nav underline gradient sweep, and a scroll-to-top button. Listener footprint consolidated rather than grown (still one scroll listener, one particle rAF loop, pointer effects share one rAF batch). Full `prefers-reduced-motion` audit passed. See `docs/DESIGN_SYSTEM.md` v7 section and `docs/WORK_LOG.md` for details.

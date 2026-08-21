@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://mecodex.com/</loc>
+    <loc>https://mostafaessam7.github.io/MeCodex/</loc>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://mecodex.com/about.html</loc>
+    <loc>https://mostafaessam7.github.io/MeCodex/about.html</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://mecodex.com/services.html</loc>
+    <loc>https://mostafaessam7.github.io/MeCodex/services.html</loc>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://mecodex.com/portfolio.html</loc>
+    <loc>https://mostafaessam7.github.io/MeCodex/portfolio.html</loc>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://mecodex.com/careers.html</loc>
+    <loc>https://mostafaessam7.github.io/MeCodex/careers.html</loc>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://mecodex.com/insights.html</loc>
+    <loc>https://mostafaessam7.github.io/MeCodex/insights.html</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://mecodex.com/faq.html</loc>
+    <loc>https://mostafaessam7.github.io/MeCodex/faq.html</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://mecodex.com/contact.html</loc>
+    <loc>https://mostafaessam7.github.io/MeCodex/contact.html</loc>
     <priority>0.8</priority>
   </url>
 </urlset>
