@@ -3,14 +3,21 @@
 ## Current
 - (none open)
 
+## Current
+- Waiting on client: Formspree endpoint URL to wire up `contact.html` (and optionally `insights.html`'s notify form) to a real backend.
+
 ## Next
 - Visual QA pass across breakpoints in a real browser (verified via markup/CSS logic and scripted link/tag/brace checks across all 8 pages this pass — the browser tool in this session still can't composite frames against local files, and `localhost` preview is blocked by policy, so a human check of the new portfolio cards / careers accordion / insights articles / home Featured-Work+Blog sections, especially at ~375/768/1024px, is worth doing).
-- Wire the contact form (and the insights.html "notify me" form) to a real backend/email service when ready to go live — both remain front-end only by design, per their own notices.
-- Replace the illustrative portfolio cards on `portfolio.html`/`index.html` with real, credited case studies once client projects ship and permission to share is granted — the current 6 cards are deliberately generic/representative (no invented client names, logos, or testimonial quotes), not real past engagements.
+- Replace the illustrative portfolio cards on `portfolio.html`/`index.html` with real, credited case studies once client projects ship and permission to share is granted — the current 6 cards are deliberately generic/representative (no invented client names, logos, or testimonial quotes), not real past engagements. Client confirmed (2026-08-21) this is fine as a temporary state.
 - Replace/update the 3 job listings on `careers.html` as real hiring needs change — current listings (Senior Full-Stack Engineer, Product Designer, DevOps/Platform Engineer) are genuine current openings the client chose to post, but generic in scope/requirements language; keep salaries/headcount out per the standing honesty rule unless the client wants those added explicitly.
 - The 3 insights.html articles are real, original written content (not fabricated stats or client mentions) — add more as they're written; no placeholder posts remain.
+- Replace footer social links (`#` placeholders for LinkedIn/GitHub/X) with real profile URLs.
+- Confirm the `mecodex.com` domain (used in every `og:url`, `robots.txt`, `sitemap.xml`) is the real one before launch, or update all three.
+- Confirm `hello@mecodex.com` is a real, monitored inbox.
+- Decide on hosting/deployment target (Netlify/Vercel/GitHub Pages/etc.) — not yet deployed anywhere, still local-only.
 
 ## Completed
+- Project hygiene pass: added `website/404.html` (branded not-found page, `noindex`), `website/robots.txt`, `website/sitemap.xml` (all 8 real pages), root `README.md` (structure/run/deploy instructions), and initialized a git repo at the project root (`ecomus-package/` excluded via `.gitignore` — large read-only vendor template, not part of the live site) with an initial commit.
 - New pages + sections (v7 → v8), client request "add sections and pages, apply the design system to them": built FAQ, Work/Portfolio, Careers, and Insights pages (all honest — no fabricated case studies, job listings, or blog posts), added a Home FAQ section and an elevated grouped Tech Stack section on About, added a new reusable Accordion component, and restructured the header/footer nav across all 8 pages (primary nav held at 5 items; FAQ/Careers/Insights moved to a new footer "Company" column). See `docs/DESIGN_SYSTEM.md` v8 section and `docs/WORK_LOG.md` for details.
 - Interaction/parallax pass (v6 → v7), client escalation ("continue, add more animation/detail"): pointer tilt on service/why/value rows and engagement cards, magnetic pull on buttons, scroll parallax on the hero visual and particle background, section-divider line-draws, icon stroke-draw-in on the two most-seen icon contexts, a form-success burst ring, a nav underline gradient sweep, and a scroll-to-top button. Listener footprint consolidated rather than grown (still one scroll listener, one particle rAF loop, pointer effects share one rAF batch). Full `prefers-reduced-motion` audit passed. See `docs/DESIGN_SYSTEM.md` v7 section and `docs/WORK_LOG.md` for details.
 - Particle background + number flip (v5 → v6), two specific client requests: sitewide ambient particle-dot canvas background (vanilla JS, no library), and an odometer/flip-counter "numbers tumble" system applied to hero stat counters, ghost numerals, and every row-index numeral site-wide. `prefers-reduced-motion` covers both. See `docs/DESIGN_SYSTEM.md` v6 section and `docs/WORK_LOG.md` for details.
