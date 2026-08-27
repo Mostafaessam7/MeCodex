@@ -159,8 +159,32 @@
         submitBtn.classList.add("is-loading");
         submitBtn.disabled = true;
       }
-      var showSuccess = function () {
-        contactForm.reset();
+      // Hand the message off to the visitor's own mail client. Not as slick as a
+      // form backend, but it genuinely delivers — the previous version showed a
+      // success state and sent nothing, which meant anyone who missed the "in a
+      // live version of this site" wording walked away thinking they'd made
+      // contact. Needs no third-party signup or server. To move to a real form
+      // service later, POST the same fields instead of building this URL; the
+      // markup already has correct `name` attributes throughout.
+      var handOffToMailClient = function () {
+        var field = function (name) {
+          var el = contactForm.querySelector('[name="' + name + '"]');
+          return el ? el.value.trim() : "";
+        };
+
+        var body =
+          "From: " + field("name") + " <" + field("email") + ">\n\n" + field("message");
+
+        // encodeURIComponent, not escape/raw: subjects and messages routinely
+        // contain &, #, and newlines, all of which would otherwise truncate the
+        // mailto URL at the first offending character.
+        var mailto =
+          "mailto:hello@mecodex.com" +
+          "?subject=" + encodeURIComponent(field("subject")) +
+          "&body=" + encodeURIComponent(body);
+
+        window.location.href = mailto;
+
         if (submitBtn) {
           submitBtn.classList.remove("is-loading");
           submitBtn.disabled = false;
@@ -177,10 +201,14 @@
           });
           successMsg.focus();
         }
+        // Deliberately not reset(): if the mail client doesn't open (not every
+        // visitor has one configured), wiping what they just typed would lose
+        // their message with nothing to show for it. The success note tells them
+        // they can copy it to an email instead.
       };
-      // Brief simulated-send delay so the loading state is perceptible; skipped
-      // entirely under reduced motion.
-      window.setTimeout(showSuccess, reducedMotion ? 0 : 650);
+      // Brief delay so the loading state is perceptible; skipped entirely under
+      // reduced motion.
+      window.setTimeout(handOffToMailClient, reducedMotion ? 0 : 650);
     });
   }
 
@@ -619,13 +647,23 @@
   });
 
   /* ---------- 11. Newsletter notice form (insights.html) ---------- */
-  // Genuinely front-end only, same honesty as the contact form's own notice — this just stops
-  // the default GET submission from reloading the page with a query string. No fake success
-  // state is shown, since there's nothing behind it yet to confirm.
+  // No mailing list exists yet, so rather than swallow the click silently (which read as a
+  // broken button even with the note underneath), hand the request off by email the same way
+  // the contact form does. Replace with a real list provider's POST when there is one.
   var newsletterForm = document.querySelector("#newsletter-form");
   if (newsletterForm) {
     newsletterForm.addEventListener("submit", function (e) {
       e.preventDefault();
+      if (!newsletterForm.checkValidity()) {
+        newsletterForm.reportValidity();
+        return;
+      }
+      var emailInput = newsletterForm.querySelector('[name="email"]');
+      var address = emailInput ? emailInput.value.trim() : "";
+      window.location.href =
+        "mailto:hello@mecodex.com" +
+        "?subject=" + encodeURIComponent("Notify me about new MeCodex insights") +
+        "&body=" + encodeURIComponent("Please add " + address + " to the list for new posts.");
     });
   }
 })();

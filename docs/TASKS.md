@@ -1,15 +1,15 @@
 # Tasks
 
 ## Current
-- Waiting on client: Formspree endpoint URL to wire up `contact.html` (and optionally `insights.html`'s notify form) to a real backend.
+- **Blocking, client-only:** real profile URLs for the footer LinkedIn/GitHub/X links — still `href="#"` on all 9 pages. These can't be guessed: a handle inferred from a name can land on a stranger's profile, and either way it ships a wrong or dead link on a live public site.
+- Confirm `hello@mecodex.com` is a real, monitored inbox — **now load-bearing**, since both forms hand off to it directly (v10).
+- Optional upgrade, no longer blocking: a Formspree (or similar) endpoint for `contact.html` / `insights.html`. As of v10 both forms genuinely deliver via a `mailto:` handoff, so this is a polish step (in-page submit, no mail client needed) rather than the gap it used to be. To switch, POST the existing fields — the markup already carries correct `name` attributes.
 
 ## Next
 - Visual QA pass across breakpoints in a real browser (verified via markup/CSS logic and scripted link/tag/brace checks across all 8 pages this pass — the browser tool in this session still can't composite frames against local files, and `localhost` preview is blocked by policy, so a human check of the new portfolio cards / careers accordion / insights articles / home Featured-Work+Blog sections, especially at ~375/768/1024px, is worth doing).
 - Replace the illustrative portfolio cards on `portfolio.html`/`index.html` with real, credited case studies once client projects ship and permission to share is granted — the current 6 cards are deliberately generic/representative (no invented client names, logos, or testimonial quotes), not real past engagements. Client confirmed (2026-08-21) this is fine as a temporary state.
 - Replace/update the 3 job listings on `careers.html` as real hiring needs change — current listings (Senior Full-Stack Engineer, Product Designer, DevOps/Platform Engineer) are genuine current openings the client chose to post, but generic in scope/requirements language; keep salaries/headcount out per the standing honesty rule unless the client wants those added explicitly.
 - The 3 insights.html articles are real, original written content (not fabricated stats or client mentions) — add more as they're written; no placeholder posts remain.
-- Replace footer social links (`#` placeholders for LinkedIn/GitHub/X) with real profile URLs.
-- Confirm `hello@mecodex.com` is a real, monitored inbox.
 - If a custom domain (e.g. `mecodex.com`) is bought later, add a `CNAME` file to `website/` and update every `og:url` + `robots.txt`/`sitemap.xml` from the current `https://mostafaessam7.github.io/MeCodex/` back to the real domain. Client confirmed (2026-08-21) no domain purchase planned soon — current GitHub Pages URL is the real, final one for now.
 
 ## Completed
