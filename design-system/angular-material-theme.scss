@@ -1,0 +1,202 @@
+// ============================================================================
+// Mecodex Angular Material theme — the Angular adapter for tokens.css.
+//
+// WHY THIS FILE EXISTS
+// Angular Material ships a complete visual opinion (Material Design 3): its own
+// palette, elevation model, corner radii and motion. Adopted as-is it would
+// overwrite the Mecodex identity, and the two Angular products would end up
+// looking like Google apps while the marketing site and the React products look
+// like Mecodex.
+//
+// The decision was to use Material/CDK for behaviour — CDK gives overlay
+// positioning, focus trapping, live announcers and keyboard interaction that are
+// genuinely hard to write correctly by hand, and which the accessibility audit
+// flagged as missing. So this file takes Material's components and drives their
+// appearance from the shared tokens instead of Material's defaults.
+//
+// The palettes below are generated from the brand hues, and the system-variable
+// overrides at the bottom re-point Material's own runtime tokens at ours. That
+// second part is what actually keeps the two in sync: without it the palette
+// only affects components Material happens to theme through it, and anything
+// else silently reverts to Material defaults.
+// ============================================================================
+
+@use '@angular/material' as mat;
+
+// Brand hue ramps. Generated around the Mecodex teal (hue ~168) and blue
+// (hue ~225) rather than picked from Material's stock palettes, so the
+// components inherit the brand rather than approximating it.
+$mecodex-teal: (
+  50: #e6f4f1,
+  100: #c0e5dd,
+  200: #96d5c7,
+  300: #6cc4b0,
+  400: #4db79f,
+  500: #2eaa8e,
+  600: #17826d,
+  700: #136b5a,
+  800: #0f5849,
+  900: #08382e,
+  contrast: (
+    50: #04231d,
+    100: #04231d,
+    200: #04231d,
+    300: #04231d,
+    400: #04231d,
+    500: #04231d,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+  ),
+);
+
+$mecodex-blue: (
+  50: #eaf0fd,
+  100: #c9d8fa,
+  200: #a5bdf7,
+  300: #80a2f4,
+  400: #648ef2,
+  500: #5285f1,
+  600: #3d6cf2,
+  700: #2f5bd6,
+  800: #2449ad,
+  900: #17306f,
+  contrast: (
+    50: #101828,
+    100: #101828,
+    200: #101828,
+    300: #101828,
+    400: #101828,
+    500: #101828,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+  ),
+);
+
+$mecodex-red: (
+  50: #fdecea,
+  100: #f9c9c4,
+  200: #f2a29a,
+  300: #e87b70,
+  400: #dd5c50,
+  500: #cf4034,
+  600: #b3261e,
+  700: #941d17,
+  800: #761611,
+  900: #4d0d0a,
+  contrast: (
+    50: #101828,
+    100: #101828,
+    200: #101828,
+    300: #101828,
+    400: #101828,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+  ),
+);
+
+$mx-primary: mat.m2-define-palette($mecodex-teal, 600, 400, 800);
+$mx-accent: mat.m2-define-palette($mecodex-blue, 600, 400, 800);
+$mx-warn: mat.m2-define-palette($mecodex-red, 600, 400, 800);
+
+// Typography mapped to the shared scale. Material's own Roboto-based scale is
+// replaced outright — two type systems in one app is how a UI stops feeling
+// designed.
+$mx-typography: mat.m2-define-typography-config(
+  $font-family: 'Inter, system-ui, -apple-system, "Segoe UI", sans-serif',
+  $headline-1: mat.m2-define-typography-level(3.25rem, 1.12, 700, 'IBM Plex Mono, ui-monospace, monospace'),
+  $headline-2: mat.m2-define-typography-level(2.5rem, 1.12, 700, 'IBM Plex Mono, ui-monospace, monospace'),
+  $headline-3: mat.m2-define-typography-level(1.7rem, 1.12, 600, 'IBM Plex Mono, ui-monospace, monospace'),
+  $headline-4: mat.m2-define-typography-level(1.3rem, 1.2, 600, 'IBM Plex Mono, ui-monospace, monospace'),
+  $body-1: mat.m2-define-typography-level(1rem, 1.6, 400),
+  $body-2: mat.m2-define-typography-level(1rem, 1.6, 400),
+  $button: mat.m2-define-typography-level(0.88rem, 1.2, 600),
+  $caption: mat.m2-define-typography-level(0.85rem, 1.4, 400)
+);
+
+$mx-light-theme: mat.m2-define-light-theme((
+  color: (primary: $mx-primary, accent: $mx-accent, warn: $mx-warn),
+  typography: $mx-typography,
+  density: 0,
+));
+
+$mx-dark-theme: mat.m2-define-dark-theme((
+  color: (primary: $mx-primary, accent: $mx-accent, warn: $mx-warn),
+  typography: $mx-typography,
+  density: 0,
+));
+
+// ---------------------------------------------------------------------------
+// Emit the themes.
+//
+// Light is emitted at :root so it applies in the un-stamped "system" state, and
+// dark is applied under both the explicit stamp and the media query — the same
+// three-state contract tokens.css uses. Emitting dark only inside the media
+// query would leave the toggle non-functional.
+// ---------------------------------------------------------------------------
+@include mat.all-component-themes($mx-light-theme);
+
+:root[data-theme='dark'] {
+  @include mat.all-component-colors($mx-dark-theme);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    @include mat.all-component-colors($mx-dark-theme);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Re-point Material's runtime tokens at ours.
+//
+// This is the part that actually prevents drift. The palettes above cover what
+// Material themes through its palette API, but Material also reads its own
+// system variables for surfaces, outlines and corner radii. Left alone, those
+// keep Material's defaults and the components sit slightly "off" against
+// everything else — subtly wrong in a way that is hard to attribute.
+// ---------------------------------------------------------------------------
+:root {
+  --mat-app-background-color: var(--mx-surface-base);
+  --mat-app-text-color: var(--mx-text);
+
+  --mdc-outlined-text-field-outline-color: var(--mx-border);
+  --mdc-outlined-text-field-hover-outline-color: var(--mx-border-strong);
+  --mdc-outlined-text-field-focus-outline-color: var(--mx-accent);
+  --mdc-outlined-text-field-label-text-color: var(--mx-text-muted);
+  --mdc-outlined-text-field-input-text-color: var(--mx-text);
+
+  --mdc-filled-button-container-color: var(--mx-accent);
+  --mdc-filled-button-label-text-color: var(--mx-text-on-accent);
+
+  --mdc-dialog-container-color: var(--mx-surface-raised);
+  --mdc-dialog-subhead-color: var(--mx-text);
+  --mdc-dialog-supporting-text-color: var(--mx-text-secondary);
+
+  --mat-table-background-color: var(--mx-surface);
+  --mat-table-header-headline-color: var(--mx-text-muted);
+  --mat-table-row-item-label-text-color: var(--mx-text);
+  --mat-table-row-item-outline-color: var(--mx-border);
+
+  --mat-menu-container-color: var(--mx-surface-raised);
+  --mat-menu-item-label-text-color: var(--mx-text);
+
+  // Material defaults to fully rounded pill buttons in M3. The Mecodex system
+  // has an explicit "not rounded-everything" position, so corners are pulled
+  // back to the shared radius scale.
+  --mdc-filled-button-container-shape: var(--mx-radius-sm);
+  --mdc-outlined-button-container-shape: var(--mx-radius-sm);
+  --mdc-text-button-container-shape: var(--mx-radius-sm);
+  --mdc-dialog-container-shape: var(--mx-radius-md);
+}
+
+// Numerals in data tables must line up in columns; Material does not do this by
+// default and misaligned digits make a table materially harder to scan.
+.mat-mdc-table {
+  font-variant-numeric: tabular-nums;
+}

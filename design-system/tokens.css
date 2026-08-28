@@ -1,0 +1,252 @@
+/* ============================================================================
+ * Mecodex Design Tokens
+ *
+ * The single source of truth for colour, type, spacing, radius, elevation and
+ * motion across every Mecodex product. Extracted from the marketing site's
+ * existing system (website/css/style.css) rather than invented, so the products
+ * and the public site share one visual identity instead of two.
+ *
+ * WHY CSS CUSTOM PROPERTIES, NOT A FRAMEWORK
+ * The products span Angular, React, Razor and plain ES modules. No component
+ * framework covers all four, but custom properties work identically in every
+ * one — including inside Angular Material's theming API and Tailwind's config.
+ * So this file is the interchange format, and each stack adapts it (see
+ * README.md) instead of re-deciding the palette.
+ *
+ * THEMING CONTRACT
+ * Three states, not two. An explicit choice stamps data-theme="light" or
+ * data-theme="dark" on <html>; the default "system" setting stamps nothing and
+ * is resolved by prefers-color-scheme. Every colour is therefore defined at
+ * :root (light), redefined under the guarded media query, and redefined again
+ * under [data-theme="dark"] so an explicit toggle wins in both directions.
+ * Never declare a colour only inside a media block — it will not apply in the
+ * un-stamped state.
+ *
+ * ACCESSIBILITY
+ * Every foreground role was measured against its own surface, not assumed. The
+ * brand teal (#33E0C7) scores 11.5:1 on the dark ink but only 1.66:1 on white,
+ * so it cannot be used for text or icons in light mode. Light mode therefore
+ * uses a hue-preserving darkened teal (#17826d, 4.72:1). The accent's *role* is
+ * constant; its *value* is theme-dependent. All roles below clear WCAG AA (4.5:1)
+ * in both themes — see README.md for the measured table.
+ * ========================================================================== */
+
+:root {
+  /* ---- Brand constants (identical in both themes) ------------------------ */
+  --mx-brand-teal: #33e0c7;
+  --mx-brand-blue: #3d6cf2;
+  --mx-brand-ink: #0a0f1c;
+  --mx-brand-paper: #eaf6ff;
+
+  --mx-gradient-brand: linear-gradient(135deg, var(--mx-brand-teal), var(--mx-brand-blue));
+
+  /* ---- LIGHT THEME (default) -------------------------------------------- */
+  /* Products are data-dense admin UIs, so light is the default here even
+     though the marketing site is dark-first. Reading a table of 200 rows on a
+     near-black ground is a different job from reading a landing page. */
+
+  /* Surfaces, from furthest back to nearest front. */
+  --mx-surface-sunk: #f1f4f8;
+  --mx-surface-base: #f7f9fb;
+  --mx-surface: #ffffff;
+  --mx-surface-raised: #ffffff;
+
+  /* Text */
+  --mx-text: #101828;
+  --mx-text-secondary: #3d4757;
+  --mx-text-muted: #5a6472;
+  --mx-text-on-accent: #ffffff;
+
+  /* Lines */
+  --mx-border: #d9dfe7;
+  --mx-border-strong: #b9c3d0;
+
+  /* Accent — darkened teal, hue-preserving, AA on white (4.72:1). */
+  --mx-accent: #17826d;
+  --mx-accent-hover: #136b5a;
+  --mx-accent-subtle: #e6f4f1;
+  --mx-accent-border: #9ccfc4;
+
+  /* Semantic status. Separate from the accent on purpose: "this is
+     interactive" and "this is dangerous" must never be the same signal. */
+  --mx-success: #186a3f;
+  --mx-success-subtle: #e7f4ec;
+  --mx-warning: #8a5a00;
+  --mx-warning-subtle: #fdf4e3;
+  --mx-danger: #b3261e;
+  --mx-danger-subtle: #fdecea;
+  --mx-info: #2f5bd6;
+  --mx-info-subtle: #eaf0fd;
+
+  /* Focus. A visible focus ring is not optional — it is how keyboard users
+     know where they are. Uses the accent so it reads as intentional. */
+  --mx-focus-ring: 0 0 0 3px rgba(23, 130, 109, 0.35);
+
+  /* Elevation. Deliberately restrained, echoing the marketing site's rule that
+     nothing carries a resting glow — shadows communicate interaction, not
+     decoration. */
+  --mx-shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.06);
+  --mx-shadow-md: 0 8px 20px -8px rgba(16, 24, 40, 0.18);
+  --mx-shadow-lg: 0 24px 48px -24px rgba(16, 24, 40, 0.28);
+
+  /* ---- Typography (theme-independent) ----------------------------------- */
+  --mx-font-heading: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --mx-font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mx-font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  /* Fluid scale carried over from the marketing site so headings match across
+     the site and the apps. */
+  --mx-text-display: clamp(2.75rem, 1.6rem + 3.6vw, 5rem);
+  --mx-text-h1: clamp(2.25rem, 1.6rem + 2.2vw, 3.25rem);
+  --mx-text-h2: clamp(1.7rem, 1.35rem + 1.3vw, 2.5rem);
+  --mx-text-h3: clamp(1.1rem, 1.02rem + 0.3vw, 1.3rem);
+  --mx-text-body-lg: clamp(1.05rem, 1rem + 0.2vw, 1.2rem);
+  --mx-text-body: 1rem;
+  --mx-text-caption: 0.85rem;
+  --mx-text-label: 0.76rem;
+  --mx-text-button: 0.88rem;
+
+  --mx-leading-tight: 1.12;
+  --mx-leading-body: 1.6;
+  --mx-tracking-label: 0.09em;
+
+  /* ---- Spacing, radius, layout ------------------------------------------ */
+  --mx-space-3xs: 0.25rem;
+  --mx-space-2xs: 0.5rem;
+  --mx-space-xs: 0.75rem;
+  --mx-space-sm: 1rem;
+  --mx-space-md: 1.5rem;
+  --mx-space-lg: 2.5rem;
+  --mx-space-xl: 4rem;
+  --mx-space-2xl: 6rem;
+  --mx-space-3xl: 8.5rem;
+
+  --mx-radius-sm: 8px;
+  --mx-radius-md: 14px;
+  --mx-radius-lg: 20px;
+  --mx-radius-pill: 999px;
+
+  --mx-container: 1240px;
+  --mx-header-height: 64px;
+
+  /* ---- Motion ------------------------------------------------------------ */
+  --mx-ease: cubic-bezier(0.16, 0.8, 0.32, 1);
+  --mx-transition: 220ms var(--mx-ease);
+  --mx-transition-slow: 480ms var(--mx-ease);
+}
+
+/* ---- DARK THEME -------------------------------------------------------- */
+/* Only the colour tokens are redefined. Type, spacing, radius and motion are
+   theme-independent and must not be duplicated here — duplicating them is how
+   the two themes silently drift apart. */
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --mx-surface-sunk: #0a0f1c;
+    --mx-surface-base: #0e1424;
+    --mx-surface: #131b30;
+    --mx-surface-raised: #182140;
+
+    --mx-text: #eaf6ff;
+    --mx-text-secondary: rgba(234, 246, 255, 0.72);
+    --mx-text-muted: #9aa8bc;
+    --mx-text-on-accent: #04231d;
+
+    --mx-border: rgba(234, 246, 255, 0.14);
+    --mx-border-strong: rgba(234, 246, 255, 0.26);
+
+    /* Full-strength brand teal: 11.04:1 on the dark surface. */
+    --mx-accent: #33e0c7;
+    --mx-accent-hover: #5aead6;
+    --mx-accent-subtle: rgba(51, 224, 199, 0.14);
+    --mx-accent-border: rgba(51, 224, 199, 0.4);
+
+    --mx-success: #4ade80;
+    --mx-success-subtle: rgba(74, 222, 128, 0.14);
+    --mx-warning: #fbbf24;
+    --mx-warning-subtle: rgba(251, 191, 36, 0.14);
+    --mx-danger: #ff8a7a;
+    --mx-danger-subtle: rgba(255, 138, 122, 0.14);
+    --mx-info: #7ba2ff;
+    --mx-info-subtle: rgba(123, 162, 255, 0.14);
+
+    --mx-focus-ring: 0 0 0 3px rgba(51, 224, 199, 0.4);
+
+    /* Darker and deeper: on a dark ground a light shadow reads as haze. */
+    --mx-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+    --mx-shadow-md: 0 10px 24px -12px rgba(0, 0, 0, 0.5);
+    --mx-shadow-lg: 0 24px 48px -24px rgba(0, 0, 0, 0.6);
+  }
+}
+
+:root[data-theme="dark"] {
+  --mx-surface-sunk: #0a0f1c;
+  --mx-surface-base: #0e1424;
+  --mx-surface: #131b30;
+  --mx-surface-raised: #182140;
+
+  --mx-text: #eaf6ff;
+  --mx-text-secondary: rgba(234, 246, 255, 0.72);
+  --mx-text-muted: #9aa8bc;
+  --mx-text-on-accent: #04231d;
+
+  --mx-border: rgba(234, 246, 255, 0.14);
+  --mx-border-strong: rgba(234, 246, 255, 0.26);
+
+  --mx-accent: #33e0c7;
+  --mx-accent-hover: #5aead6;
+  --mx-accent-subtle: rgba(51, 224, 199, 0.14);
+  --mx-accent-border: rgba(51, 224, 199, 0.4);
+
+  --mx-success: #4ade80;
+  --mx-success-subtle: rgba(74, 222, 128, 0.14);
+  --mx-warning: #fbbf24;
+  --mx-warning-subtle: rgba(251, 191, 36, 0.14);
+  --mx-danger: #ff8a7a;
+  --mx-danger-subtle: rgba(255, 138, 122, 0.14);
+  --mx-info: #7ba2ff;
+  --mx-info-subtle: rgba(123, 162, 255, 0.14);
+
+  --mx-focus-ring: 0 0 0 3px rgba(51, 224, 199, 0.4);
+
+  --mx-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --mx-shadow-md: 0 10px 24px -12px rgba(0, 0, 0, 0.5);
+  --mx-shadow-lg: 0 24px 48px -24px rgba(0, 0, 0, 0.6);
+}
+
+/* ---- Baseline ---------------------------------------------------------- */
+/* Only what every product needs identically. Component styling belongs in the
+   products, not here — this file is tokens plus the few global rules that would
+   otherwise be copy-pasted into six codebases. */
+
+body {
+  background: var(--mx-surface-base);
+  color: var(--mx-text);
+  font-family: var(--mx-font-body);
+  font-size: var(--mx-text-body);
+  line-height: var(--mx-leading-body);
+}
+
+/* Numerals in tables and metrics must line up in columns. */
+.mx-tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* A single focus style everywhere. :focus-visible, not :focus, so a mouse click
+   does not leave a ring behind while keyboard focus still shows one. */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid transparent;
+  box-shadow: var(--mx-focus-ring);
+  border-radius: var(--mx-radius-sm);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
