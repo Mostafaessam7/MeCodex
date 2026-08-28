@@ -79,19 +79,24 @@ Type, spacing, radius and motion are theme-independent and defined once. Duplica
 
 Every foreground role was measured against its own surface.
 
-**The brand teal cannot be used for text in light mode.** `#33E0C7` scores **11.50:1** on the dark ink but **1.66:1** on white — nowhere near the 4.5:1 floor. So the accent's *role* is constant while its *value* is theme-dependent: light mode uses a hue-preserving darkened teal, `#17826d` (4.72:1, same hue 168).
+Values are not picked and then checked — they are **solved**. `build-themes.mjs` walks lightness for each role until the measured ratio against its own surface clears the floor, so "AA compliant" is a computed property of the generator rather than a claim about a spreadsheet.
 
-| Role | Light (on white) | Dark (on `#0E1424`) |
+Semantic colours (identical everywhere):
+
+| Role | Light | Dark |
 | --- | --- | --- |
-| accent | `#17826d` · 4.72:1 | `#33e0c7` · 11.04:1 |
-| text | `#101828` · 17.75:1 | `#eaf6ff` · 16.71:1 |
-| muted | `#5a6472` · 6.00:1 | `#9aa8bc` · 7.60:1 |
-| success | `#186a3f` · 6.62:1 | `#4ade80` · 10.53:1 |
-| warning | `#8a5a00` · 5.93:1 | `#fbbf24` · 10.99:1 |
-| danger | `#b3261e` · 6.54:1 | `#ff8a7a` · 8.01:1 |
-| info | `#2f5bd6` · 5.85:1 | `#7ba2ff` · 7.39:1 |
+| success | `#19864c` | `#259e5d` |
+| warning | `#a06807` | `#be7f13` |
+| danger | `#dc3327` | `#e46258` |
+| info | `#2372d9` | `#4c8de2` |
 
-All 30 shade/contrast pairs in the Angular Material palettes were verified the same way.
+Each clears 4.5:1 against **every** theme's surface, not just one.
+
+Two findings worth keeping:
+
+**A bright brand colour may be unusable for light-mode text.** The original Mecodex teal `#33E0C7` scores 11.5:1 on dark ink but **1.66:1 on white**. That is why the accent's *role* stays constant while its *value* changes per mode — `modern-teal` uses a hue-preserving `#17826d` in light.
+
+**Dark surfaces must be normalised by luminance, not HSL lightness.** A warm hue at the same nominal lightness reads visibly lighter than a cool one; `amber-commerce` originally produced a mid-brown "dark mode" that looked washed out beside the others and left semantics at 4.51:1. Surfaces are now matched on measured luminance so all five feel equally dark.
 
 **Semantic status is separate from the accent on purpose.** "This is interactive" and "this is dangerous" must never be the same signal.
 
