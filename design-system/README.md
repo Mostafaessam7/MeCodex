@@ -27,7 +27,18 @@ Products share one architecture and one set of token **names**; only the values 
 | `enterprise-blue` | PosFlow |
 | `amber-commerce` | POS, E-Commerce |
 | `slate-pro` | Gym Manager |
-| `modern-teal` | Subscription Tracker, MeCodex |
+| `modern-teal` | Subscription Tracker |
+
+### The marketing site is the source, not a consumer
+
+`website/` deliberately does **not** import these files, even though `modern-teal` is nominally its theme. The relationship runs the other way: `modern-teal` was derived *from* the marketing site's palette, so applying the derived approximation back onto the original would be circular.
+
+It would also break things. Two concrete reasons, both measured rather than assumed:
+
+- The site hardcodes the brand teal **63 times** in SVG `stroke` attributes in the markup. Token aliasing cannot reach a presentation attribute, so the CSS accent would move to `#14a387` while 63 icon strokes stayed `#33E0C7` — a visible desync across every page of a live public site.
+- The site's ground is `#0A0F1C` (blue-ink); the generated theme's is `#111b1f` (teal-ink). Close, but not the same, and the site is dark-only with no light mode to fall back on.
+
+If the site should genuinely consume the system later, the work is: convert those 63 strokes to `currentColor` driven by CSS, add an explicit `data-theme="dark"` stamp (the shared tokens default to light, so without it the site flips), then alias. That is a deliberate piece of work on a live site, not a side effect of a token migration.
 
 Always import both, in this order:
 
