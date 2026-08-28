@@ -2,7 +2,7 @@
 
 The shared visual layer for every Mecodex product. This directory is the **source of truth**; each product vendors a copy (see [Consuming it](#consuming-it)).
 
-It was extracted from the marketing site's existing system in `website/css/style.css`, not invented — so the products and the public site share one identity rather than two that drift.
+It was extracted from the marketing site's existing system in `website/css/style.css`, then generalised into five per-product themes.
 
 ---
 
@@ -10,9 +10,48 @@ It was extracted from the marketing site's existing system in `website/css/style
 
 | File | Purpose |
 | --- | --- |
-| `tokens.css` | The portable token layer. Colour, type, spacing, radius, elevation, motion. Works in any stack. |
-| `tailwind-preset.js` | React adapter. Maps tokens to Tailwind theme keys **and** to the semantic names shadcn/ui generates against. |
-| `angular-material-theme.scss` | Angular adapter. Drives Angular Material's appearance from the tokens instead of Material Design defaults. |
+| `tokens.css` | Theme-**independent** layer: type scale, spacing, radius, elevation, motion, baseline. No colour. |
+| `themes/*.css` | One file per colour identity. Only surfaces, text, borders and brand colours. |
+| `tailwind-preset.js` | React adapter. Maps tokens to Tailwind keys **and** to the names shadcn/ui generates against. |
+| `angular-material-theme.scss` | Angular adapter. Drives Material's appearance from the tokens, not Material defaults. |
+| `build-themes.mjs` | Derives every palette and verifies contrast. The source of truth for values. |
+| `emit-theme-files.mjs` | Writes `themes/*.css` and asserts token-name parity across them. |
+
+## Per-product themes
+
+Products share one architecture and one set of token **names**; only the values differ.
+
+| Theme | Products |
+| --- | --- |
+| `navy-corporate` | RealEstateCRM |
+| `enterprise-blue` | PosFlow |
+| `amber-commerce` | POS, E-Commerce |
+| `slate-pro` | Gym Manager |
+| `modern-teal` | Subscription Tracker, MeCodex |
+
+Always import both, in this order:
+
+```css
+@import "design-system/tokens.css";
+@import "design-system/themes/navy-corporate.css";
+```
+
+Switching a product's identity is a one-line change, because **all five theme files expose an identical set of 27 token names**. That parity is asserted by `emit-theme-files.mjs` against the emitted files — not assumed — so a theme that gained or lost a token fails the build rather than shipping a half-styled app.
+
+### Two invariants
+
+**Token names are identical in every theme.** Never add a token to one theme file without adding it to all of them. The generator enforces this.
+
+**Semantic colours are identical in every theme.** `success`, `warning`, `danger` and `info` do not vary by product — an error must look like an error everywhere, or the signal stops being learnable. They are solved once against *every* theme's surface (the lightest dark surface is the binding constraint) and written into each file so a theme reads as a complete palette while being impossible to drift.
+
+### Regenerating
+
+```bash
+node design-system/build-themes.mjs final-themes.json
+node design-system/emit-theme-files.mjs final-themes.json design-system/themes
+```
+
+The first derives and verifies; the second writes the CSS and checks parity. Both fail loudly rather than emitting something unverified.
 
 ### Why CSS custom properties as the interchange format
 

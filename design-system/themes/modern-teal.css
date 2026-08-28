@@ -1,0 +1,135 @@
+/* ============================================================================
+ * Mecodex theme — Modern Teal
+ *
+ * Assigned to: Subscription Tracker, MeCodex
+ *
+ * Pairs with tokens.css, which carries everything theme-independent (type scale,
+ * spacing, radius, motion, elevation). This file defines ONLY what varies between
+ * themes: surfaces, text, borders and the brand colours.
+ *
+ * TOKEN NAMES ARE IDENTICAL IN EVERY THEME FILE. Swapping a product's theme is a
+ * one-line import change with no other edits anywhere — that is the entire point
+ * of the split. Do not add a token here that does not exist in every other theme.
+ *
+ * SEMANTIC COLOURS ARE IDENTICAL IN EVERY THEME. success / warning / danger /
+ * info do not vary by product: an error must look like an error everywhere, or
+ * the signal stops being learnable. They appear in each file so a theme reads as
+ * a complete palette, but they are generated from one source and cannot drift.
+ *
+ * Every value below was derived and verified, not picked. Each foreground clears
+ * WCAG AA (>= 4.5:1) against the surface it renders on, in both modes.
+ * Regenerate with design-system/build-themes.mjs.
+ * ========================================================================== */
+
+:root {
+  --mx-surface-sunk: #f1f4f6;
+  --mx-surface-base: #f7f9fb;
+  --mx-surface: #ffffff;
+  --mx-surface-raised: #ffffff;
+
+  --mx-text: #243842;
+  --mx-text-secondary: #475c66;
+  --mx-text-muted: #627781;
+  --mx-text-on-accent: #ffffff;
+
+  --mx-border: #d4dee2;
+  --mx-border-strong: #b1c1c9;
+
+  --mx-accent: #17846e;
+  --mx-accent-hover: #016e58;
+  --mx-accent-subtle: rgba(23, 132, 110, 0.12);
+  --mx-accent-border: rgba(23, 132, 110, 0.42);
+
+  --mx-secondary: #297ba4;
+  --mx-secondary-subtle: rgba(41, 123, 164, 0.12);
+
+  --mx-accent-alt: #456bde;
+  --mx-accent-alt-subtle: rgba(69, 107, 222, 0.12);
+
+  --mx-focus-ring: 0 0 0 3px rgba(23, 132, 110, 0.38);
+
+  --mx-success: #19864c;
+  --mx-success-subtle: rgba(25, 134, 76, 0.12);
+  --mx-warning: #a06807;
+  --mx-warning-subtle: rgba(160, 104, 7, 0.12);
+  --mx-danger: #dc3327;
+  --mx-danger-subtle: rgba(220, 51, 39, 0.12);
+  --mx-info: #2372d9;
+  --mx-info-subtle: rgba(35, 114, 217, 0.12);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --mx-surface-sunk: #0b1216;
+    --mx-surface-base: #111b1f;
+    --mx-surface: #18242a;
+    --mx-surface-raised: #213038;
+
+    --mx-text: #d8e3e8;
+    --mx-text-secondary: #9bb0ba;
+    --mx-text-muted: #788e99;
+    --mx-text-on-accent: #0b0f16;
+
+    --mx-border: #34454e;
+    --mx-border-strong: #4c636e;
+
+    --mx-accent: #139e82;
+    --mx-accent-hover: #2db89c;
+    --mx-accent-subtle: rgba(19, 158, 130, 0.18);
+    --mx-accent-border: rgba(19, 158, 130, 0.42);
+
+    --mx-secondary: #2493ca;
+    --mx-secondary-subtle: rgba(36, 147, 202, 0.18);
+
+    --mx-accent-alt: #6686e4;
+    --mx-accent-alt-subtle: rgba(102, 134, 228, 0.18);
+
+    --mx-focus-ring: 0 0 0 3px rgba(19, 158, 130, 0.38);
+
+    --mx-success: #259e5d;
+    --mx-success-subtle: rgba(37, 158, 93, 0.2);
+    --mx-warning: #be7f13;
+    --mx-warning-subtle: rgba(190, 127, 19, 0.2);
+    --mx-danger: #e46258;
+    --mx-danger-subtle: rgba(228, 98, 88, 0.2);
+    --mx-info: #4c8de2;
+    --mx-info-subtle: rgba(76, 141, 226, 0.2);
+  }
+}
+
+:root[data-theme="dark"] {
+  --mx-surface-sunk: #0b1216;
+  --mx-surface-base: #111b1f;
+  --mx-surface: #18242a;
+  --mx-surface-raised: #213038;
+
+  --mx-text: #d8e3e8;
+  --mx-text-secondary: #9bb0ba;
+  --mx-text-muted: #788e99;
+  --mx-text-on-accent: #0b0f16;
+
+  --mx-border: #34454e;
+  --mx-border-strong: #4c636e;
+
+  --mx-accent: #139e82;
+  --mx-accent-hover: #2db89c;
+  --mx-accent-subtle: rgba(19, 158, 130, 0.12);
+  --mx-accent-border: rgba(19, 158, 130, 0.42);
+
+  --mx-secondary: #2493ca;
+  --mx-secondary-subtle: rgba(36, 147, 202, 0.12);
+
+  --mx-accent-alt: #6686e4;
+  --mx-accent-alt-subtle: rgba(102, 134, 228, 0.12);
+
+  --mx-focus-ring: 0 0 0 3px rgba(19, 158, 130, 0.38);
+
+  --mx-success: #259e5d;
+  --mx-success-subtle: rgba(37, 158, 93, 0.2);
+  --mx-warning: #be7f13;
+  --mx-warning-subtle: rgba(190, 127, 19, 0.2);
+  --mx-danger: #e46258;
+  --mx-danger-subtle: rgba(228, 98, 88, 0.2);
+  --mx-info: #4c8de2;
+  --mx-info-subtle: rgba(76, 141, 226, 0.2);
+}
