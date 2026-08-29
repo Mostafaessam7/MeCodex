@@ -1,6 +1,15 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
+// Without this guard a missing argument surfaces as ERR_INVALID_ARG_TYPE from deep inside
+// node:fs, which reads like the script is broken rather than mis-invoked.
+if (!process.argv[2] || !process.argv[3]) {
+  console.error('usage: node emit-theme-files.mjs <themes.json> <out-dir>');
+  console.error('  e.g. node design-system/emit-theme-files.mjs final-themes.json design-system/themes');
+  console.error('  <themes.json> is produced by build-themes.mjs.');
+  process.exit(1);
+}
+
 const { themes, semantics } = JSON.parse(fs.readFileSync(process.argv[2], 'utf8'));
 const outDir = process.argv[3];
 fs.mkdirSync(outDir, { recursive: true });

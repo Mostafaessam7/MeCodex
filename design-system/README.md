@@ -136,24 +136,44 @@ import './design-system/tokens.css';
 
 The preset maps both Mecodex role names (`bg-surface`, `text-ink-muted`, `text-accent`) **and** the semantic names shadcn generates against (`background`, `foreground`, `primary`, `border`, `ring`, `destructive`). A generated `<Button>` or `<Card>` is therefore on-brand with no per-component editing — which is what makes shadcn viable here instead of a second design language living alongside this one.
 
-### Angular — Material/CDK + tokens
+### Angular — CDK + tokens
 
-```scss
-// styles.scss
-@use './design-system/angular-material-theme' as mecodex;
+Both Angular products (Subscription Tracker, PosFlow) load the theme CSS directly and use
+**`@angular/cdk` only**:
+
+```css
+/* styles.css */
 @import './design-system/tokens.css';
+@import './design-system/themes/<product-theme>.css';
 ```
 
-Material is used **for behaviour**: CDK overlay positioning, focus trapping, live announcers and keyboard interaction are hard to write correctly by hand and were flagged as missing in the accessibility audit.
+The CDK is used **for behaviour**, not appearance: focus trapping, overlay positioning, live
+announcers, keyboard interaction. Those are hard to write correctly by hand, and the accessibility
+work proved it — the dialogs in both products carried the right-looking markup while focus escaped
+to the page behind them and Escape did nothing. The CDK primitives fixed that with **no visual
+change at all**, which is exactly why they were worth adding.
 
-Its *appearance* is driven from the tokens. That happens in two places, and both matter:
+#### `angular-material-theme.scss` is **not in use**
 
-1. The palettes and typography config — covers what Material themes through its palette API.
-2. The `--mdc-*` / `--mat-*` overrides at the bottom of the file — covers Material's own runtime tokens for surfaces, outlines and corner radii.
+The file is here, and it is written, but nothing consumes it:
 
-Without the second part, components Material doesn't theme through the palette silently revert to Material defaults and sit slightly "off" against everything else, in a way that is hard to attribute.
+- neither app has `@angular/material` **or** `sass` installed, so it cannot compile today;
+- it has therefore **never been built or verified** anywhere — treat it as a draft, not a
+  working adapter.
 
-Material also defaults to fully-rounded pill buttons. The Mecodex system has an explicit **anti-"rounded-everything"** position, so corners are pulled back to the shared radius scale.
+It exists because the workspace decision named "Angular Material/CDK". The CDK half was adopted;
+the component library was not. Replacing hand-written components that already work, are already
+bound to these tokens, and are already covered by tests is a large change to working UI whose only
+clear benefit — the accessibility primitives — was obtainable from the CDK alone.
+
+If Material is ever adopted, **verify this file before trusting it**: it needs `sass` and
+`@angular/material`, and its two halves both matter. The palettes and typography config cover what
+Material themes through its palette API; the `--mdc-*` / `--mat-*` overrides at the bottom cover
+Material's own runtime tokens for surfaces, outlines and corner radii. Without the second half,
+components Material does not theme through the palette silently revert to Material defaults and sit
+slightly "off" in a way that is hard to attribute. It also pulls corners back from Material's
+fully-rounded pill default to the shared radius scale, per this system's explicit
+anti-"rounded-everything" position.
 
 ### Razor / vanilla — tokens only
 

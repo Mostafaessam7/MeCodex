@@ -162,5 +162,15 @@ for (const mode of ['light', 'dark']) {
   console.log(mode + ': ' + line);
 }
 
+// Checked here rather than at the top on purpose: the contrast verification above is the
+// valuable part and runs either way, so `node build-themes.mjs` with no argument still tells
+// you whether the palettes pass before it complains about where to write them.
+if (!process.argv[2]) {
+  console.error('\nusage: node build-themes.mjs <out.json>');
+  console.error('  e.g. node design-system/build-themes.mjs final-themes.json');
+  console.error('  Feed that file to emit-theme-files.mjs to write themes/*.css.');
+  process.exit(1);
+}
+
 fs.writeFileSync(process.argv[2], JSON.stringify({ themes, semantics }, null, 1));
 console.log('written', process.argv[2]);

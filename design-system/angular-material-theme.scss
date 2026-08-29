@@ -1,3 +1,14 @@
+// ⚠️ NOT IN USE — unverified draft.
+//
+// Nothing consumes this file. Neither Angular product has `@angular/material` or `sass`
+// installed, so it cannot compile as things stand, and it has never been built or verified
+// anywhere. Both apps use `@angular/cdk` directly for behaviour (focus trap, overlay,
+// live announcer) and load the theme CSS for appearance.
+//
+// It is kept because the workspace decision named "Angular Material/CDK"; the CDK half was
+// adopted and the component library was not. If Material is ever adopted, verify this file
+// before trusting it. See the "Angular — CDK + tokens" section of README.md for the reasoning.
+
 // ============================================================================
 // Mecodex Angular Material theme — the Angular adapter for tokens.css.
 //
