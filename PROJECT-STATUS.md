@@ -101,3 +101,31 @@ Project memory lives in `docs/` (`PROJECT_CONTEXT.md`, `DESIGN_SYSTEM.md`, `TASK
 | **Migrating the marketing site onto the shared themes** | 63 hardcoded SVG strokes and a circular derivation in its own token layer. It is a real migration with visual risk, and the site is not the reason the design system exists |
 | **Deleting `angular-material-theme.scss`** | The workspace decision named "Angular Material/CDK". The CDK half was adopted; the component library is deferred, not cancelled. The file is kept and clearly labelled rather than removed |
 | **Adopting Angular Material's components** | Would replace hand-written components that work, are bound to these tokens, and are covered by tests. The clear benefit — accessibility primitives — came from the CDK alone, with no visual change |
+
+---
+
+## Update 2026-08-30 — CI gate and branch protection
+
+**The design system is now verified in CI** (`.github/workflows/design-system.yml`), not just when
+someone remembers to run the generator. It checks all three properties the architecture depends on:
+contrast against each theme's own surfaces, identical token names across all five themes, and that
+the committed `themes/*.css` are byte-identical to freshly generated output.
+
+That last check is the one that cannot be caught in review. A hand-edit to a theme file looks
+entirely reasonable in a diff and silently drops that theme out of the contrast guarantees, because
+the generator *solves* for those values rather than checking them afterwards. Verified both ways:
+the job passes on the current tree, and hand-editing an accent colour to `#ff0000` makes it fail.
+
+**Branch protection is on** (`enforce_admins: true`, force-pushes and deletions blocked, the design
+system check required). Verified by attempting a direct push, which is now rejected. This closes
+the gap listed above as "no automated check that products stay on the shared tokens" for the
+*generator side* — it still does not check that consuming products have not hardcoded a hex next to
+a themed component.
+
+Deliberately **not** wired to `deploy.yml`: that job runs on push to `main` to publish Pages, so
+requiring it as a status check would deadlock — nothing could merge until a deploy that only runs
+after merge had passed.
+
+> Worth noting for context: this is one of only two repos in the workspace where protection is
+> possible. The other six are private, and GitHub requires Pro for branch protection on private
+> repositories.
