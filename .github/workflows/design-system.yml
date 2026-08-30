@@ -1,0 +1,55 @@
+name: Design system
+
+# The design system in this repo is consumed by every other product in the workspace, so a change
+# here reaches beyond it. Three properties the whole architecture depends on are verified by the
+# generator, and until now only when somebody remembered to run it by hand:
+#
+#   1. every theme passes WCAG AA contrast against its own surfaces;
+#   2. all five themes expose an identical set of token names, so a component written against
+#      --mx-surface is portable between products;
+#   3. the committed themes/*.css are exactly what the generator produces.
+#
+# (3) is the one that cannot be caught by reading a diff. A hand-edit to a theme file looks
+# perfectly reasonable in review and silently drops that theme out of the contrast guarantees,
+# because the generator solves for those values rather than checking them afterwards. This job
+# regenerates into a temporary directory and diffs, so drift fails the build in either direction --
+# an edited committed file, or a generator change that was never re-emitted.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  verify:
+    name: Contrast, token parity and reproducibility
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      # build-themes.mjs solves each palette until the measured contrast clears the floor and
+      # fails if any pair cannot. emit-theme-files.mjs asserts token-name parity by re-parsing the
+      # files it just wrote, rather than trusting the in-memory model it wrote them from.
+      - name: Generate themes and verify contrast and token parity
+        run: |
+          node design-system/build-themes.mjs "$RUNNER_TEMP/themes.json"
+          node design-system/emit-theme-files.mjs "$RUNNER_TEMP/themes.json" "$RUNNER_TEMP/themes"
+
+      - name: Check the committed theme files match the generator
+        run: |
+          if ! diff -r "$RUNNER_TEMP/themes" design-system/themes; then
+            echo ""
+            echo "::error::The committed design-system/themes/*.css do not match the generator output."
+            echo "Either a theme file was hand-edited, or the generator changed and the files were"
+            echo "not re-emitted. Regenerate with:"
+            echo "  node design-system/build-themes.mjs final-themes.json"
+            echo "  node design-system/emit-theme-files.mjs final-themes.json design-system/themes"
+            exit 1
+          fi
+          echo "Committed theme files are byte-identical to freshly generated output."
