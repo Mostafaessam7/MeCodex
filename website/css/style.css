@@ -695,6 +695,25 @@ main { display: block; }
 .node-pulse.delay-1 { animation-delay: .4s; }
 .node-pulse.delay-2 { animation-delay: .9s; }
 .node-pulse.delay-3 { animation-delay: 1.3s; }
+
+/* Diagram node/packet fills, moved off eleven hardcoded fill="" attributes in index.html.
+   These elements already carried the classes below, so the colour had no reason to be duplicated
+   onto each shape. A CSS fill beats the presentation attribute, but the attributes were removed
+   rather than left to be overridden -- leaving both means the next person has to work out which
+   one is actually winning. */
+.node-pulse,
+.hero-visual .packet { fill: var(--teal); }
+
+/* The hero gradient's two stops. stop-color is a real CSS property, so these can come from the
+   same tokens as everything else rather than being the last two hardcoded brand values in the
+   markup. Classes rather than `#heroLine stop:nth-child()` so the rule survives someone adding or
+   reordering a stop. */
+.hero-line-from { stop-color: var(--teal); }
+.hero-line-to { stop-color: var(--blue); }
+
+.node-pulse.delay-1,
+.node-pulse.delay-3,
+.hero-visual .packet.packet-2 { fill: var(--blue); }
 @keyframes pulse {
   0%, 100% { opacity: 0.85; transform: scale(1); }
   50% { opacity: 1; transform: scale(1.2); }
@@ -836,6 +855,13 @@ main { display: block; }
   flex-shrink: 0;
 }
 .card-icon svg { width: 26px; height: 26px; }
+
+/* Icon stroke colour lives here, not on 56 individual <svg stroke="#33E0C7"> attributes across
+   seven pages. The icons now draw with stroke="currentColor", so this one declaration is the only
+   place the brand teal appears for them — changing it changes every icon, and nothing can drift to
+   a slightly different teal by being edited in one page and not the others. */
+.card-icon,
+.contact-info-item .icon-wrap { color: var(--teal); }
 
 /* ---------- 9. Why MeCodex (asymmetric) ---------- */
 .why-grid {
