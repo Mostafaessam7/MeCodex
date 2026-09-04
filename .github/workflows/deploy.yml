@@ -26,15 +26,24 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v6
         with:
-          # Pages had never been turned on for this repo, so this step failed on every single
-          # run with a bare "Get Pages site failed ... Error: Not Found" -- which reads like a
-          # broken workflow rather than an unset repository setting, and the site consequently
-          # never deployed once.
+          # Pages had never been turned on for this repo, so this step failed on every run with
+          # "Get Pages site failed ... Error: Not Found" -- which reads like a broken workflow
+          # rather than an unset repository setting, and the site never deployed once.
           #
-          # `enablement: true` has the action switch Pages on itself through the API, using the
-          # `pages: write` permission this workflow already grants above. That is the fix the
-          # action's own error message points at, and it keeps the setting in version control
-          # instead of in a settings page nobody remembers to check.
+          # `enablement: true` is what the action's own error message points at, but on its own
+          # it does NOT fix a repo where Pages has never been enabled. Measured here on
+          # 2026-09-04: the read succeeded (404, meaning no site), then the create was refused --
+          #
+          #     Create Pages site failed. Error: Resource not accessible by integration
+          #
+          # `pages: write` lets GITHUB_TOKEN configure and deploy to an existing Pages site; it
+          # does not let it bring one into existence. **The first enablement has to be done once
+          # by a person**, either in Settings > Pages > Source: GitHub Actions, or with
+          # `gh api -X POST repos/OWNER/REPO/pages -f build_type=workflow`.
+          #
+          # This stays set because it is a no-op once the site exists (the read succeeds and no
+          # create is attempted), and it means a fresh fork or a re-created repo self-heals if
+          # the job is ever run with a token that does have the rights.
           enablement: true
       - name: Upload website/ as the Pages artifact
         uses: actions/upload-pages-artifact@v5
