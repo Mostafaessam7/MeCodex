@@ -25,6 +25,17 @@ jobs:
         uses: actions/checkout@v7
       - name: Setup Pages
         uses: actions/configure-pages@v6
+        with:
+          # Pages had never been turned on for this repo, so this step failed on every single
+          # run with a bare "Get Pages site failed ... Error: Not Found" -- which reads like a
+          # broken workflow rather than an unset repository setting, and the site consequently
+          # never deployed once.
+          #
+          # `enablement: true` has the action switch Pages on itself through the API, using the
+          # `pages: write` permission this workflow already grants above. That is the fix the
+          # action's own error message points at, and it keeps the setting in version control
+          # instead of in a settings page nobody remembers to check.
+          enablement: true
       - name: Upload website/ as the Pages artifact
         uses: actions/upload-pages-artifact@v5
         with:
