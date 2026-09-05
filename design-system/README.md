@@ -2,7 +2,7 @@
 
 The shared visual layer for every Mecodex product. This directory is the **source of truth**; each product vendors a copy (see [Consuming it](#consuming-it)).
 
-It was extracted from the marketing site's existing system in `website/css/style.css`, then generalised into five per-product themes.
+It was extracted from the marketing site's existing system in `website/css/style.css`, then generalised into per-product themes.
 
 ---
 
@@ -25,7 +25,8 @@ Products share one architecture and one set of token **names**; only the values 
 | --- | --- |
 | `navy-corporate` | RealEstateCRM |
 | `enterprise-blue` | PosFlow |
-| `amber-commerce` | POS, E-Commerce |
+| `amber-commerce` | POS |
+| `crimson-noir` | E-Commerce |
 | `slate-pro` | Gym Manager |
 | `modern-teal` | Subscription Tracker |
 
@@ -47,7 +48,7 @@ Always import both, in this order:
 @import "design-system/themes/navy-corporate.css";
 ```
 
-Switching a product's identity is a one-line change, because **all five theme files expose an identical set of 27 token names**. That parity is asserted by `emit-theme-files.mjs` against the emitted files — not assumed — so a theme that gained or lost a token fails the build rather than shipping a half-styled app.
+Switching a product's identity is a one-line change, because **every theme file exposes an identical set of 27 token names**. That parity is asserted by `emit-theme-files.mjs` against the emitted files — not assumed — so a theme that gained or lost a token fails the build rather than shipping a half-styled app.
 
 ### Two invariants
 
@@ -107,9 +108,18 @@ Two findings worth keeping:
 
 **A bright brand colour may be unusable for light-mode text.** The original Mecodex teal `#33E0C7` scores 11.5:1 on dark ink but **1.66:1 on white**. That is why the accent's *role* stays constant while its *value* changes per mode — `modern-teal` uses a hue-preserving `#17826d` in light.
 
-**Dark surfaces must be normalised by luminance, not HSL lightness.** A warm hue at the same nominal lightness reads visibly lighter than a cool one; `amber-commerce` originally produced a mid-brown "dark mode" that looked washed out beside the others and left semantics at 4.51:1. Surfaces are now matched on measured luminance so all five feel equally dark.
+**Dark surfaces must be normalised by luminance, not HSL lightness.** A warm hue at the same nominal lightness reads visibly lighter than a cool one; `amber-commerce` originally produced a mid-brown "dark mode" that looked washed out beside the others and left semantics at 4.51:1. Surfaces are now matched on measured luminance so they all feel equally dark.
 
 **Semantic status is separate from the accent on purpose.** "This is interactive" and "this is dangerous" must never be the same signal.
+
+> **`crimson-noir` bends this, knowingly.** It was requested as a black-and-red identity for
+> E-Commerce, and its primary lands on hue 358 while the universal `danger` sits on hue 4 — close
+> enough that a primary button and a destructive one read as the same colour. The semantics are
+> universal by design and are not re-solved per theme, so the alternative was refusing the brief.
+>
+> The consequence is real and belongs on whoever maintains that storefront: in this theme,
+> destructive actions must not rely on colour alone. Give them an icon, a verb that says what will
+> happen, or a confirmation step. That is better practice everywhere; here it is load-bearing.
 
 ---
 
