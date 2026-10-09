@@ -17,7 +17,14 @@
  * a complete palette, but they are generated from one source and cannot drift.
  *
  * Every value below was derived and verified, not picked. Each foreground clears
- * WCAG AA (>= 4.5:1) against the surface it renders on, in both modes.
+ * WCAG AA (>= 4.5:1) against all four surface levels, in both modes.
+ *
+ * TEXT ON A TINTED CHIP USES THE -on-subtle SHADE, NOT THE COLOUR ITSELF. A
+ * `-subtle` background shifts the ground toward the colour being read on it, so
+ * `color: var(--mx-success)` on `background: var(--mx-success-subtle)` lands
+ * around 3.5:1 however carefully the colour was solved. Badges, pills and soft
+ * buttons take `--mx-<role>-on-subtle`; the plain colour stays for fills,
+ * icons, borders and rules, where nothing is read on top of it.
  * Regenerate with design-system/build-themes.mjs.
  * ========================================================================== */
 
@@ -29,33 +36,40 @@
 
   --mx-text: #29374c;
   --mx-text-secondary: #4b596d;
-  --mx-text-muted: #68768a;
+  --mx-text-muted: #626f81;
   --mx-text-on-accent: #ffffff;
 
   --mx-border: #d7dde4;
   --mx-border-strong: #b7c0cd;
 
-  --mx-accent: #597798;
-  --mx-accent-hover: #436182;
-  --mx-accent-subtle: rgba(89, 119, 152, 0.12);
-  --mx-accent-border: rgba(89, 119, 152, 0.42);
+  --mx-accent: #54708f;
+  --mx-accent-hover: #3e5a79;
+  --mx-accent-subtle: rgba(84, 112, 143, 0.12);
+  --mx-accent-on-subtle: #4c6581;
+  --mx-accent-border: rgba(84, 112, 143, 0.42);
 
-  --mx-secondary: #567b82;
-  --mx-secondary-subtle: rgba(86, 123, 130, 0.12);
+  --mx-secondary: #52747b;
+  --mx-secondary-subtle: rgba(82, 116, 123, 0.12);
+  --mx-secondary-on-subtle: #4a686e;
 
-  --mx-accent-alt: #497d73;
-  --mx-accent-alt-subtle: rgba(73, 125, 115, 0.12);
+  --mx-accent-alt: #45766c;
+  --mx-accent-alt-subtle: rgba(69, 118, 108, 0.12);
+  --mx-accent-alt-on-subtle: #3f6b62;
 
-  --mx-focus-ring: 0 0 0 3px rgba(89, 119, 152, 0.38);
+  --mx-focus-ring: 0 0 0 3px rgba(84, 112, 143, 0.38);
 
-  --mx-success: #19864c;
-  --mx-success-subtle: rgba(25, 134, 76, 0.12);
-  --mx-warning: #a06807;
-  --mx-warning-subtle: rgba(160, 104, 7, 0.12);
-  --mx-danger: #dc3327;
-  --mx-danger-subtle: rgba(220, 51, 39, 0.12);
-  --mx-info: #2372d9;
-  --mx-info-subtle: rgba(35, 114, 217, 0.12);
+  --mx-success: #187d47;
+  --mx-success-subtle: rgba(24, 125, 71, 0.12);
+  --mx-success-on-subtle: #157140;
+  --mx-warning: #956106;
+  --mx-warning-subtle: rgba(149, 97, 6, 0.12);
+  --mx-warning-on-subtle: #885806;
+  --mx-danger: #cf2d22;
+  --mx-danger-subtle: rgba(207, 45, 34, 0.12);
+  --mx-danger-on-subtle: #ba291e;
+  --mx-info: #216bcc;
+  --mx-info-subtle: rgba(33, 107, 204, 0.12);
+  --mx-info-on-subtle: #1e62ba;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -67,33 +81,40 @@
 
     --mx-text: #dae1e9;
     --mx-text-secondary: #a2aebe;
-    --mx-text-muted: #7e8b9e;
+    --mx-text-muted: #8e9aaa;
     --mx-text-on-accent: #0b0f16;
 
     --mx-border: #374353;
     --mx-border-strong: #526075;
 
-    --mx-accent: #6a8db6;
-    --mx-accent-hover: #84a7d0;
-    --mx-accent-subtle: rgba(106, 141, 182, 0.18);
-    --mx-accent-border: rgba(106, 141, 182, 0.42);
+    --mx-accent: #7d9cbf;
+    --mx-accent-hover: #97b6d9;
+    --mx-accent-subtle: rgba(125, 156, 191, 0.18);
+    --mx-accent-on-subtle: #9ab2cd;
+    --mx-accent-border: rgba(125, 156, 191, 0.42);
 
-    --mx-secondary: #5c929c;
-    --mx-secondary-subtle: rgba(92, 146, 156, 0.18);
+    --mx-secondary: #6ea0aa;
+    --mx-secondary-subtle: rgba(110, 160, 170, 0.18);
+    --mx-secondary-on-subtle: #90b6be;
 
-    --mx-accent-alt: #589689;
-    --mx-accent-alt-subtle: rgba(88, 150, 137, 0.18);
+    --mx-accent-alt: #65a598;
+    --mx-accent-alt-subtle: rgba(101, 165, 152, 0.18);
+    --mx-accent-alt-on-subtle: #89bab0;
 
-    --mx-focus-ring: 0 0 0 3px rgba(106, 141, 182, 0.38);
+    --mx-focus-ring: 0 0 0 3px rgba(125, 156, 191, 0.38);
 
-    --mx-success: #259e5d;
-    --mx-success-subtle: rgba(37, 158, 93, 0.2);
-    --mx-warning: #be7f13;
-    --mx-warning-subtle: rgba(190, 127, 19, 0.2);
-    --mx-danger: #e46258;
-    --mx-danger-subtle: rgba(228, 98, 88, 0.2);
-    --mx-info: #4c8de2;
-    --mx-info-subtle: rgba(76, 141, 226, 0.2);
+    --mx-success: #29af68;
+    --mx-success-subtle: rgba(41, 175, 104, 0.2);
+    --mx-success-on-subtle: #30cc79;
+    --mx-warning: #cf8a14;
+    --mx-warning-subtle: rgba(207, 138, 20, 0.2);
+    --mx-warning-on-subtle: #eaa52e;
+    --mx-danger: #e87971;
+    --mx-danger-subtle: rgba(232, 121, 113, 0.2);
+    --mx-danger-on-subtle: #ee9c96;
+    --mx-info: #629be5;
+    --mx-info-subtle: rgba(98, 155, 229, 0.2);
+    --mx-info-on-subtle: #8db6ec;
   }
 }
 
@@ -105,31 +126,38 @@
 
   --mx-text: #dae1e9;
   --mx-text-secondary: #a2aebe;
-  --mx-text-muted: #7e8b9e;
+  --mx-text-muted: #8e9aaa;
   --mx-text-on-accent: #0b0f16;
 
   --mx-border: #374353;
   --mx-border-strong: #526075;
 
-  --mx-accent: #6a8db6;
-  --mx-accent-hover: #84a7d0;
-  --mx-accent-subtle: rgba(106, 141, 182, 0.12);
-  --mx-accent-border: rgba(106, 141, 182, 0.42);
+  --mx-accent: #7d9cbf;
+  --mx-accent-hover: #97b6d9;
+  --mx-accent-subtle: rgba(125, 156, 191, 0.18);
+  --mx-accent-on-subtle: #9ab2cd;
+  --mx-accent-border: rgba(125, 156, 191, 0.42);
 
-  --mx-secondary: #5c929c;
-  --mx-secondary-subtle: rgba(92, 146, 156, 0.12);
+  --mx-secondary: #6ea0aa;
+  --mx-secondary-subtle: rgba(110, 160, 170, 0.18);
+  --mx-secondary-on-subtle: #90b6be;
 
-  --mx-accent-alt: #589689;
-  --mx-accent-alt-subtle: rgba(88, 150, 137, 0.12);
+  --mx-accent-alt: #65a598;
+  --mx-accent-alt-subtle: rgba(101, 165, 152, 0.18);
+  --mx-accent-alt-on-subtle: #89bab0;
 
-  --mx-focus-ring: 0 0 0 3px rgba(106, 141, 182, 0.38);
+  --mx-focus-ring: 0 0 0 3px rgba(125, 156, 191, 0.38);
 
-  --mx-success: #259e5d;
-  --mx-success-subtle: rgba(37, 158, 93, 0.2);
-  --mx-warning: #be7f13;
-  --mx-warning-subtle: rgba(190, 127, 19, 0.2);
-  --mx-danger: #e46258;
-  --mx-danger-subtle: rgba(228, 98, 88, 0.2);
-  --mx-info: #4c8de2;
-  --mx-info-subtle: rgba(76, 141, 226, 0.2);
+  --mx-success: #29af68;
+  --mx-success-subtle: rgba(41, 175, 104, 0.2);
+  --mx-success-on-subtle: #30cc79;
+  --mx-warning: #cf8a14;
+  --mx-warning-subtle: rgba(207, 138, 20, 0.2);
+  --mx-warning-on-subtle: #eaa52e;
+  --mx-danger: #e87971;
+  --mx-danger-subtle: rgba(232, 121, 113, 0.2);
+  --mx-danger-on-subtle: #ee9c96;
+  --mx-info: #629be5;
+  --mx-info-subtle: rgba(98, 155, 229, 0.2);
+  --mx-info-on-subtle: #8db6ec;
 }

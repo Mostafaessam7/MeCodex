@@ -230,11 +230,38 @@ These are decisions, not preferences — they're what makes the products look de
 
 ---
 
+## Text on a tinted chip
+
+Badges, pills, status tags and soft buttons put text on a `-subtle` tint **of its own colour**.
+That chip is not the surface the colour was solved against: it shifts the ground toward the very
+colour being read on it, which is the one direction that always costs contrast. Measured across
+all six themes before this was handled, every such pair sat between 3.50 and 4.05:1 — 126 of them.
+
+Each colour therefore ships two values:
+
+| Use | Token |
+|---|---|
+| Fills, icons, borders, rules, chart series — nothing read on top | `--mx-<role>` |
+| Text read **on** `--mx-<role>-subtle` | `--mx-<role>-on-subtle` |
+
+`<role>` is `accent`, `secondary`, `accent-alt`, `success`, `warning`, `danger` or `info`.
+
+The second shade exists instead of simply darkening the colour because the colour is also the
+button fill, the icon and the focus ring: moving it to satisfy a badge would repaint six products
+to fix their chips.
+
 ## Changing a token
 
-Edit here first, then re-copy to the products. Two checks before committing:
+Edit here first, then re-copy to the products. Three checks before committing:
 
-1. **Contrast** — any new or changed colour role must clear 4.5:1 against the surface it sits on, in *both* themes.
-2. **Theme parity** — every colour token defined in light must also exist in the dark override, or the themes drift.
+1. **Contrast** — any new or changed colour role must clear 4.5:1 against **all four surface
+   levels** (`surface`, `surface-base`, `surface-sunk`, `surface-raised`), in *both* themes. Not
+   just `surface`: muted text on the page ground and on sunken wells was the gap that let
+   4.19–4.47:1 ship.
+2. **Chips** — every `-subtle` tint must clear 4.5:1 against its `-on-subtle` shade, on every one
+   of those grounds.
+3. **Theme parity** — every colour token defined in light must also exist in the dark override, or
+   the themes drift.
 
-Both were run against this file when it was written; re-run them when you change it.
+`build-themes.mjs` performs all three and refuses to emit if any pair fails, so re-running the
+generator is the check.

@@ -10,7 +10,8 @@ if (!process.argv[2] || !process.argv[3]) {
   process.exit(1);
 }
 
-const { themes, semantics } = JSON.parse(fs.readFileSync(process.argv[2], 'utf8'));
+const { themes, semantics, semanticsOnSubtle, subtleAlpha, semanticSubtleAlpha } =
+  JSON.parse(fs.readFileSync(process.argv[2], 'utf8'));
 const outDir = process.argv[3];
 fs.mkdirSync(outDir, { recursive: true });
 
@@ -27,11 +28,17 @@ const semanticBlock = (mode, indent) => {
   const s = semantics[mode];
   return Object.entries(s).map(([role, hex]) => {
     const name = role === 'danger' ? 'danger' : role;
-    return `${indent}--mx-${name}: ${hex};\n${indent}--mx-${name}-subtle: ${alpha(hex, mode === 'light' ? 0.12 : 0.20)};`;
+    return `${indent}--mx-${name}: ${hex};\n`
+      + `${indent}--mx-${name}-subtle: ${alpha(hex, semanticSubtleAlpha[mode])};\n`
+      + `${indent}--mx-${name}-on-subtle: ${semanticsOnSubtle[mode][role]};`;
   }).join('\n');
 };
 
-const paletteBlock = (p, indent) => `${indent}--mx-surface-sunk: ${p.sunk};
+// `mode` is passed in rather than inferred. It used to be read off the indent width -- the dark
+// palette is emitted twice, nested under prefers-color-scheme and flat under [data-theme="dark"],
+// and `indent.length > 2` quietly meant "nested", so the same dark theme shipped 0.18 tints to a
+// browser following the OS and 0.12 tints to an app that stamps the attribute.
+const paletteBlock = (p, indent, mode) => `${indent}--mx-surface-sunk: ${p.sunk};
 ${indent}--mx-surface-base: ${p.base};
 ${indent}--mx-surface: ${p.surface};
 ${indent}--mx-surface-raised: ${p.raised};
@@ -46,14 +53,17 @@ ${indent}--mx-border-strong: ${p.borderStrong};
 
 ${indent}--mx-accent: ${p.primary};
 ${indent}--mx-accent-hover: ${p.accentHover};
-${indent}--mx-accent-subtle: ${alpha(p.primary, indent.length > 2 ? 0.18 : 0.12)};
+${indent}--mx-accent-subtle: ${alpha(p.primary, subtleAlpha[mode])};
+${indent}--mx-accent-on-subtle: ${p.primaryOnSubtle};
 ${indent}--mx-accent-border: ${alpha(p.primary, 0.42)};
 
 ${indent}--mx-secondary: ${p.secondary};
-${indent}--mx-secondary-subtle: ${alpha(p.secondary, indent.length > 2 ? 0.18 : 0.12)};
+${indent}--mx-secondary-subtle: ${alpha(p.secondary, subtleAlpha[mode])};
+${indent}--mx-secondary-on-subtle: ${p.secondaryOnSubtle};
 
 ${indent}--mx-accent-alt: ${p.accent};
-${indent}--mx-accent-alt-subtle: ${alpha(p.accent, indent.length > 2 ? 0.18 : 0.12)};
+${indent}--mx-accent-alt-subtle: ${alpha(p.accent, subtleAlpha[mode])};
+${indent}--mx-accent-alt-on-subtle: ${p.accentOnSubtle};
 
 ${indent}--mx-focus-ring: 0 0 0 3px ${alpha(p.primary, 0.38)};`;
 
@@ -87,26 +97,33 @@ for (const t of themes) {
  * a complete palette, but they are generated from one source and cannot drift.
  *
  * Every value below was derived and verified, not picked. Each foreground clears
- * WCAG AA (>= 4.5:1) against the surface it renders on, in both modes.
+ * WCAG AA (>= 4.5:1) against all four surface levels, in both modes.
+ *
+ * TEXT ON A TINTED CHIP USES THE -on-subtle SHADE, NOT THE COLOUR ITSELF. A
+ * \`-subtle\` background shifts the ground toward the colour being read on it, so
+ * \`color: var(--mx-success)\` on \`background: var(--mx-success-subtle)\` lands
+ * around 3.5:1 however carefully the colour was solved. Badges, pills and soft
+ * buttons take \`--mx-<role>-on-subtle\`; the plain colour stays for fills,
+ * icons, borders and rules, where nothing is read on top of it.
  * Regenerate with design-system/build-themes.mjs.
  * ========================================================================== */
 
 :root {
-${paletteBlock(t.light, '  ')}
+${paletteBlock(t.light, '  ', 'light')}
 
 ${semanticBlock('light', '  ')}
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-${paletteBlock(t.dark, '    ')}
+${paletteBlock(t.dark, '    ', 'dark')}
 
 ${semanticBlock('dark', '    ')}
   }
 }
 
 :root[data-theme="dark"] {
-${paletteBlock(t.dark, '  ')}
+${paletteBlock(t.dark, '  ', 'dark')}
 
 ${semanticBlock('dark', '  ')}
 }

@@ -57,6 +57,26 @@ const solveAgainstAll = (h, s, bgs, target, ascending) => {
   throw new Error(`no value clears ${target}:1 for hue ${h} against ${bgs.join(",")}`);
 };
 
+/** Flatten `hex` at opacity `a` onto `bg` -- what a translucent tint actually renders as. */
+const mix = (hex, a, bg) => {
+  const f = hex.replace('#', '').match(/../g).map(x => parseInt(x, 16));
+  const b = bg.replace('#', '').match(/../g).map(x => parseInt(x, 16));
+  const t = v => Math.round(v).toString(16).padStart(2, '0');
+  return '#' + f.map((v, i) => t(v * a + b[i] * (1 - a))).join('');
+};
+
+// The opacity of every `-subtle` tint, by mode. These live here rather than in the emitter
+// because the solver has to know them: a token whose contrast is only checked against the plain
+// surface is not checked against the surface the text actually sits on once a chip is behind it.
+//
+// They also used to be chosen in the emitter by `indent.length > 2`, meaning "is this block
+// nested inside the @media query". The dark palette is emitted twice -- once under
+// prefers-color-scheme and once under [data-theme="dark"] -- at different indents, so the same
+// dark theme shipped 0.18 tints to a browser following the OS and 0.12 tints to an app that
+// stamps the attribute. Same theme, two different chips.
+const SUBTLE_ALPHA = { light: 0.12, dark: 0.18 };
+const SEMANTIC_SUBTLE_ALPHA = { light: 0.12, dark: 0.20 };
+
 // ---- Theme definitions (only those in use) --------------------------------
 const THEMES = [
   { id: 'navy-corporate',  name: 'Navy Corporate',     primary: 224, secondary: 205, accent: 186, neutral: 225, sat: 55, products: ['RealEstateCRM'] },
@@ -110,19 +130,45 @@ const build = t => {
 
   const solveOn = (bg, h, s, target, ascending) => solveAgainstAll(h, s, [bg], target, ascending);
 
+  // Every ground a foreground can land on, not just `surface`. Four levels are emitted and all
+  // four get used: the page sits on `base`, wells and table stripes on `sunk`, cards on `raised`.
+  // Solving against `surface` alone left muted text at 4.19-4.47:1 on the other three -- below
+  // AA on exactly the grounds a secondary label is most likely to sit on.
+  const grounds = p => [p.surface, p.base, p.sunk, p.raised];
+
   light.text = solveOn(light.surface, t.neutral, 30 * nS, 12, false);
   light.textSecondary = solveOn(light.surface, t.neutral, 18 * nS, 7, false);
-  light.textMuted = solveOn(light.surface, t.neutral, 14 * nS, 4.6, false);
-  light.primary = solveOn(light.surface, t.primary, t.sat, 4.6, false);
-  light.secondary = solveOn(light.surface, t.secondary, Math.max(t.sat - 10, 20), 4.6, false);
-  light.accent = solveOn(light.surface, t.accent, t.sat, 4.6, false);
+  light.textMuted = solveAgainstAll(t.neutral, 14 * nS, grounds(light), 4.6, false);
+  light.primary = solveAgainstAll(t.primary, t.sat, grounds(light), 4.6, false);
+  light.secondary = solveAgainstAll(t.secondary, Math.max(t.sat - 10, 20), grounds(light), 4.6, false);
+  light.accent = solveAgainstAll(t.accent, t.sat, grounds(light), 4.6, false);
 
   dark.text = solveOn(dark.surface, t.neutral, 26 * nS, 12, true);
   dark.textSecondary = solveOn(dark.surface, t.neutral, 18 * nS, 7, true);
-  dark.textMuted = solveOn(dark.surface, t.neutral, 14 * nS, 4.6, true);
-  dark.primary = solveOn(dark.surface, t.primary, Math.min(t.sat + 8, 90), 4.6, true);
-  dark.secondary = solveOn(dark.surface, t.secondary, t.sat, 4.6, true);
-  dark.accent = solveOn(dark.surface, t.accent, t.sat, 4.6, true);
+  dark.textMuted = solveAgainstAll(t.neutral, 14 * nS, grounds(dark), 4.6, true);
+  dark.primary = solveAgainstAll(t.primary, Math.min(t.sat + 8, 90), grounds(dark), 4.6, true);
+  dark.secondary = solveAgainstAll(t.secondary, t.sat, grounds(dark), 4.6, true);
+  dark.accent = solveAgainstAll(t.accent, t.sat, grounds(dark), 4.6, true);
+
+  // Text on a `-subtle` chip of its own colour -- the badge, the pill, the soft button. The chip
+  // shifts the ground toward the very colour being read on it, which is the one direction that
+  // always costs contrast. Each brand colour is solved at 4.6:1 against the plain surface, so
+  // there was never headroom for it: measured across all six themes, every colour-on-own-tint
+  // pair landed between 3.50 and 4.05:1. All 126 of them.
+  //
+  // The fix is a second shade rather than a darker brand colour, because the brand colour is
+  // also the button fill, the icon, the focus ring and the chart series; moving it to satisfy
+  // the chip would repaint six products to fix their badges. This token moves only the text.
+  const onSubtle = (p, mode, fill, h, s, ascending) =>
+    solveAgainstAll(h, s, grounds(p).map(g => mix(fill, SUBTLE_ALPHA[mode], g)), 4.6, ascending);
+
+  light.primaryOnSubtle = onSubtle(light, 'light', light.primary, t.primary, t.sat, false);
+  light.secondaryOnSubtle = onSubtle(light, 'light', light.secondary, t.secondary, Math.max(t.sat - 10, 20), false);
+  light.accentOnSubtle = onSubtle(light, 'light', light.accent, t.accent, t.sat, false);
+
+  dark.primaryOnSubtle = onSubtle(dark, 'dark', dark.primary, t.primary, Math.min(t.sat + 8, 90), true);
+  dark.secondaryOnSubtle = onSubtle(dark, 'dark', dark.secondary, t.secondary, t.sat, true);
+  dark.accentOnSubtle = onSubtle(dark, 'dark', dark.accent, t.accent, t.sat, true);
 
   const onFill = fill => (ratio('#ffffff', fill) >= ratio('#0b0f16', fill) ? '#ffffff' : '#0b0f16');
   light.onPrimary = onFill(light.primary);
@@ -135,29 +181,54 @@ const themes = THEMES.map(build);
 
 // ---- One universal semantic set, solved against every surface -------------
 const SEM = { success: [148, 68, 62], warning: [38, 92, 82], danger: [4, 72, 72], info: [214, 72, 72] };
-const lightSurfaces = themes.map(t => t.light.surface);
-const darkSurfaces = themes.map(t => t.dark.surface);
+
+// Every ground a foreground can sit on, across every theme -- the semantic set is one palette
+// shared by all of them, so it has to clear the worst ground any theme produces, not just the
+// one `surface` each theme happens to have.
+const allGrounds = mode => themes.flatMap(t => [t[mode].surface, t[mode].base, t[mode].sunk, t[mode].raised]);
+const lightSurfaces = allGrounds('light');
+const darkSurfaces = allGrounds('dark');
 
 const semantics = { light: {}, dark: {} };
 for (const [role, [h, sL, sD]] of Object.entries(SEM)) {
   semantics.light[role] = solveAgainstAll(h, sL, lightSurfaces, 4.6, false);
   semantics.dark[role] = solveAgainstAll(h, sD, darkSurfaces, 4.6, true);
 }
+const semanticsOnSubtle = { light: {}, dark: {} };
+for (const [role, [h, sL, sD]] of Object.entries(SEM)) {
+  for (const [mode, s, ascending] of [['light', sL, false], ['dark', sD, true]]) {
+    const chips = allGrounds(mode).map(g => mix(semantics[mode][role], SEMANTIC_SUBTLE_ALPHA[mode], g));
+    semanticsOnSubtle[mode][role] = solveAgainstAll(h, s, chips, 4.6, ascending);
+  }
+}
 
 // ---- Verify ---------------------------------------------------------------
+// Checks the pairs that actually render, not one representative pair per role. Every text and
+// brand colour is checked against all four surface levels, and every `-subtle` chip against the
+// shade meant to be read on it. The previous loop checked each role against `surface` only and
+// then reported "all pairs >= 4.5:1", which was true of the pairs it looked at and not of the
+// ones it did not: muted text on the other three grounds, and all 126 colour-on-own-tint pairs.
 let fail = 0;
 const ROLES = ['text', 'textSecondary', 'textMuted', 'primary', 'secondary', 'accent'];
+const GROUNDS = ['surface', 'base', 'sunk', 'raised'];
+const check = (label, fg, bg) => {
+  const v = ratio(fg, bg);
+  if (v < 4.5) { fail++; console.log(`FAIL ${label} ${v.toFixed(2)}`); }
+};
 for (const t of themes) {
   for (const mode of ['light', 'dark']) {
-    for (const r of ROLES) {
-      const v = ratio(t[mode][r], t[mode].surface);
-      if (v < 4.5) { fail++; console.log(`FAIL ${t.id} ${mode} ${r} ${v.toFixed(2)}`); }
+    const p = t[mode];
+    for (const r of ROLES) for (const g of GROUNDS) check(`${t.id} ${mode} ${r} on ${g}`, p[r], p[g]);
+    check(`${t.id} ${mode} button`, p.onPrimary, p.primary);
+
+    for (const [role, fill] of [['primary', p.primary], ['secondary', p.secondary], ['accent', p.accent]]) {
+      for (const g of GROUNDS) check(`${t.id} ${mode} ${role} on its own tint over ${g}`, p[role + 'OnSubtle'], mix(fill, SUBTLE_ALPHA[mode], p[g]));
     }
-    const b = ratio(t[mode].onPrimary, t[mode].primary);
-    if (b < 4.5) { fail++; console.log(`FAIL ${t.id} ${mode} button ${b.toFixed(2)}`); }
     for (const [role, hex] of Object.entries(semantics[mode])) {
-      const v = ratio(hex, t[mode].surface);
-      if (v < 4.5) { fail++; console.log(`FAIL ${t.id} ${mode} ${role} ${v.toFixed(2)}`); }
+      for (const g of GROUNDS) {
+        check(`${t.id} ${mode} ${role} on ${g}`, hex, p[g]);
+        check(`${t.id} ${mode} ${role} on its own tint over ${g}`, semanticsOnSubtle[mode][role], mix(hex, SEMANTIC_SUBTLE_ALPHA[mode], p[g]));
+      }
     }
   }
 }
@@ -170,7 +241,7 @@ for (const t of themes.slice(1)) {
 }
 
 console.log(fail === 0
-  ? `PASS — ${themes.length} themes, identical token names, semantics constant, all pairs >= 4.5:1`
+  ? `PASS — ${themes.length} themes, identical token names, semantics constant; every text and brand colour clears 4.5:1 on all four surface levels, and every -subtle chip clears 4.5:1 against its -on-subtle shade`
   : `${fail} failures`);
 
 // Worst-case semantic margins, so the thin ones are visible.
@@ -191,5 +262,7 @@ if (!process.argv[2]) {
   process.exit(1);
 }
 
-fs.writeFileSync(process.argv[2], JSON.stringify({ themes, semantics }, null, 1));
+fs.writeFileSync(process.argv[2], JSON.stringify(
+  { themes, semantics, semanticsOnSubtle, subtleAlpha: SUBTLE_ALPHA, semanticSubtleAlpha: SEMANTIC_SUBTLE_ALPHA },
+  null, 1));
 console.log('written', process.argv[2]);
