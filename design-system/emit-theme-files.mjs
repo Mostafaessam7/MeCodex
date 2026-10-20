@@ -10,7 +10,7 @@ if (!process.argv[2] || !process.argv[3]) {
   process.exit(1);
 }
 
-const { themes, semantics, semanticsOnSubtle, subtleAlpha, semanticSubtleAlpha } =
+const { themes, semantics, semanticsOnSubtle, semanticsOnFill, subtleAlpha, semanticSubtleAlpha } =
   JSON.parse(fs.readFileSync(process.argv[2], 'utf8'));
 const outDir = process.argv[3];
 fs.mkdirSync(outDir, { recursive: true });
@@ -30,7 +30,8 @@ const semanticBlock = (mode, indent) => {
     const name = role === 'danger' ? 'danger' : role;
     return `${indent}--mx-${name}: ${hex};\n`
       + `${indent}--mx-${name}-subtle: ${alpha(hex, semanticSubtleAlpha[mode])};\n`
-      + `${indent}--mx-${name}-on-subtle: ${semanticsOnSubtle[mode][role]};`;
+      + `${indent}--mx-${name}-on-subtle: ${semanticsOnSubtle[mode][role]};\n`
+      + `${indent}--mx-text-on-${name}: ${semanticsOnFill[mode][role]};`;
   }).join('\n');
 };
 

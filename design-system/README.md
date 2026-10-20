@@ -243,8 +243,14 @@ Each colour therefore ships two values:
 |---|---|
 | Fills, icons, borders, rules, chart series — nothing read on top | `--mx-<role>` |
 | Text read **on** `--mx-<role>-subtle` | `--mx-<role>-on-subtle` |
+| Text read **on** a solid `--mx-<role>` fill (a delete button, a filled tag) | `--mx-text-on-<role>` |
 
-`<role>` is `accent`, `secondary`, `accent-alt`, `success`, `warning`, `danger` or `info`.
+`<role>` is `accent`, `secondary`, `accent-alt`, `success`, `warning`, `danger` or `info` for the first
+two rows; the solid-fill row exists for `accent` and the four status roles.
+
+Never hardcode `#fff` on a fill. The dark palette lightens every colour so it reads as text on a dark
+ground, and white on those lighter fills drops under 3:1 — that is why Gym Manager's "Delete" and
+"+ New" buttons and the Tracker's confirm-dialog button were the faintest labels on their pages.
 
 The second shade exists instead of simply darkening the colour because the colour is also the
 button fill, the icon and the focus ring: moving it to satisfy a badge would repaint six products

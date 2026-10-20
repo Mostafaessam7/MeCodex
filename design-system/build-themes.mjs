@@ -202,6 +202,17 @@ for (const [role, [h, sL, sD]] of Object.entries(SEM)) {
   }
 }
 
+// Text on a SOLID status fill -- the delete button, a filled error tag. The accent already had
+// this (--mx-text-on-accent); the status colours did not, so products wrote `color: #fff` and
+// were right only in light mode. The dark palette brightens danger to clear 4.5:1 as text on a
+// dark ground, and white on that brighter fill measures 2.84:1. Same rule as the accent: take
+// whichever of white or ink reads better on the fill.
+const onFillOf = fill => (ratio('#ffffff', fill) >= ratio('#0b0f16', fill) ? '#ffffff' : '#0b0f16');
+const semanticsOnFill = { light: {}, dark: {} };
+for (const mode of ['light', 'dark']) {
+  for (const [role, hex] of Object.entries(semantics[mode])) semanticsOnFill[mode][role] = onFillOf(hex);
+}
+
 // ---- Verify ---------------------------------------------------------------
 // Checks the pairs that actually render, not one representative pair per role. Every text and
 // brand colour is checked against all four surface levels, and every `-subtle` chip against the
@@ -225,6 +236,7 @@ for (const t of themes) {
       for (const g of GROUNDS) check(`${t.id} ${mode} ${role} on its own tint over ${g}`, p[role + 'OnSubtle'], mix(fill, SUBTLE_ALPHA[mode], p[g]));
     }
     for (const [role, hex] of Object.entries(semantics[mode])) {
+      check(`${t.id} ${mode} text on solid ${role}`, semanticsOnFill[mode][role], hex);
       for (const g of GROUNDS) {
         check(`${t.id} ${mode} ${role} on ${g}`, hex, p[g]);
         check(`${t.id} ${mode} ${role} on its own tint over ${g}`, semanticsOnSubtle[mode][role], mix(hex, SEMANTIC_SUBTLE_ALPHA[mode], p[g]));
@@ -263,6 +275,6 @@ if (!process.argv[2]) {
 }
 
 fs.writeFileSync(process.argv[2], JSON.stringify(
-  { themes, semantics, semanticsOnSubtle, subtleAlpha: SUBTLE_ALPHA, semanticSubtleAlpha: SEMANTIC_SUBTLE_ALPHA },
+  { themes, semantics, semanticsOnSubtle, semanticsOnFill, subtleAlpha: SUBTLE_ALPHA, semanticSubtleAlpha: SEMANTIC_SUBTLE_ALPHA },
   null, 1));
 console.log('written', process.argv[2]);
