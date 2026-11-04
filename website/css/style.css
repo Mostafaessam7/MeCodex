@@ -187,16 +187,16 @@ body::after {
 /* Skip link */
 .skip-link {
   position: absolute;
-  left: -999px;
+  inset-inline-start: -999px;
   top: 0;
   background: var(--teal);
   color: var(--ink-dark);
   padding: 0.75rem 1.25rem;
   z-index: 1000;
-  border-radius: 0 0 var(--radius-sm) 0;
+  border-end-end-radius: var(--radius-sm);
   font-weight: 600;
 }
-.skip-link:focus { left: 0; }
+.skip-link:focus { inset-inline-start: 0; }
 
 /* ---------- 3. Typography ---------- */
 h1, h2, h3, h4 {
@@ -384,7 +384,7 @@ main { display: block; }
 .scroll-progress {
   position: absolute;
   top: 0;
-  left: 0;
+  inset-inline-start: 0;
   height: 2px;
   width: 0%;
   background: var(--gradient-brand);
@@ -447,7 +447,7 @@ main { display: block; }
 .primary-nav a::after {
   content: "";
   position: absolute;
-  left: 0; right: 100%; bottom: -4px;
+  inset-inline-start: 0; inset-inline-end: 100%; bottom: -4px;
   height: 2px;
   background: var(--gradient-brand);
   /* v7: the underline gains a subtle gradient sweep on hover (background-position shift)
@@ -455,14 +455,27 @@ main { display: block; }
   background-size: 220% 100%;
   background-position: 0% 0%;
   border-radius: 2px;
-  transition: right var(--transition-base), background-position var(--transition-slow);
+  transition: inset-inline-end var(--transition-base), background-position var(--transition-slow);
 }
 .primary-nav a:hover::after { background-position: 100% 0%; }
 .primary-nav a:hover { color: var(--text-primary); }
-.primary-nav a:hover::after { right: 0; }
+.primary-nav a:hover::after { inset-inline-end: 0; }
 .primary-nav a[aria-current="page"] { color: var(--teal); }
-.primary-nav a[aria-current="page"]::after { right: 0; }
+.primary-nav a[aria-current="page"]::after { inset-inline-end: 0; }
 .header-actions { display: flex; align-items: center; gap: var(--space-md); }
+.lang-switch {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding-inline: 0.85rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  transition: color var(--transition-base), border-color var(--transition-base);
+}
+.lang-switch:hover { color: var(--text-primary); border-color: var(--border-strong); }
+.lang-switch:focus-visible { outline: 2px solid var(--teal); outline-offset: 3px; }
 
 /* Services mega-menu preview — desktop-only enhancement; the "Services" link itself
    still works standalone on touch/mobile, so nothing essential depends on hover. */
@@ -786,7 +799,7 @@ main { display: block; }
   padding-block: var(--space-lg);
   border-bottom: 1px solid var(--border-subtle);
   overflow: hidden;
-  transition: padding-left var(--transition-base);
+  transition: padding-inline-start var(--transition-base);
   perspective: 300px; /* v6: 3D space for .row-index's tumble-in */
 }
 .service-row::before {
@@ -800,7 +813,7 @@ main { display: block; }
   z-index: 0;
 }
 .service-row:hover::before { transform: scaleX(1); }
-.service-row:hover { padding-left: var(--space-sm); }
+.service-row:hover { padding-inline-start: var(--space-sm); }
 .service-row > * { position: relative; z-index: 1; }
 .service-row .row-index {
   font-family: var(--font-heading);
@@ -834,7 +847,7 @@ main { display: block; }
 .service-rows .service-row {
   opacity: 0;
   transform: translateY(16px);
-  transition: opacity 600ms var(--ease), transform 600ms var(--ease), padding-left var(--transition-base);
+  transition: opacity 600ms var(--ease), transform 600ms var(--ease), padding-inline-start var(--transition-base);
 }
 .service-rows.is-visible .service-row { opacity: 1; transform: translateY(0); }
 .service-rows.is-visible .service-row:nth-child(1) { transition-delay: 0ms; }
@@ -874,7 +887,7 @@ main { display: block; }
 .why-callout {
   margin-top: var(--space-xl);
   padding: var(--space-md) var(--space-lg);
-  border-left: 2px solid var(--teal);
+  border-inline-start: 2px solid var(--teal);
   background: var(--surface-1);
 }
 .why-callout .stat-num {
@@ -944,8 +957,8 @@ main { display: block; }
   content: "";
   position: absolute;
   top: 17px;
-  left: -8px;
-  right: 8px;
+  inset-inline-start: -8px;
+  inset-inline-end: 8px;
   height: 1px;
   background: var(--border-subtle);
   transform: scaleX(0);
@@ -969,7 +982,7 @@ main { display: block; }
   font-weight: 700;
   position: absolute;
   top: 0;
-  left: 0;
+  inset-inline-start: 0;
   opacity: 0;
   transform: scale(0.4) rotateX(70deg); /* v6: flip-in instead of a plain scale-pop */
   transition: background var(--transition-base), border-color var(--transition-base), color var(--transition-base), opacity 420ms var(--ease), transform 420ms var(--ease);
@@ -1025,7 +1038,7 @@ main { display: block; }
   content: "";
   position: absolute;
   top: -1px;
-  left: 0;
+  inset-inline-start: 0;
   width: 96px;
   height: 2px;
   background: var(--gradient-brand);
@@ -1184,7 +1197,7 @@ main { display: block; }
 .service-detail-ghost {
   position: absolute;
   top: -0.5em;
-  right: 0;
+  inset-inline-end: 0;
   font-size: clamp(4rem, 9vw, 8rem);
   z-index: 0;
   transform-origin: center;
@@ -1225,7 +1238,7 @@ main { display: block; }
   padding: var(--space-md);
   border-radius: var(--radius-sm);
   background: var(--surface-1);
-  border-left: 2px solid var(--teal);
+  border-inline-start: 2px solid var(--teal);
   font-size: 0.9rem;
 }
 .best-for strong { color: var(--text-primary); font-family: var(--font-heading); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.06em; display: block; margin-bottom: 0.3rem; }
@@ -1543,7 +1556,7 @@ main { display: block; }
    click. visibility (not just opacity) is toggled so it drops out of the tab order while hidden. */
 .scroll-top {
   position: fixed;
-  right: clamp(1rem, 3vw, 2rem);
+  inset-inline-end: clamp(1rem, 3vw, 2rem);
   bottom: clamp(1rem, 3vw, 2rem);
   width: 46px;
   height: 46px;
@@ -1582,7 +1595,7 @@ main { display: block; }
   justify-content: space-between;
   gap: var(--space-md);
   padding-block: var(--space-md);
-  text-align: left;
+  text-align: start;
   font-family: var(--font-heading);
   font-size: 1rem;
   font-weight: 600;
@@ -1633,7 +1646,7 @@ main { display: block; }
 .accordion-item.is-open .accordion-panel { max-height: 60rem; }
 .accordion-panel-inner p {
   padding-bottom: var(--space-md);
-  padding-right: calc(30px + var(--space-md));
+  padding-inline-end: calc(30px + var(--space-md));
   font-size: 0.95rem;
   margin: 0;
 }
@@ -1720,7 +1733,7 @@ main { display: block; }
 /* Job listing accordion (careers.html): role title + type/location meta inside the trigger,
    and "what you'll do / what we're looking for" lists reuse the existing .service-detail-list
    check-row pattern from services.html rather than inventing a new list idiom. */
-.accordion-trigger .role-title { display: flex; flex-direction: column; gap: 0.3rem; text-align: left; }
+.accordion-trigger .role-title { display: flex; flex-direction: column; gap: 0.3rem; text-align: start; }
 .role-meta {
   font-family: var(--font-body);
   font-size: 0.78rem;
@@ -1736,9 +1749,9 @@ main { display: block; }
   color: var(--text-muted);
   margin-bottom: var(--space-xs);
 }
-.accordion-panel-inner .service-detail-list { margin-top: 0; margin-bottom: var(--space-md); padding-right: calc(30px + var(--space-md)); }
+.accordion-panel-inner .service-detail-list { margin-top: 0; margin-bottom: var(--space-md); padding-inline-end: calc(30px + var(--space-md)); }
 .accordion-panel-inner .service-detail-list li { max-width: 60ch; }
-.role-apply { display: flex; align-items: center; gap: var(--space-sm); flex-wrap: wrap; padding-bottom: var(--space-md); padding-right: calc(30px + var(--space-md)); }
+.role-apply { display: flex; align-items: center; gap: var(--space-sm); flex-wrap: wrap; padding-bottom: var(--space-md); padding-inline-end: calc(30px + var(--space-md)); }
 .role-apply p { margin: 0; font-size: 0.85rem; max-width: none; }
 
 /* Article entries (insights.html): meta line matches the existing .eng-mark/.cta-panel-meta
@@ -1906,7 +1919,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   .hero-grid { grid-template-columns: 1fr; }
   .hero-index { display: none; }
   .hero-visual { order: -1; max-width: 480px; margin-inline: auto; }
-  .cta-panel { grid-template-columns: 1fr; text-align: left; }
+  .cta-panel { grid-template-columns: 1fr; text-align: start; }
   .service-row { grid-template-columns: 3rem 1fr; }
   .service-row p { grid-column: 2 / -1; }
   .service-row .row-link { display: none; }
@@ -1936,6 +1949,9 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   .primary-nav a { display: block; padding: 0.95rem 0; width: 100%; font-size: 1rem; }
   .primary-nav a::after { display: none; }
   .header-actions .btn-primary.header-cta-desktop { display: none; }
+  /* The menu is out of the flow here, so keep the language switch and the toggle together at the end. */
+  .header-actions { margin-inline-start: auto; }
+  .nav-toggle { order: 1; }
   .contact-grid, .service-detail { grid-template-columns: 1fr; }
   .service-detail:nth-of-type(even) .service-detail-media { order: 0; }
   .form-row { grid-template-columns: 1fr; }
@@ -1957,3 +1973,28 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   .service-row .row-index { display: none; }
   .hero-visual-readout { flex-wrap: wrap; gap: var(--space-xs) var(--space-md); }
 }
+
+/* ---------- Arabic (website/ar/, built by i18n/build-arabic.mjs) ----------
+   Layout mirrors through dir="rtl" and the logical properties above; this block covers what
+   direction alone can't. */
+/* Inter and IBM Plex Mono have no Arabic glyphs, so IBM Plex Sans Arabic (loaded only on the
+   Arabic pages) leads both stacks; Latin words keep their own fonts behind it. */
+html:lang(ar) {
+  --font-heading: "IBM Plex Sans Arabic", "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --font-body: "IBM Plex Sans Arabic", "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+/* Arabic letters join; any tracking pulls the joins apart. The English rules set letter-spacing
+   in 20+ places for small caps-style labels, so this resets it everywhere rather than chasing each. */
+html:lang(ar) body,
+html:lang(ar) body * { letter-spacing: normal !important; }
+html:lang(ar) body { line-height: 1.8; }
+/* Arrows point the way you read. */
+[dir="rtl"] svg:has(> path[d="m13 6 6 6-6 6"]) { scale: -1 1; }
+/* Sweeps that grow from the reading start. */
+[dir="rtl"] .service-row::before {
+  background: linear-gradient(270deg, rgba(51,224,199,0.06), transparent 60%);
+  transform-origin: right;
+}
+[dir="rtl"] .process-step::before { transform-origin: right; }
+[dir="rtl"] .service-row .row-link { transform: translateX(6px); }
+[dir="rtl"] .service-row:hover .row-link { transform: translateX(0); }

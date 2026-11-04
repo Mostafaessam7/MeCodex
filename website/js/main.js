@@ -27,6 +27,10 @@
   var reducedMotion =
     window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  // The Arabic pages (website/ar/) run this same file; the only words it writes itself are the
+  // two emails the forms hand off, so they are picked here rather than through a string table.
+  var arabic = document.documentElement.lang === "ar";
+
   /* ---------- 0. Header scroll state + scroll-progress bar + parallax + scroll-to-top ---------- */
   var siteHeader = document.querySelector(".site-header");
   var scrollProgressEl = document.querySelector(".scroll-progress");
@@ -173,7 +177,7 @@
         };
 
         var body =
-          "From: " + field("name") + " <" + field("email") + ">\n\n" + field("message");
+          (arabic ? "من: " : "From: ") + field("name") + " <" + field("email") + ">\n\n" + field("message");
 
         // encodeURIComponent, not escape/raw: subjects and messages routinely
         // contain &, #, and newlines, all of which would otherwise truncate the
@@ -662,8 +666,12 @@
       var address = emailInput ? emailInput.value.trim() : "";
       window.location.href =
         "mailto:hello@mecodex.com" +
-        "?subject=" + encodeURIComponent("Notify me about new MeCodex insights") +
-        "&body=" + encodeURIComponent("Please add " + address + " to the list for new posts.");
+        "?subject=" + encodeURIComponent(arabic
+          ? "أبلغوني بمقالات MeCodex الجديدة"
+          : "Notify me about new MeCodex insights") +
+        "&body=" + encodeURIComponent(arabic
+          ? "أرجو إضافة " + address + " إلى قائمة المقالات الجديدة."
+          : "Please add " + address + " to the list for new posts.");
     });
   }
 })();

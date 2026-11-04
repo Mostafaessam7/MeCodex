@@ -1,7 +1,7 @@
 # Project Context — MeCodex Website
 
 ## What this is
-A premium, art-directed **corporate/services website** for MeCodex, a software development studio (web, mobile, custom software/SaaS, maintenance & support). English only. **Not an ecommerce store** — this was explicitly decided twice; the Ecomus template's shop functionality (cart, checkout, PDP, collections) is out of scope.
+A premium, art-directed **corporate/services website** for MeCodex, a software development studio (web, mobile, custom software/SaaS, maintenance & support). English, plus an Arabic version under `website/ar/` generated from the English pages by `i18n/build-arabic.mjs` (v11). Edit the English page and `i18n/ar.json`, then rebuild; never hand-edit `website/ar/`. **Not an ecommerce store** — this was explicitly decided twice; the Ecomus template's shop functionality (cart, checkout, PDP, collections) is out of scope.
 
 ## Paths
 - Live site: `website/` — 8 pages, all sharing the same header/nav/footer markup and `css/style.css` / `js/main.js`:

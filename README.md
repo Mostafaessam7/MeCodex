@@ -47,6 +47,12 @@ No build step. Either open `website/index.html` directly in a browser, or serve 
 npx serve website
 ```
 
+The Arabic site (`website/ar/`) is generated; rebuild it after editing an English page:
+
+```bash
+node i18n/build-arabic.mjs
+```
+
 ## Deploying
 
 Live on GitHub Pages, auto-deployed from `website/` on every push to `main` via `.github/workflows/deploy.yml`.

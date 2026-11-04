@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MeCodex — تطوير الويب والجوال والبرمجيات المخصصة</title>
+<meta name="description" content="MeCodex شركة تطوير برمجيات تبني تطبيقات ويب وتطبيقات جوال وبرمجيات مخصصة موثوقة للفرق الطموحة — من أول سطر كود حتى الدعم طويل الأمد.">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="MeCodex — تطوير الويب والجوال والبرمجيات المخصصة">
+<meta property="og:description" content="نصمم تطبيقات الويب والجوال والبرمجيات المخصصة ونبنيها وندعمها للفرق الطموحة.">
+<meta property="og:image" content="../assets/img/mecodex-social-cover-linkedin.png">
+<meta property="og:url" content="https://mostafaessam7.github.io/MeCodex/ar/">
+<link rel="alternate" hreflang="en" href="https://mostafaessam7.github.io/MeCodex/">
+<link rel="alternate" hreflang="ar" href="https://mostafaessam7.github.io/MeCodex/ar/">
+<link rel="alternate" hreflang="x-default" href="https://mostafaessam7.github.io/MeCodex/">
+
+<link rel="icon" href="../assets/img/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/img/mecodex-favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../assets/img/mecodex-favicon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="../assets/img/mecodex-favicon-512.png">
+<link rel="apple-touch-icon" href="../assets/img/mecodex-favicon-192.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<a class="skip-link" href="#main-content">انتقل إلى المحتوى</a>
+<canvas class="bg-particles" aria-hidden="true"></canvas>
+
+<header class="site-header">
+  <div class="scroll-progress" aria-hidden="true"></div>
+  <div class="container">
+    <a class="brand" href="index.html" aria-label="الصفحة الرئيسية لـ MeCodex">
+      <img src="../assets/img/mecodex-logo-for-dark-bg.svg" alt="MeCodex" width="164" height="30">
+    </a>
+    <button class="nav-toggle" aria-expanded="false" aria-controls="primary-nav" aria-label="فتح قائمة التنقل أو إغلاقها">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="primary-nav" id="primary-nav" aria-label="التنقل الرئيسي">
+      <div class="container">
+        <ul>
+          <li><a href="index.html" aria-current="page">الرئيسية</a></li>
+          <li><a href="about.html">من نحن</a></li>
+          <li class="nav-has-menu">
+            <a href="services.html">خدماتنا</a>
+            <div class="nav-menu" aria-label="روابط سريعة للخدمات">
+              <a class="nav-menu-item" href="services.html#web-development"><span class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M3 9h18"/><path d="M8 21h8"/><path d="M12 18v3"/></svg></span><span>تطوير الويب</span></a>
+              <a class="nav-menu-item" href="services.html#mobile-app-development"><span class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg></span><span>تطبيقات الجوال</span></a>
+              <a class="nav-menu-item" href="services.html#custom-software"><span class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span><span>برمجيات مخصصة</span></a>
+              <a class="nav-menu-item" href="services.html#maintenance-support"><span class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg></span><span>الصيانة</span></a>
+            </div>
+          </li>
+          <li><a href="portfolio.html">أعمالنا</a></li>
+          <li><a href="contact.html">تواصل</a></li>
+        </ul>
+      </div>
+    </nav>
+    <div class="header-actions">
+      <a class="lang-switch" href="../index.html" lang="en" hreflang="en">English</a>
+      <a class="btn btn-primary btn-sm header-cta-desktop" href="contact.html">تواصل معنا</a>
+    </div>
+  </div>
+</header>
+
+<main id="main-content">
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container hero-grid">
+      <div class="hero-index" aria-hidden="true">
+        <span>الاستوديو</span>
+        <span class="hero-index-line"></span>
+        <span>01</span>
+      </div>
+      <div class="hero-copy">
+        <p class="eyebrow">استوديو تطوير برمجيات</p>
+        <h1 class="word-reveal">نبني برمجيات تستطيع الفرق الطموحة أن <span class="text-gradient">تنطلق</span> بها، وتعتمد عليها.</h1>
+        <p class="lead">تصمم MeCodex تطبيقات الويب والجوال والبرمجيات المخصصة وتهندسها — من أول سطر كود مرورًا بالإطلاق وما بعده. مهندسون متمرسون، وتقنيات حديثة، وبلا متاعب.</p>
+        <div class="hero-ctas">
+          <a class="btn btn-primary" href="contact.html">ابدأ مشروعًا</a>
+          <a class="btn btn-secondary" href="services.html">خدماتنا</a>
+        </div>
+      </div>
+      <div class="hero-visual">
+       <div class="hero-visual-frame">
+        <svg viewBox="0 0 480 440" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="heroSvgTitle">
+          <title id="heroSvgTitle">Abstract network diagram representing connected systems</title>
+          <defs>
+            <linearGradient id="heroLine" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" class="hero-line-from"/>
+              <stop offset="1" class="hero-line-to"/>
+            </linearGradient>
+          </defs>
+          <circle class="orbit-ring" cx="240" cy="220" r="190" fill="none" stroke="var(--border-subtle)" stroke-width="1" stroke-dasharray="2 10"/>
+          <g class="drift">
+            <g fill="none" stroke="url(#heroLine)" stroke-width="1.4" opacity="0.85">
+              <line x1="80" y1="90" x2="220" y2="60"/>
+              <line x1="220" y1="60" x2="360" y2="110"/>
+              <line x1="220" y1="60" x2="240" y2="200"/>
+              <line x1="80" y1="90" x2="100" y2="230"/>
+              <line x1="360" y1="110" x2="400" y2="240"/>
+              <line x1="240" y1="200" x2="100" y2="230"/>
+              <line x1="240" y1="200" x2="400" y2="240"/>
+              <line x1="100" y1="230" x2="140" y2="350"/>
+              <line x1="240" y1="200" x2="230" y2="350"/>
+              <line x1="400" y1="240" x2="330" y2="360"/>
+              <line x1="140" y1="350" x2="230" y2="350"/>
+              <line x1="230" y1="350" x2="330" y2="360"/>
+            </g>
+            <g>
+              <circle class="node-pulse" cx="80" cy="90" r="6"/>
+              <circle class="node-pulse delay-1" cx="220" cy="60" r="7"/>
+              <circle class="node-pulse delay-2" cx="360" cy="110" r="6"/>
+              <circle class="node-pulse delay-3" cx="240" cy="200" r="8"/>
+              <circle class="node-pulse" cx="100" cy="230" r="6"/>
+              <circle class="node-pulse delay-1" cx="400" cy="240" r="6"/>
+              <circle class="node-pulse delay-2" cx="140" cy="350" r="6"/>
+              <circle class="node-pulse delay-3" cx="230" cy="350" r="7"/>
+              <circle class="node-pulse" cx="330" cy="360" r="6"/>
+            </g>
+            <g aria-hidden="true">
+              <circle class="packet" cx="80" cy="90" r="3"/>
+              <circle class="packet packet-2" cx="100" cy="230" r="3"/>
+            </g>
+          </g>
+        </svg>
+       </div>
+        <div class="hero-visual-caption" aria-hidden="true">
+          <span>// system.map</span>
+          <span>connected</span>
+        </div>
+        <div class="hero-visual-readout" aria-hidden="true">
+          <span>nodes: 09</span>
+          <span>links: 12</span>
+          <span>state: stable</span>
+        </div>
+      </div>
+    </div>
+    <div class="container hero-statbar">
+      <div>
+        <span class="stat-num">4</span>
+        <span class="stat-label">تخصصات أساسية</span>
+      </div>
+      <div>
+        <span class="stat-num">100%</span>
+        <span class="stat-label">تسليم بقيادة الخبرة</span>
+      </div>
+      <div>
+        <span class="stat-num">24/7</span>
+        <span class="stat-label">تغطية الدعم</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services overview -->
+  <section class="section" id="services-overview">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">ماذا نقدّم</p>
+        <h2>أربعة تخصصات، وفريق واحد مسؤول</h2>
+        <p class="lead">أيًا كانت مرحلة منتجك، ننضم بالمزيج المناسب من التصميم والهندسة والانضباط التشغيلي.</p>
+      </div>
+
+      <ul class="service-rows reveal">
+        <li class="service-row">
+          <span class="row-index">01</span>
+          <h3>
+            <span class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M3 9h18"/><path d="M8 21h8"/><path d="M12 18v3"/></svg></span>
+            تطوير الويب
+          </h3>
+          <p>مواقع تسويقية وتطبيقات ويب سريعة وسهلة الوصول، مبنية بأطر عمل حديثة وكود نظيف قابل للصيانة.</p>
+          <a class="link-arrow row-link" href="services.html#web-development" aria-label="اعرف المزيد عن تطوير الويب">اعرف المزيد <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></a>
+        </li>
+        <li class="service-row">
+          <span class="row-index">02</span>
+          <h3>
+            <span class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg></span>
+            تطوير تطبيقات الجوال
+          </h3>
+          <p>تطبيقات iOS وAndroid بإحساس التطبيقات الأصلية، أو قاعدة كود واحدة متعددة المنصات، مهندسة للأداء والإتقان.</p>
+          <a class="link-arrow row-link" href="services.html#mobile-app-development" aria-label="اعرف المزيد عن تطوير تطبيقات الجوال">اعرف المزيد <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></a>
+        </li>
+        <li class="service-row">
+          <span class="row-index">03</span>
+          <h3>
+            <span class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span>
+            برمجيات مخصصة / SaaS
+          </h3>
+          <p>أدوات داخلية مصممة خصيصًا ومنصات SaaS متعددة المستأجرين مبنية حول سير عملك، لا العكس.</p>
+          <a class="link-arrow row-link" href="services.html#custom-software" aria-label="اعرف المزيد عن البرمجيات المخصصة وSaaS">اعرف المزيد <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></a>
+        </li>
+        <li class="service-row">
+          <span class="row-index">04</span>
+          <h3>
+            <span class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg></span>
+            الصيانة والدعم
+          </h3>
+          <p>مراقبة، وإصلاح أخطاء، وترقية الاعتماديات، وتحسينات على الميزات، ليبقى منتجك سريعًا وآمنًا.</p>
+          <a class="link-arrow row-link" href="services.html#maintenance-support" aria-label="اعرف المزيد عن الصيانة والدعم">اعرف المزيد <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></a>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="section-divider reveal" aria-hidden="true"><span class="divider-line"></span></div>
+
+  <!-- Why MeCodex -->
+  <section class="section" id="why-mecodex">
+    <div class="container why-grid">
+      <div class="why-intro reveal">
+        <p class="eyebrow">لماذا MeCodex</p>
+        <h2>هندسة يمكنك أن تسلّمها المفاتيح</h2>
+        <p class="lead">أربعة التزامات تشكّل كل تعاقد، سواء كان إصلاحًا لأسبوعين أو بناءً يمتد عامًا.</p>
+        <div class="why-callout">
+          <span class="stat-num">+3 سنوات</span>
+          <span class="stat-label">متوسط مدة العلاقة مع العميل</span>
+        </div>
+      </div>
+      <div class="why-list reveal">
+        <div class="why-item">
+          <span class="feature-num">01</span>
+          <div>
+            <h3>فريق هندسي متمرس</h3>
+            <p>يتولى كل مشروع مهندسون متمرسون، لا مبتدئون يتعلمون على حساب ميزانيتك.</p>
+          </div>
+        </div>
+        <div class="why-item">
+          <span class="feature-num">02</span>
+          <div>
+            <h3>تقنيات حديثة، مملة عن قصد</h3>
+            <p>TypeScript، وأطر عمل مجرّبة، وبنية تحتية مُدارة — اخترناها لقابلية الصيانة لا للضجة.</p>
+          </div>
+        </div>
+        <div class="why-item">
+          <span class="feature-num">03</span>
+          <div>
+            <h3>عملية شفافة</h3>
+            <p>عروض أسبوعية، وقوائم مهام مشتركة، وسجل تغييرات مستمر — تعرف دائمًا أين تقف الأمور بالضبط.</p>
+          </div>
+        </div>
+        <div class="why-item">
+          <span class="feature-num">04</span>
+          <div>
+            <h3>دعم ما بعد الإطلاق</h3>
+            <p>نبقى مسؤولين بعد الإطلاق بالمراقبة والإصلاحات وخط مباشر مع من بنوا المنتج.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider reveal" aria-hidden="true"><span class="divider-line"></span></div>
+
+  <!-- Process -->
+  <section class="section" id="process">
+    <div class="container">
+      <div class="section-head centered reveal">
+        <p class="eyebrow">كيف نعمل</p>
+        <h2>عملية مصممة لنتائج متوقعة</h2>
+        <p class="lead" style="margin-inline:auto;">من المحادثة الأولى حتى يوم الإطلاق وما بعده، خمس مراحل واضحة تُبقي كل مشروع على المسار.</p>
+      </div>
+      <ol class="process-list">
+        <li class="process-step reveal">
+          <span class="step-index">1</span>
+          <h3>الاستكشاف</h3>
+          <p>نتعرّف على أهدافك ومستخدميك وقيودك، ونحدد نطاق الحل المناسب.</p>
+        </li>
+        <li class="process-step reveal">
+          <span class="step-index">2</span>
+          <h3>التصميم</h3>
+          <p>تُتخذ قرارات المعمارية وتجربة المستخدم مبكرًا، بمشاركتك في كل خطوة.</p>
+        </li>
+        <li class="process-step reveal">
+          <span class="step-index">3</span>
+          <h3>البناء</h3>
+          <p>تطوير تكراري في دورات قصيرة، مع برمجيات عاملة من الأسبوع الأول.</p>
+        </li>
+        <li class="process-step reveal">
+          <span class="step-index">4</span>
+          <h3>الاختبار</h3>
+          <p>ضمان جودة آلي ويدوي يكتشف المشكلات قبل أن يصادفها مستخدموك بوقت طويل.</p>
+        </li>
+        <li class="process-step reveal">
+          <span class="step-index">5</span>
+          <h3>الإطلاق والدعم</h3>
+          <p>نُطلق ونراقب ونبقى معك لتستمر الأمور بسلاسة.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <div class="section-divider reveal" aria-hidden="true"><span class="divider-line"></span></div>
+
+  <!-- Featured Work -->
+  <section class="section" id="featured-work">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">أعمال مختارة</p>
+        <h2>عينة مما نبنيه</h2>
+        <p class="lead">أمثلة تمثيلية لنوع التعاقدات التي نتولاها — اطّلع على <a class="text-link" href="portfolio.html">معرض الأعمال التوضيحي الكامل</a> للمزيد.</p>
+      </div>
+
+      <div class="grid engagement-grid">
+        <div class="engagement-card bracket-frame reveal">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M3 9h18"/><path d="M8 21h8"/><path d="M12 18v3"/></svg>
+          </div>
+          <span class="eng-mark">/ تطبيق ويب · SaaS</span>
+          <h3>إعادة تصميم منصة تقنية مالية</h3>
+          <p>لوحة تحكم مدفوعات بين الشركات أُعيد بناؤها للسرعة والوضوح — صلاحيات متعددة الأدوار، وشاشات مطابقة، وسجلات تدقيق لفريق عمليات مالية غارق في جداول البيانات.</p>
+          <div class="eng-tags">
+            <span class="eng-tag">تطبيق ويب</span>
+            <span class="eng-tag">React</span>
+            <span class="eng-tag">TypeScript</span>
+            <span class="eng-tag">3 أشهر</span>
+          </div>
+        </div>
+        <div class="engagement-card bracket-frame reveal">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg>
+          </div>
+          <span class="eng-mark">/ تطبيق جوال</span>
+          <h3>تطبيق حجوزات طبية</h3>
+          <p>تطبيق جدولة متعدد المنصات لعيادة متعددة الفروع — حجز للمرضى، وتذكيرات، وتقويم للطاقم يتصل أخيرًا بمصدر حقيقة واحد مشترك.</p>
+          <div class="eng-tags">
+            <span class="eng-tag">تطبيق جوال</span>
+            <span class="eng-tag">React Native</span>
+            <span class="eng-tag">iOS وAndroid</span>
+            <span class="eng-tag">4 أشهر</span>
+          </div>
+        </div>
+        <div class="engagement-card bracket-frame reveal">
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          </div>
+          <span class="eng-mark">/ برمجيات مخصصة · SaaS</span>
+          <h3>أداة تحليلات SaaS</h3>
+          <p>حزمة تقارير ولوحات تحكم متعددة المستأجرين لفريق منتج بين الشركات — وصول حسب الأدوار، وتقارير قابلة للتصدير، ومقاييس استخدام يثق بها العملاء فعلًا.</p>
+          <div class="eng-tags">
+            <span class="eng-tag">SaaS</span>
+            <span class="eng-tag">Node.js</span>
+            <span class="eng-tag">PostgreSQL</span>
+            <span class="eng-tag">5 أشهر</span>
+          </div>
+        </div>
+      </div>
+      <div class="section-more">
+        <a class="btn btn-secondary" href="portfolio.html">عرض كل الأعمال</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider reveal" aria-hidden="true"><span class="divider-line"></span></div>
+
+  <!-- FAQ -->
+  <section class="section" id="faq">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">الأسئلة الشائعة</p>
+        <h2>إجابات سريعة</h2>
+        <p class="lead">الأسئلة التي نسمعها أكثر في المحادثة الأولى. اطّلع على <a class="text-link" href="faq.html">صفحة الأسئلة الشائعة الكاملة</a> للمزيد.</p>
+      </div>
+
+      <div class="accordion reveal">
+        <div class="accordion-item">
+          <h3 class="accordion-heading">
+            <button class="accordion-trigger" aria-expanded="false" aria-controls="home-faq-pricing-panel" id="home-faq-pricing-trigger">
+              <span>كيف يتم التسعير؟</span>
+              <span class="accordion-icon" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div class="accordion-panel" id="home-faq-pricing-panel" role="region" aria-labelledby="home-faq-pricing-trigger">
+            <div class="accordion-panel-inner">
+              <p>يعتمد ذلك على نموذج التعاون. المشاريع محددة النطاق تحصل على سعر ثابت بعد مرحلة الاستكشاف؛ وتعاقدات الفريق المخصص والدعم الشهري المرن تُحاسَب شهريًا. نحدد النطاق ونقدّم عرض السعر دائمًا قبل بدء أي عمل.</p>
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h3 class="accordion-heading">
+            <button class="accordion-trigger" aria-expanded="false" aria-controls="home-faq-timeline-panel" id="home-faq-timeline-trigger">
+              <span>ما المدة المعتادة للمشروع؟</span>
+              <span class="accordion-icon" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div class="accordion-panel" id="home-faq-timeline-panel" role="region" aria-labelledby="home-faq-timeline-trigger">
+            <div class="accordion-panel-inner">
+              <p>تختلف حسب النطاق — قد يُطلق تطبيق ويب مركّز خلال 6–10 أسابيع، بينما قد تستغرق منصة SaaS أكبر عدة أشهر. نعمل في دورات قصيرة، فترى برمجيات عاملة من الأسبوع الأول.</p>
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h3 class="accordion-heading">
+            <button class="accordion-trigger" aria-expanded="false" aria-controls="home-faq-launch-panel" id="home-faq-launch-trigger">
+              <span>ماذا يحدث بعد الإطلاق؟</span>
+              <span class="accordion-icon" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div class="accordion-panel" id="home-faq-launch-panel" role="region" aria-labelledby="home-faq-launch-trigger">
+            <div class="accordion-panel-inner">
+              <p>لا نختفي عند الإطلاق. يمكن أن ينتقل كل مشروع إلى ترتيب صيانة أو دعم — مراقبة، وتحديثات، وتحسينات صغيرة — مع المهندسين أنفسهم الذين بنوه.</p>
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h3 class="accordion-heading">
+            <button class="accordion-trigger" aria-expanded="false" aria-controls="home-faq-team-panel" id="home-faq-team-trigger">
+              <span>هل يمكنكم العمل إلى جانب فريقنا الحالي؟</span>
+              <span class="accordion-icon" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div class="accordion-panel" id="home-faq-team-panel" role="region" aria-labelledby="home-faq-team-trigger">
+            <div class="accordion-panel-inner">
+              <p>نعم — وهذا من أكثر أنواع التعاقد شيوعًا لدينا. ننضم إلى مستودعاتك وطقوس السبرنت الحالية، ونحدد منذ البداية بوضوح أين يبدأ نطاقنا وأين ينتهي.</p>
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h3 class="accordion-heading">
+            <button class="accordion-trigger" aria-expanded="false" aria-controls="home-faq-scope-panel" id="home-faq-scope-trigger">
+              <span>ماذا لو احتجنا إلى تغيير النطاق في منتصف المشروع؟</span>
+              <span class="accordion-icon" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div class="accordion-panel" id="home-faq-scope-panel" role="region" aria-labelledby="home-faq-scope-trigger">
+            <div class="accordion-panel-inner">
+              <p>المتطلبات تتطور — وهذا طبيعي. في العمل محدد النطاق نراجع معًا الأثر على السعر والجدول الزمني أولًا. أما تعاقدات الفريق المخصص والدعم الشهري المرن فمصممة لهذا من البداية.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-more">
+        <a class="btn btn-secondary" href="faq.html">كل الأسئلة الشائعة</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider reveal" aria-hidden="true"><span class="divider-line"></span></div>
+
+  <!-- From the Blog -->
+  <section class="section" id="from-the-blog">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">من المدونة</p>
+        <h2>ملاحظات حول كيف نبني البرمجيات</h2>
+        <p class="lead">مقالات حديثة كتبها من يؤدون العمل بأنفسهم.</p>
+      </div>
+
+      <div class="grid engagement-grid">
+        <div class="engagement-card bracket-frame reveal">
+          <span class="eng-mark">3 أغسطس 2026 · قراءة 6 دقائق</span>
+          <h3>كيف نحدد نطاق مشروع برمجي في أول أسبوعين</h3>
+          <p>لماذا نتعامل مع الاستكشاف كعمل حقيقي مدفوع — وكيف تُبقي وثيقة نطاق مكتوبة بافتراضات صريحة المفاجآتِ رخيصة بدلًا من أن تكون مكلفة.</p>
+          <a class="link-arrow" href="insights.html#scoping-a-project" aria-label="اقرأ: كيف نحدد نطاق مشروع برمجي في أول أسبوعين">اقرأ المقال <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></a>
+        </div>
+        <div class="engagement-card bracket-frame reveal">
+          <span class="eng-mark">14 يوليو 2026 · قراءة 7 دقائق</span>
+          <h3>TypeScript في بيئة الإنتاج: خياراتنا الافتراضية</h3>
+          <p>الوضع الصارم من اليوم الأول، والتحقق وقت التشغيل عند كل حدّ، ولماذا نعدّ <code>any</code> علامة تستدعي التوقف في مراجعة الكود، لا طريقًا مختصرًا.</p>
+          <a class="link-arrow" href="insights.html#typescript-in-production" aria-label="اقرأ: TypeScript في بيئة الإنتاج: خياراتنا الافتراضية">اقرأ المقال <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></a>
+        </div>
+        <div class="engagement-card bracket-frame reveal">
+          <span class="eng-mark">22 يونيو 2026 · قراءة 5 دقائق</span>
+          <h3>ماذا يعني «التسليم بقيادة الخبرة» فعليًا يومًا بيوم</h3>
+          <p>عبارة سهلة الوضع على صفحة رئيسية — وإليك ما تغيّره فعليًا في من يتخذ القرارات ومن تتحدث معه.</p>
+          <a class="link-arrow" href="insights.html#senior-led-delivery" aria-label="اقرأ: ماذا يعني التسليم بقيادة الخبرة فعليًا يومًا بيوم">اقرأ المقال <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></a>
+        </div>
+      </div>
+      <div class="section-more">
+        <a class="btn btn-secondary" href="insights.html">اقرأ مزيدًا من المقالات</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider reveal" aria-hidden="true"><span class="divider-line"></span></div>
+
+  <!-- CTA band -->
+  <section class="section">
+    <div class="container">
+      <div class="cta-panel bracket-frame reveal">
+        <div>
+          <p class="cta-panel-meta">// ابدأ مشروعًا</p>
+          <h2>لديك فكرة مشروع؟</h2>
+        </div>
+        <div class="cta-panel-actions">
+          <p>أخبرنا بما تبنيه. سنرد خلال يوم عمل واحد بالخطوات التالية — بلا ضغط بيعي، فقط إجابة صريحة عن مدى الملاءمة والجدول الزمني.</p>
+          <a class="btn btn-primary" href="contact.html">ابدأ مشروعًا</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<button class="scroll-top" type="button" aria-label="العودة إلى أعلى الصفحة">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></svg>
+</button>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-top reveal">
+      <div class="footer-brand">
+        <img src="../assets/img/mecodex-logo-for-dark-bg.svg" alt="MeCodex" width="150" height="27">
+        <p>استوديو لتطوير البرمجيات يبني تطبيقات الويب والجوال والبرمجيات المخصصة للفرق الطموحة.</p>
+        <div class="social-row">
+          <a href="#" aria-label="MeCodex on LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5C4.98 4.88 3.9 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.24 8.25h4.5V23h-4.5V8.25zM8.5 8.25h4.31v2.02h.06c.6-1.13 2.06-2.32 4.24-2.32 4.53 0 5.37 2.98 5.37 6.86V23h-4.5v-6.98c0-1.66-.03-3.8-2.32-3.8-2.32 0-2.68 1.81-2.68 3.68V23h-4.5V8.25z"/></svg></a>
+          <a href="#" aria-label="MeCodex on GitHub"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.7-3.88-1.54-3.88-1.54-.53-1.33-1.29-1.69-1.29-1.69-1.05-.72.08-.7.08-.7 1.17.08 1.78 1.2 1.78 1.2 1.03 1.77 2.71 1.26 3.37.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.68 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.79 0c2.2-1.49 3.18-1.18 3.18-1.18.63 1.59.23 2.76.11 3.05.74.8 1.18 1.83 1.18 3.09 0 4.41-2.69 5.38-5.25 5.67.41.36.78 1.06.78 2.14 0 1.55-.01 2.79-.01 3.17 0 .31.21.67.8.56A10.51 10.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z"/></svg></a>
+          <a href="#" aria-label="MeCodex on X (Twitter)"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.9 2H22l-7.6 8.7L23.4 22H16.7l-5.2-6.8L5.5 22H2.4l8.1-9.3L1.6 2h6.9l4.7 6.2L18.9 2Zm-1.2 18h1.7L7.4 3.9H5.6l12.1 16.1Z"/></svg></a>
+        </div>
+      </div>
+      <nav class="footer-col" aria-label="الموقع">
+        <h4>الموقع</h4>
+        <ul>
+          <li><a href="index.html" aria-current="page">الرئيسية</a></li>
+          <li><a href="about.html">من نحن</a></li>
+          <li><a href="services.html">خدماتنا</a></li>
+          <li><a href="portfolio.html">أعمالنا</a></li>
+          <li><a href="contact.html">تواصل</a></li>
+        </ul>
+      </nav>
+      <nav class="footer-col" aria-label="الشركة">
+        <h4>الشركة</h4>
+        <ul>
+          <li><a href="faq.html">الأسئلة الشائعة</a></li>
+          <li><a href="careers.html">الوظائف</a></li>
+          <li><a href="insights.html">مقالات</a></li>
+        </ul>
+      </nav>
+      <div class="footer-col">
+        <h4>تواصل</h4>
+        <ul>
+          <li><a href="mailto:hello@mecodex.com">hello@mecodex.com</a></li>
+          <li>العمل عن بُعد أولًا / القاهرة، مصر</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; <span data-current-year>2026</span> MeCodex. جميع الحقوق محفوظة.</p>
+      <p>صُمّم للفرق الطموحة.</p>
+      <p class="footer-meta">// MeCodex — استوديو هندسي</p>
+    </div>
+  </div>
+</footer>
+
+<script src="../js/main.js"></script>
+</body>
+</html>

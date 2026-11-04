@@ -5,7 +5,7 @@
 
 This repo holds two separate things that happen to share a home:
 
-1. **`website/`** — the MeCodex marketing site (static HTML/CSS/JS, English only, 8 pages).
+1. **`website/`** — the MeCodex marketing site (static HTML/CSS/JS, 8 pages in English and the same 8 in Arabic under `website/ar/`).
 2. **`design-system/`** — the **workspace-shared** design system that every other product consumes.
 
 They have different audiences and different risk profiles, so they are tracked separately below.
@@ -152,3 +152,18 @@ workflow:
 **Security updates are unaffected** — Dependabot ignores that limit for security advisories, so a
 dependency with a known vulnerability still opens a PR. Set the limits back to a non-zero number to
 bring routine updates back.
+
+---
+
+## Update 2026-11-04 — Arabic version
+
+- **`website/ar/`**: the 8 pages in Arabic, right to left, with a language switch in every header,
+  `hreflang` alternates and sitemap entries. The pages are generated from the English ones by
+  `node i18n/build-arabic.mjs` using `i18n/ar.json`, and the build refuses to run with
+  untranslated text. Edit English, rebuild; never hand-edit `website/ar/`.
+- **CSS** moved its left/right rules to logical properties (no visual change in English), plus a
+  small Arabic block: font, no letter-spacing, flipped arrows.
+- **Fixed in English**: the contact form note claimed the form sends nothing, which has been
+  false since the mailto hand-off.
+- **Still open**: a native-speaker read of the Arabic copy for tone; real social profile URLs.
+- Verified in a real browser at phone and desktop widths, both languages.
